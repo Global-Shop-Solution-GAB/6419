@@ -1,0 +1,60 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(11151)
+		F.ODBC.Connection!Con.OpenCompanyConnection
+		'making sure no current entry is entered the newly created router.
+		F.Intrinsic.String.Build("Delete From GCG_6313_RTR_EXTRA Where Router = '{0}' and Rev = '{1}'",V.Passed.000006,V.Passed.000007,V.Local.sSql)
+		F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.String.Build("Select * From GCG_6313_RTR_EXTRA Where Router = '{0}' and Rev = '{1}'",V.Passed.000003,V.Passed.000004,V.Local.sSql)
+		F.Data.DataTable.CreateFromSQL("User","con",V.Local.sSql,True)
+		F.Intrinsic.Control.If(V.DataTable.User.RowCount--,<>,-1)
+			F.Data.DataTable.SetValue("User",-1,"Router",V.Passed.000006,"Rev",V.Passed.000007)
+			F.Data.DataTable.SaveToDB("User","con","GCG_6313_RTR_Extra","",128)
+		F.Intrinsic.Control.EndIf
+		F.ODBC.Connection!Con.Close
+		
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.Control.End
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Copy_Router_User.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Exit.Start
+F.Intrinsic.Control.SetErrorHandler("Exit_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Exit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+Program.Sub.Exit.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$rking$}$20230720070722038$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXeuYdx2q/CwYz6Rv/65muhNPh9JKx+N1FY+oLand/rYe0=
+Program.Sub.Comments.End
