@@ -1,0 +1,799 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.FormMassRout..Create
+Gui.FormMassRout..Caption("Mass Replace Parts on Routers")
+Gui.FormMassRout..Size(17760,9765)
+Gui.FormMassRout..MinX(0)
+Gui.FormMassRout..MinY(0)
+Gui.FormMassRout..Position(0,0)
+Gui.FormMassRout..BackColor(-2147483633)
+Gui.FormMassRout..MousePointer(0)
+Gui.FormMassRout..MinX(0)
+Gui.FormMassRout..MinY(0)
+Gui.FormMassRout..Position(0,0)
+Gui.FormMassRout..BackColor(-2147483633)
+Gui.FormMassRout..MousePointer(0)
+Gui.FormMassRout..Event(UnLoad,FormMassRout_UnLoad)
+Gui.FormMassRout.frmCurrentPartNo.Create(Frame)
+Gui.FormMassRout.frmCurrentPartNo.Size(6675,2160)
+Gui.FormMassRout.frmCurrentPartNo.Position(135,180)
+Gui.FormMassRout.frmCurrentPartNo.Caption("Current Part No")
+Gui.FormMassRout.frmCurrentPartNo.FontName("Tahoma")
+Gui.FormMassRout.frmCurrentPartNo.FontSize(10)
+Gui.FormMassRout.frmCurrentPartNo.BorderStyle(3)
+Gui.FormMassRout.lblCurrUM.Create(Label,"UM",True,330,300,0,6210,1290,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblCurrUM.Parent("frmCurrentPartNo")
+Gui.FormMassRout.lblCurrDesc.Create(Label,"Part Description",True,1785,300,0,180,1290,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblCurrDesc.Parent("frmCurrentPartNo")
+Gui.FormMassRout.cmdBrowsePart.Create(Button)
+Gui.FormMassRout.cmdBrowsePart.Size(540,345)
+Gui.FormMassRout.cmdBrowsePart.Position(4470,840)
+Gui.FormMassRout.cmdBrowsePart.Caption("^")
+Gui.FormMassRout.cmdBrowsePart.FontName("Tahoma")
+Gui.FormMassRout.cmdBrowsePart.Parent("frmCurrentPartNo")
+Gui.FormMassRout.cmdBrowsePart.TabStop(True)
+Gui.FormMassRout.cmdBrowsePart.TabIndex(4)
+Gui.FormMassRout.cmdBrowsePart.Event(Click,cmdBrowsePart_Click)
+Gui.FormMassRout.cmdRefresh.Create(Button)
+Gui.FormMassRout.cmdRefresh.Size(855,375)
+Gui.FormMassRout.cmdRefresh.Position(5100,825)
+Gui.FormMassRout.cmdRefresh.Caption("Refresh")
+Gui.FormMassRout.cmdRefresh.FontName("Tahoma")
+Gui.FormMassRout.cmdRefresh.Parent("frmCurrentPartNo")
+Gui.FormMassRout.cmdRefresh.TabStop(True)
+Gui.FormMassRout.cmdRefresh.TabIndex(5)
+Gui.FormMassRout.cmdRefresh.Event(Click,cmdRefresh_Click)
+Gui.FormMassRout.txtPartRev.Create(TextBox,"",True,585,360,0,3120,855,True,0,"Tahoma",10,-2147483643,1)
+Gui.FormMassRout.txtPartRev.TabStop(True)
+Gui.FormMassRout.txtPartRev.TabIndex(2)
+Gui.FormMassRout.txtPartRev.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartRev.Event(GotFocus,Got_Focus)
+Gui.FormMassRout.lblCurrLoc.Create(Label,"Loc",True,405,300,0,3840,525,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblCurrLoc.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartLoc.Create(TextBox,"",True,480,360,0,3795,855,True,0,"Tahoma",10,-2147483643,1)
+Gui.FormMassRout.txtPartLoc.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartLoc.TabStop(True)
+Gui.FormMassRout.txtPartLoc.TabIndex(3)
+Gui.FormMassRout.txtPartLoc.Event(GotFocus,Got_Focus)
+Gui.FormMassRout.txtPartLoc.Event(LostFocus,txtPartLoc_LostFocus)
+Gui.FormMassRout.txtPartUM.Create(TextBox,"",True,465,300,0,6105,1560,False,2,"Tahoma",8,-2147483643,1)
+Gui.FormMassRout.txtPartUM.Locked(True)
+Gui.FormMassRout.txtPartUM.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartDesc.Create(TextBox,"",True,5850,300,0,165,1560,False,0,"Tahoma",8,-2147483643,1)
+Gui.FormMassRout.txtPartDesc.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartDesc.Locked(True)
+Gui.FormMassRout.lblCurrRev.Create(Label,"Rev",True,525,300,0,3150,525,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblCurrRev.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartNo.Create(TextBox,"",True,2865,360,0,165,855,True,0,"Tahoma",10,-2147483643,1)
+Gui.FormMassRout.txtPartNo.Parent("frmCurrentPartNo")
+Gui.FormMassRout.txtPartNo.TabStop(True)
+Gui.FormMassRout.txtPartNo.TabIndex(1)
+Gui.FormMassRout.txtPartNo.Event(GotFocus,Got_Focus)
+Gui.FormMassRout.lblCurrPart.Create(Label,"Part No",True,795,300,0,180,525,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblCurrPart.Parent("frmCurrentPartNo")
+Gui.FormMassRout.cboState.Create(ComboBox)
+Gui.FormMassRout.cboState.Size(1095,330)
+Gui.FormMassRout.cboState.Position(5460,420)
+Gui.FormMassRout.cboState.Parent("frmCurrentPartNo")
+Gui.FormMassRout.cboState.Visible(False)
+Gui.FormMassRout.lblState.Create(Label,"State",False,570,255,0,4845,525,True,0,"Arial",8,-2147483633,0)
+Gui.FormMassRout.lblState.Parent("frmCurrentPartNo")
+Gui.FormMassRout.frmNewPartNo.Create(Frame)
+Gui.FormMassRout.frmNewPartNo.Size(6405,2160)
+Gui.FormMassRout.frmNewPartNo.Position(6930,180)
+Gui.FormMassRout.frmNewPartNo.Caption("New Part No")
+Gui.FormMassRout.frmNewPartNo.FontName("Tahoma")
+Gui.FormMassRout.frmNewPartNo.FontSize(10)
+Gui.FormMassRout.frmNewPartNo.BorderStyle(3)
+Gui.FormMassRout.cmdBrowseNewPart.Create(Button)
+Gui.FormMassRout.cmdBrowseNewPart.Size(540,345)
+Gui.FormMassRout.cmdBrowseNewPart.Position(4410,840)
+Gui.FormMassRout.cmdBrowseNewPart.TabStop(True)
+Gui.FormMassRout.cmdBrowseNewPart.TabIndex(4)
+Gui.FormMassRout.cmdBrowseNewPart.Caption("^")
+Gui.FormMassRout.cmdBrowseNewPart.FontName("Tahoma")
+Gui.FormMassRout.cmdBrowseNewPart.Parent("frmNewPartNo")
+Gui.FormMassRout.cmdBrowseNewPart.Event(Click,cmdBrowseNewPart_Click)
+Gui.FormMassRout.lblNewLoc.Create(Label,"Loc",True,405,300,0,3795,525,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblNewLoc.Parent("frmNewPartNo")
+Gui.FormMassRout.lblNewPart.Create(Label,"Part No",True,795,300,0,165,525,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblNewPart.Parent("frmNewPartNo")
+Gui.FormMassRout.txtNewPartDesc.Create(TextBox,"",True,5580,300,0,135,1560,False,0,"Tahoma",8,-2147483643,1)
+Gui.FormMassRout.txtNewPartDesc.Locked(True)
+Gui.FormMassRout.txtNewPartDesc.Parent("frmNewPartNo")
+Gui.FormMassRout.lblNewDesc.Create(Label,"Part Description",True,1785,300,0,195,1290,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblNewDesc.Parent("frmNewPartNo")
+Gui.FormMassRout.lblNewRev.Create(Label,"Rev",True,525,300,0,3090,525,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblNewRev.Parent("frmNewPartNo")
+Gui.FormMassRout.txtNewPartLoc.Create(TextBox,"",True,480,360,0,3735,855,True,0,"Tahoma",10,-2147483643,1)
+Gui.FormMassRout.txtNewPartLoc.TabStop(True)
+Gui.FormMassRout.txtNewPartLoc.TabIndex(3)
+Gui.FormMassRout.txtNewPartLoc.Parent("frmNewPartNo")
+Gui.FormMassRout.txtNewPartLoc.Event(GotFocus,Got_Focus)
+Gui.FormMassRout.txtNewPartLoc.Event(LostFocus,txtNewPartLoc_LostFocus)
+Gui.FormMassRout.txtNewPartRev.Create(TextBox,"",True,585,360,0,3075,855,True,0,"Tahoma",10,-2147483643,1)
+Gui.FormMassRout.txtNewPartRev.TabStop(True)
+Gui.FormMassRout.txtNewPartRev.TabIndex(2)
+Gui.FormMassRout.txtNewPartRev.Parent("frmNewPartNo")
+Gui.FormMassRout.txtNewPartRev.Event(GotFocus,Got_Focus)
+Gui.FormMassRout.txtNewPartNo.Create(TextBox,"",True,2865,360,0,135,855,True,0,"Tahoma",10,-2147483643,1)
+Gui.FormMassRout.txtNewPartNo.TabStop(True)
+Gui.FormMassRout.txtNewPartNo.TabIndex(1)
+Gui.FormMassRout.txtNewPartNo.Parent("frmNewPartNo")
+Gui.FormMassRout.txtNewPartNo.Event(GotFocus,Got_Focus)
+Gui.FormMassRout.txtNewPartUM.Create(TextBox,"",True,465,300,0,5835,1560,False,2,"Tahoma",8,-2147483643,1)
+Gui.FormMassRout.txtNewPartUM.Locked(True)
+Gui.FormMassRout.txtNewPartUM.Parent("frmNewPartNo")
+Gui.FormMassRout.lblNewUm.Create(Label,"UM",True,330,300,0,5955,1290,True,0,"Tahoma",8,-2147483633,0)
+Gui.FormMassRout.lblNewUm.Parent("frmNewPartNo")
+Gui.FormMassRout.cmdUpdate.Create(Button)
+Gui.FormMassRout.cmdUpdate.Size(840,375)
+Gui.FormMassRout.cmdUpdate.Position(13455,195)
+Gui.FormMassRout.cmdUpdate.Caption("Update")
+Gui.FormMassRout.cmdUpdate.FontName("Tahoma")
+Gui.FormMassRout.cmdUpdate.Event(Click,cmdUpdate_Click)
+Gui.FormMassRout.cmdExport.Create(Button)
+Gui.FormMassRout.cmdExport.Size(825,375)
+Gui.FormMassRout.cmdExport.Position(13455,660)
+Gui.FormMassRout.cmdExport.Caption("Export")
+Gui.FormMassRout.cmdExport.FontName("Tahoma")
+Gui.FormMassRout.cmdExport.Event(Click,cmdExport_Click)
+Gui.FormMassRout.GsGridRouters.Create(GsGridControl)
+Gui.FormMassRout.GsGridRouters.Size(17370,6720)
+Gui.FormMassRout.GsGridRouters.Position(135,2430)
+Gui.FormMassRout.GsGridRouters.Anchor(15)
+Gui.FormMassRout.GsGridRouters.Event(RowCellClick,GsGridRouters_RowCellClick)
+Gui.FormMassRout.optRout.Create(Option)
+Gui.FormMassRout.optRout.Size(2655,255)
+Gui.FormMassRout.optRout.Position(13485,1575)
+Gui.FormMassRout.optRout.Caption("Update Material on like Routers")
+Gui.FormMassRout.optRout.Event(Click,optRout_Click)
+Gui.FormMassRout.optMat.Create(Option)
+Gui.FormMassRout.optMat.Size(2865,255)
+Gui.FormMassRout.optMat.Position(13485,1170)
+Gui.FormMassRout.optMat.Caption("Update Material on all Routers")
+Gui.FormMassRout.optMat.Event(Click,optMat_Click)
+Gui.FormMassRout.cmdCheckAll.Create(Button)
+Gui.FormMassRout.cmdCheckAll.Size(990,375)
+Gui.FormMassRout.cmdCheckAll.Position(13455,1920)
+Gui.FormMassRout.cmdCheckAll.Caption("Check All")
+Gui.FormMassRout.cmdCheckAll.Event(Click,cmdCheckAll_Click)
+Gui.FormMassRout.cmdUnCheckAll.Create(Button)
+Gui.FormMassRout.cmdUnCheckAll.Size(1155,375)
+Gui.FormMassRout.cmdUnCheckAll.Position(14505,1920)
+Gui.FormMassRout.cmdUnCheckAll.Caption("Uncheck All")
+Gui.FormMassRout.cmdUnCheckAll.Event(Click,cmdUnCheckAll_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sRev.Declare(String,"")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormMassRout.optMat.Value(1)
+
+F.Intrinsic.Control.CallSub(Build_DT)
+F.Intrinsic.Control.CallSub(Set_Prop)
+
+F.Intrinsic.Control.CallSub(Create_Context_Menu)
+
+gui.FormMassRout..Show
+gui.FormMassRout..AlwaysOnTop(True)
+gui.FormMassRout..AlwaysOnTop(False)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.FormMassRout_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("FormMassRout_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("FormMassRout_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.FormMassRout_UnLoad.End
+
+Program.Sub.Got_Focus.Start
+F.Intrinsic.Control.SetErrorHandler("Got_Focus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormMassRout.[V.Args.ControlName].SelectAll
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Got_Focus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Got_Focus.End
+
+Program.Sub.cmdUpdate_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdUpdate_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+V.Local.sDesc.Declare(String,"")
+V.Local.sUM.Declare(String,"")
+
+Gui.FormMassRout..Enabled(False)
+
+F.Intrinsic.Control.If(V.Global.sRev.Trim,=,"Y")
+	F.Intrinsic.String.RPad(V.Screen.FormMassRout!txtNewPartNo.Text," ",17,V.Local.sPart)
+	F.Intrinsic.String.Build("{0}{1}",V.Local.sPart,V.Screen.FormMassRout!txtNewPartRev.Text,V.Local.sPart)
+F.Intrinsic.Control.Else
+	V.Local.sPart.Set(V.Screen.FormMassRout!txtNewPartNo.Text)
+F.Intrinsic.Control.EndIf
+
+V.Local.sDesc.Set(V.Screen.FormMassRout!txtNewPartDesc.Text)
+V.Local.sUM.Set(V.Screen.FormMassRout!txtNewPartUM.Text)
+Function.Intrinsic.Debug.InvokeDebugger
+Function.Intrinsic.Debug.Stop
+
+F.Data.DataView.Create("RouterLine","VRouterLine",22,"Selection = True","")
+F.Data.DataView.SetValue("RouterLine","VRouterLine",-1,"Part_WC_OutSide",V.Local.sPart.Trim,"Desc_Rt_Line",V.Local.sDesc.Trim,"UM_Inventory",V.Local.sUM.Trim)
+F.Data.DataView.ToDataTableDistinct("RouterLine","VRouterLine","RouterSave","Router*!*Line_Router*!*Part_WC_OutSide*!*Desc_Rt_Line*!*UM_Inventory",True)
+F.Data.DataView.Close("RouterLine","VRouterLine")
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.Data.DataTable.SaveToDB("RouterSave","con","ROUTER_LINE","Router*!*Line_Router",256,"Router@!@Router*!*Line_Router@!@Line_Router*!*Part_WC_OutSide@!@Part_WC_OutSide*!*Desc_Rt_Line@!@Desc_Rt_Line*!*UM_Inventory@!@UM_Inventory")
+F.ODBC.Connection!Con.Close
+
+F.Data.DataTable.Close("RouterSave")
+
+F.Intrinsic.Control.CallSub(cmdRefresh_Click)
+
+Gui.FormMassRout..Enabled(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdUpdate_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdUpdate_Click.End
+
+Program.Sub.cmdExport_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdExport_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sFileExport.Declare(String,"")
+V.Local.sMsg.Declare(String,"")
+V.Local.bExcel.Declare(Boolean,False)
+V.Local.bFileLocked.Declare(Boolean,False)
+
+F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+F.Intrinsic.Control.If(V.Local.bExcel)
+	F.Intrinsic.String.Build("{0}\GCG_6419_Router_Mat.xlsx",V.Caller.LocalGssTempDir,V.Local.sFileExport)
+	F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+	F.Intrinsic.Control.If(V.Local.bFileLocked)
+		F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+		F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+	F.Intrinsic.Control.Else
+		Gui.FormMassRout.GsGridRouters.Export(V.Local.sFileExport,"xlsx")
+		F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("{0}\GCG_6419_Router_Mat.csv",V.Caller.LocalGssTempDir,V.Local.sFileExport)
+	F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+	F.Intrinsic.Control.If(V.Local.bFileLocked)
+		F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+		F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+	F.Intrinsic.Control.Else
+		Gui.FormMassRout.GsGridRouters.Export(V.Local.sFileExport,"csv")
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdExport_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdExport_Click.End
+
+Program.Sub.cmdBrowsePart_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdBrowsePart_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sUM.Declare(String,"")
+
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+F.Intrinsic.UI.SetBrowserOOT(True)
+
+F.Intrinsic.UI.Browser(100,"",V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	F.Intrinsic.String.RPad(V.Local.sRet(0).Trim," ",17,V.Local.sPart)
+	F.Intrinsic.String.Build("{0}{1}",V.Local.sPart,V.Local.sRet(1).Trim,V.Local.sPart)
+	F.Intrinsic.String.Build("Select Top 1 UM_Inventory From V_Inventory_Mstr Where Part = '{0}' and Location = '{1}'",V.Local.sPart,V.Local.sRet(2).Trim,V.Local.sSql)
+	F.ODBC.Connection!Con.OpenCompanyConnection
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sUM)
+	F.ODBC.Connection!Con.Close
+	Gui.FormMassRout.txtPartNo.Text(V.Local.sRet(0).Trim)
+	Gui.FormMassRout.txtPartRev.Text(V.Local.sRet(1).Trim)
+	Gui.FormMassRout.txtPartLoc.Text(V.Local.sRet(2).Trim)
+	Gui.FormMassRout.txtPartDesc.Text(V.Local.sRet(3).Trim)
+	Gui.FormMassRout.txtPartUM.Text(V.Local.sUM.Trim)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdBrowsePart_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdBrowsePart_Click.End
+
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdRefresh_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+
+Gui.FormMassRout..Enabled(False)
+
+F.Intrinsic.String.RPad(V.Screen.FormMassRout!txtPartNo.Text," ",17,V.Local.sPart)
+F.Intrinsic.String.Build("{0}{1}",V.Local.sPart,V.Screen.FormMassRout!txtPartRev.Text,V.Local.sPart)
+	
+F.Intrinsic.Control.If(V.Screen.FormMassRout!optMat.Value,=,1)
+	F.Intrinsic.String.Build("Select Router, Line_Router, Part_WC_OutSide, Desc_Rt_Line, UM_Inventory From V_Router_Line Where Part_WC_OutSide = '{0}' and LMO = 'M' Order by Router,Line_Router",V.Local.sPart.Trim,V.Local.sSql)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("Select Router, Line_Router, Part_WC_OutSide, Desc_Rt_Line, UM_Inventory From V_Router_Line Where Part_WC_OutSide = '{0}' and LMO = 'M'  and Router Like '{1}%' Order by Router,Line_Router",V.Local.sPart.Trim,V.Screen.FormMassRout!cboState.Text,V.Local.sSql)
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("Temp","con",V.Local.sSql,True)
+F.ODBC.Connection!Con.Close
+F.Data.DataTable.DeleteRow("RouterLine")
+F.Data.DataTable.AcceptChanges("RouterLine")
+F.Data.DataTable.Merge("Temp","RouterLine",False,4)
+F.Data.DataTable.Close("Temp")
+F.Data.DataTable.SetValue("RouterLine",-1,"Selection",False)
+
+Gui.FormMassRout..Enabled(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdRefresh_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.cmdBrowseNewPart_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdBrowseNewPart_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sUM.Declare(String,"")
+
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+F.Intrinsic.UI.SetBrowserOOT(True)
+
+F.Intrinsic.UI.Browser(100,"",V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	F.Intrinsic.String.RPad(V.Local.sRet(0).Trim," ",17,V.Local.sPart)
+	F.Intrinsic.String.Build("{0}{1}",V.Local.sPart,V.Local.sRet(1).Trim,V.Local.sPart)
+	F.Intrinsic.String.Build("Select Top 1 UM_Inventory From V_Inventory_Mstr Where Part = '{0}' and Location = '{1}'",V.Local.sPart,V.Local.sRet(2).Trim,V.Local.sSql)
+	F.ODBC.Connection!Con.OpenCompanyConnection
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sUM)
+	F.ODBC.Connection!Con.Close
+	Gui.FormMassRout.txtNewPartNo.Text(V.Local.sRet(0).Trim)
+	Gui.FormMassRout.txtNewPartRev.Text(V.Local.sRet(1).Trim)
+	Gui.FormMassRout.txtNewPartLoc.Text(V.Local.sRet(2).Trim)
+	Gui.FormMassRout.txtNewPartDesc.Text(V.Local.sRet(3).Trim)
+	Gui.FormMassRout.txtNewPartUM.Text(V.Local.sUM.Trim)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdBrowseNewPart_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdBrowseNewPart_Click.End
+
+Program.Sub.GsGridRouters_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridRouters_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.SelectCase(V.Args.Column.UCase)
+	F.Intrinsic.Control.Case("SELECTION")
+		F.Data.DataTable.SetValue("RouterLine",V.Args.RowIndex,"Selection",V.DataTable.RouterLine(V.Args.RowIndex).Selection!FieldValNot)		
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridRouters_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGridRouters_RowCellClick.End
+
+Program.Sub.optMat_Click.Start
+F.Intrinsic.Control.SetErrorHandler("optMat_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormMassRout.cboState.Visible(False)
+Gui.FormMassRout.lblState.Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("optMat_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.optMat_Click.End
+
+Program.Sub.optRout_Click.Start
+F.Intrinsic.Control.SetErrorHandler("optRout_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormMassRout.cboState.Visible(True)
+Gui.FormMassRout.lblState.Visible(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("optRout_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.optRout_Click.End
+
+Program.Sub.Build_DT.Start
+F.Intrinsic.Control.SetErrorHandler("Build_DT_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sState.Declare(String,":AL:AK:AZ:AR:CA:CO:CT:DE:FL:GA:HI:ID:IL:IN:IA:KS:KY:LA:ME:MD:MA:MI:MN:MS:MO:MT:NE:NV:NH:NJ:NM:NY:NC:ND:OH:OK:OR:PA:RI:SC:SD:TN:TX:UT:VT:VA:WA:WV:WI:WY")
+V.Local.i.Declare(Long,0)
+V.Local.iIndex.Declare(Long,0)
+
+F.Intrinsic.String.Split(V.Local.sState,":",V.Local.sState)
+
+F.Intrinsic.Control.For(V.Local.i,0,V.Local.sState.UBound,1)
+	F.Intrinsic.Math.Add(V.Local.i,1,V.Local.iIndex)
+	Gui.FormMassRout.cboState.AddItem(V.Local.sState(V.Local.i),V.Local.iIndex)
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("RouterLine","con","Select Router, Line_Router, Part_WC_OutSide, Desc_Rt_Line, UM_Inventory From V_Router_Line Where Router = '$%$#**-1'",True)
+F.ODBC.Connection!Con.ExecuteAndReturn("select Ascii_Flag from V_OP_HEADER where id = '070008'",V.Global.sRev)
+F.ODBC.Connection!con.Close
+
+F.Data.DataTable.AddColumn("RouterLine","Selection",Boolean)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Build_DT_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Build_DT.End
+
+Program.Sub.Set_Prop.Start
+F.Intrinsic.Control.SetErrorHandler("Set_Prop_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormMassRout.GsGridRouters.AddGridviewFromDatatable("GRouterLine","RouterLine")
+Gui.FormMassRout.GsGridRouters.SetGridviewProperty("GRouterLine","Editable",False)
+Gui.FormMassRout.GsGridRouters.SetGridviewProperty("GRouterLine","ReadOnly",True)
+
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Selection","Caption"," ")
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Selection","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Selection","headerfontbold", true)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Selection","Fixed","Left")
+
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Router","Caption","Router")
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Router","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Router","headerfontbold", true)
+
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Line_Router","Caption","Line Router")
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Line_Router","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Line_Router","headerfontbold", true)
+
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Part_WC_OutSide","Caption","Material")
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Part_WC_OutSide","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Part_WC_OutSide","headerfontbold", true)
+
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Desc_Rt_Line","Caption","Description")
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Desc_Rt_Line","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","Desc_Rt_Line","headerfontbold", true)
+
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","UM_Inventory","Caption","UM")
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","UM_Inventory","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormMassRout.GsGridRouters.SetColumnProperty("GRouterLine","UM_Inventory","headerfontbold", true)
+
+Gui.FormMassRout.GsGridRouters.MainView("GRouterLine")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Prop_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Set_Prop.End
+
+Program.Sub.txtPartLoc_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtPartLoc_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+F.Intrinsic.Control.If(V.Global.sRev.Trim,=,"Y")
+	F.Intrinsic.String.RPad(V.Screen.FormMassRout!txtPartNo.Text," ",17,V.Local.sPart)
+	F.Intrinsic.String.Build("{0}{1}",V.Local.sPart,V.Screen.FormMassRout!txtPartRev.Text,V.Local.sPart)
+F.Intrinsic.Control.Else
+	GUi.FormMassRout.txtPartRev.Text("")
+	V.Local.sPart.Set(V.Screen.FormMassRout!txtPartNo.Text)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Select Top 1 Description, UM_Inventory From V_Inventory_Mstr Where Part = '{0}' and Location = '{1}'",V.Local.sPart,V.Screen.FormMassRout!txtPartLoc.Text,V.Local.sSql)
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.FormMassRout.txtPartDesc.Text(V.Local.sRet(0).Trim)
+	Gui.FormMassRout.txtPartUM.Text(V.Local.sRet(1).Trim)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.BlockEvents
+	F.Intrinsic.UI.Msgbox("Part not Found.","Attention")
+	Gui.FormMassRout.txtPartNo.Text("")
+	Gui.FormMassRout.txtPartRev.Text("")
+	Gui.FormMassRout.txtPartLoc.Text("")
+	Gui.FormMassRout.txtPartDesc.Text("")
+	Gui.FormMassRout.txtPartUM.Text("")
+	Gui.FormMassRout.txtPartNo.SetFocus
+	F.Intrinsic.Control.UnBlockEvents
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtPartLoc_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.txtPartLoc_LostFocus.End
+
+Program.Sub.txtNewPartLoc_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtNewPartLoc_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+F.Intrinsic.Control.If(V.Global.sRev.Trim,=,"Y")
+	F.Intrinsic.String.RPad(V.Screen.FormMassRout!txtNewPartNo.Text," ",17,V.Local.sPart)
+	F.Intrinsic.String.Build("{0}{1}",V.Local.sPart,V.Screen.FormMassRout!txtNewPartRev.Text,V.Local.sPart)
+F.Intrinsic.Control.Else
+	GUi.FormMassRout.txtNewPartRev.Text("")
+	V.Local.sPart.Set(V.Screen.FormMassRout!txtNewPartNo.Text)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Select Top 1 Description, UM_Inventory From V_Inventory_Mstr Where Part = '{0}' and Location = '{1}'",V.Local.sPart,V.Screen.FormMassRout!txtNewPartLoc.Text,V.Local.sSql)
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.FormMassRout.txtNewPartDesc.Text(V.Local.sRet(0).Trim)
+	Gui.FormMassRout.txtNewPartUM.Text(V.Local.sRet(1).Trim)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.BlockEvents
+	F.Intrinsic.UI.Msgbox("Part not Found.","Attention")
+	Gui.FormMassRout.txtNewPartNo.Text("")
+	Gui.FormMassRout.txtNewPartRev.Text("")
+	Gui.FormMassRout.txtNewPartLoc.Text("")
+	Gui.FormMassRout.txtNewPartDesc.Text("")
+	Gui.FormMassRout.txtNewPartUM.Text("")
+	Gui.FormMassRout.txtNewPartNo.SetFocus
+	F.Intrinsic.Control.UnBlockEvents
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Close
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtNewPartLoc_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.txtNewPartLoc_LostFocus.End
+
+Program.Sub.cmdCheckAll_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdCheckAll_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.If(V.DataTable.RouterLine.RowCount--,<>,-1)
+	F.Data.DataTable.SetValue("RouterLine",-1,"Selection",True)
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdCheckAll_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdCheckAll_Click.End
+
+Program.Sub.cmdUnCheckAll_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdUnCheckAll_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.If(V.DataTable.RouterLine.RowCount--,<>,-1)
+	F.Data.DataTable.SetValue("RouterLine",-1,"Selection",False)
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdUnCheckAll_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdUnCheckAll_Click.End
+
+Program.Sub.Create_Context_Menu.Start
+F.Intrinsic.Control.SetErrorHandler("Create_Context_Menu_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+
+Gui.FormMassRout..ContextMenuCreate("ctxRout")
+Gui.FormMassRout.GsGridRouters.ContextMenuAttach("ctxRout")
+Gui.FormMassRout..ContextMenuAddItem("ctxRout","SelectAllRows",0,"Select All Rows")
+Gui.FormMassRout..ContextMenuAddItem("ctxRout","DeselectAllRows",0,"Deselect All Rows")
+Gui.FormMassRout..ContextMenuAddItem("ctxRout","SelectHighlightedRows",0,"Select Highlighted Rows")
+Gui.FormMassRout..ContextMenuAddItem("ctxRout","DeselectHighlightedRows",0,"Deselect Highlighted Rows")
+
+Gui.FormMassRout..ContextMenuSetItemEventHandler("ctxRout","SelectAllRows","cmdCheckAll_Click")
+Gui.FormMassRout..ContextMenuSetItemEventHandler("ctxRout","DeselectAllRows","cmdUnCheckAll_Click")
+Gui.FormMassRout..ContextMenuSetItemEventHandler("ctxRout","SelectHighlightedRows","MenuClickSelectHighlightedRows")
+Gui.FormMassRout..ContextMenuSetItemEventHandler("ctxRout","DeselectHighlightedRows","MenuClickDeselectHighlightedRows")
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Create_Context_Menu_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Create_Context_Menu.End
+
+Program.Sub.MenuClickSelectHighlightedRows.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickSelectHighlightedRows_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sRows.Declare(String,"")
+V.Local.iCnt.Declare(Long,0)
+
+Gui.FormMassRout.GsGridRouters.GetSelectedRows("GRouterLine",V.Local.sRows)
+f.Intrinsic.String.Split(v.Local.sRows,"*!*",v.Local.sRows)
+f.Intrinsic.Control.For(v.Local.iCnt,0,v.Local.sRows.UBound,1)
+	f.Data.DataTable.SetValue("RouterLine",v.Local.sRows(v.Local.iCnt),"Selection",True)
+f.Intrinsic.Control.Next(v.Local.iCnt)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickSelectHighlightedRows_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickSelectHighlightedRows.End
+
+Program.Sub.MenuClickDeselectHighlightedRows.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickDeselectHighlightedRows_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sRows.Declare(String,"")
+V.Local.iCnt.Declare(Long,0)
+
+Gui.FormMassRout.GsGridRouters.GetSelectedRows("GRouterLine",V.Local.sRows)
+f.Intrinsic.String.Split(v.Local.sRows,"*!*",v.Local.sRows)
+f.Intrinsic.Control.For(v.Local.iCnt,0,v.Local.sRows.UBound,1)
+	f.Data.DataTable.SetValue("RouterLine",v.Local.sRows(v.Local.iCnt),"Selection",False)
+f.Intrinsic.Control.Next(v.Local.iCnt)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickDeselectHighlightedRows_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}GAB Version: {5}}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(FormMassRout_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickDeselectHighlightedRows.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$rking$}$20230412141926595$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXe5J9Du882QzX6dXn6uP1M0lbDc13dA9iHqcnR0FFLyyw=
+Program.Sub.Comments.End
