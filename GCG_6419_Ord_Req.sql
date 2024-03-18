@@ -1,0 +1,8 @@
+CREATE TABLE "GCG_6419_Ord_Req"(
+ "Order_NO" CHAR(7),
+ "Samples" BIT DEFAULT '0' NOT NULL,
+ "Photos" BIT DEFAULT '0' NOT NULL,
+ "Inspection" BIT DEFAULT '0' NOT NULL,
+ "None" BIT DEFAULT '0' NOT NULL );
+
+CREATE INDEX "GCG_6419_Ord_Req" ON "GCG_6419_Ord_Req"("Order_NO");
