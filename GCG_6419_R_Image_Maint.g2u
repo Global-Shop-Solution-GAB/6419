@@ -1,0 +1,467 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.FormRMaint..Create(BaseForm)
+Gui.FormRMaint..Caption("Router Image Maintenance")
+Gui.FormRMaint..Size(15360,10905)
+Gui.FormRMaint..MinX(0)
+Gui.FormRMaint..MinY(0)
+Gui.FormRMaint..Position(0,0)
+Gui.FormRMaint..BackColor(-2147483633)
+Gui.FormRMaint..MousePointer(0)
+Gui.FormRMaint..Event(UnLoad,FormRMaint_UnLoad)
+Gui.FormRMaint..AlwaysOnTop(False)
+Gui.FormRMaint..FontName("Tahoma")
+Gui.FormRMaint..FontSize(8.25)
+Gui.FormRMaint..ControlBox(True)
+Gui.FormRMaint..MaxButton(True)
+Gui.FormRMaint..MinButton(True)
+Gui.FormRMaint..Moveable(True)
+Gui.FormRMaint..Sizeable(True)
+Gui.FormRMaint..ShowInTaskBar(True)
+Gui.FormRMaint..TitleBar(True)
+Gui.FormRMaint.GsGridRTable.Create(GsGridControl)
+Gui.FormRMaint.GsGridRTable.Size(5655,4605)
+Gui.FormRMaint.GsGridRTable.Position(165,375)
+Gui.FormRMaint.GsGridRTable.Event(RowCellClick,GsGridRTable_RowCellClick)
+Gui.FormRMaint.GsGridRTable.Enabled(True)
+Gui.FormRMaint.GsGridRTable.Visible(True)
+Gui.FormRMaint.GsGridRTable.Zorder(0)
+Gui.FormRMaint.GsGridHTable.Create(GsGridControl)
+Gui.FormRMaint.GsGridHTable.Size(4890,4605)
+Gui.FormRMaint.GsGridHTable.Position(5910,375)
+Gui.FormRMaint.GsGridHTable.Event(RowCellClick,GsGridHTable_RowCellClick)
+Gui.FormRMaint.GsGridHTable.Enabled(True)
+Gui.FormRMaint.GsGridHTable.Visible(True)
+Gui.FormRMaint.GsGridHTable.Zorder(0)
+Gui.FormRMaint.GsGridPunch.Create(GsGridControl)
+Gui.FormRMaint.GsGridPunch.Size(14910,4170)
+Gui.FormRMaint.GsGridPunch.Position(165,5355)
+Gui.FormRMaint.GsGridPunch.Event(RowCellClick,GsGridPunch_RowCellClick)
+Gui.FormRMaint.GsGridPunch.Anchor(15)
+Gui.FormRMaint.GsGridPunch.Enabled(True)
+Gui.FormRMaint.GsGridPunch.Visible(True)
+Gui.FormRMaint.GsGridPunch.Zorder(0)
+Gui.FormRMaint.lblR.Create(Label,"R Table",True,1935,255,0,180,135,True,0,"Arial",8,-2147483633,0,0)
+Gui.FormRMaint.lblR.BorderStyle(0)
+Gui.FormRMaint.lblH.Create(Label,"H Table",True,540,210,0,5895,105,True,0,"Arial",8,-2147483633,0,0)
+Gui.FormRMaint.lblH.BorderStyle(0)
+Gui.FormRMaint.lblPunch.Create(Label,"Punch Master",True,1935,255,0,210,5115,True,0,"Arial",8,-2147483633,0,0)
+Gui.FormRMaint.lblPunch.BorderStyle(0)
+Gui.FormRMaint.cmdSave.Create(Button)
+Gui.FormRMaint.cmdSave.Size(855,375)
+Gui.FormRMaint.cmdSave.Position(165,9780)
+Gui.FormRMaint.cmdSave.Anchor(6)
+Gui.FormRMaint.cmdSave.Caption("Save")
+Gui.FormRMaint.cmdSave.Event(Click,cmdSave_Click)
+Gui.FormRMaint.cmdSave.Enabled(True)
+Gui.FormRMaint.cmdSave.Visible(True)
+Gui.FormRMaint.cmdSave.Zorder(0)
+Gui.FormRMaint.cmdSave.FontName("Tahoma")
+Gui.FormRMaint.cmdSave.FontSize(8.25)
+Gui.FormRMaint.lblimg1.Create(Label,"Image 1 Path:",True,1110,255,0,1110,9720,True,0,"Arial",8,-2147483633,0,0)
+Gui.FormRMaint.lblimg1.Anchor(6)
+Gui.FormRMaint.lblimg1.BorderStyle(0)
+Gui.FormRMaint.lblimg2.Create(Label,"Image 2 Path:",True,1110,255,0,7365,9705,True,0,"Arial",8,-2147483633,0,0)
+Gui.FormRMaint.lblimg2.Anchor(6)
+Gui.FormRMaint.lblimg2.BorderStyle(0)
+Gui.FormRMaint.txtImg1.Create(TextBox,"",True,5025,300,0,2235,9645,True,0,"Arial",8,-2147483643,1)
+Gui.FormRMaint.txtImg1.MaxLength(180)
+Gui.FormRMaint.txtImg1.Event(GotFocus,txtImg1_GotFocus)
+Gui.FormRMaint.txtImg1.Anchor(6)
+Gui.FormRMaint.txtImg2.Create(TextBox,"",True,5025,300,0,8520,9630,True,0,"Arial",8,-2147483643,1)
+Gui.FormRMaint.txtImg2.MaxLength(180)
+Gui.FormRMaint.txtImg2.Event(GotFocus,txtImg2_GotFocus)
+Gui.FormRMaint.txtImg2.Anchor(6)
+Gui.FormRMaint.lblimg3.Create(Label,"Image 3 Path:",True,1110,255,0,1110,10080,True,0,"Arial",8,-2147483633,0,0)
+Gui.FormRMaint.lblimg3.Anchor(6)
+Gui.FormRMaint.lblimg3.BorderStyle(0)
+Gui.FormRMaint.txtImg3.Create(TextBox,"",True,5025,300,0,2235,10020,True,0,"Arial",8,-2147483643,1)
+Gui.FormRMaint.txtImg3.Anchor(6)
+Gui.FormRMaint.txtImg3.MaxLength(180)
+Gui.FormRMaint.pic1.Create(PictureBox)
+Gui.FormRMaint.pic1.Enabled(True)
+Gui.FormRMaint.pic1.Visible(True)
+Gui.FormRMaint.pic1.Zorder(0)
+Gui.FormRMaint.pic1.Size(4470,4605)
+Gui.FormRMaint.pic1.Position(10830,360)
+Gui.FormRMaint.pic1.Anchor(13)
+Gui.FormRMaint.pic1.SizeMode(4)
+Gui.FormRMaint.pic1.Dock(0)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.CallSub(Get_Data)
+F.Intrinsic.Control.CallSub(Set_Prop)
+
+Gui.FormRMaint..Show
+Gui.FormRMaint..AlwaysOnTop(True)
+Gui.FormRMaint..AlwaysOnTop(False)
+
+'setting focus to grids so add row ability show on bottom of grids
+Gui.FormRMaint.GsGridPunch.SetFocus
+Gui.FormRMaint.GsGridRTable.SetFocus
+Gui.FormRMaint.GsGridHTable.SetFocus
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.FormRMaint_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("FormRMaint_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("FormRMaint_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.FormRMaint_UnLoad.End
+
+Program.Sub.GsGridRTable_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridRTable_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+
+F.Intrinsic.Control.If(V.Args.Column.UCase,=,"DELETE_ROW")
+	F.Intrinsic.UI.Msgbox("Delete Record?","Attention",4,V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.iRet,=,6)
+		F.Data.DataTable.DeleteRow("RTable",V.Args.RowIndex)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridRTable_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGridRTable_RowCellClick.End
+
+Program.Sub.GsGridHTable_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridHTable_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+
+F.Intrinsic.Control.If(V.Args.Column.UCase,=,"DELETE_ROW")
+	F.Intrinsic.UI.Msgbox("Delete Record?","Attention",4,V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.iRet,=,6)
+		F.Data.DataTable.DeleteRow("HTable",V.Args.RowIndex)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridHTable_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGridHTable_RowCellClick.End
+
+Program.Sub.GsGridPunch_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridPunch_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+V.Local.sImage.Declare(String)
+V.Local.sGssLogo.Declare(String)
+
+F.Intrinsic.String.Build("{0}\GAB_GSS_Logo_Green_Dash.png", V.Caller.ArtDir, V.Local.sGssLogo)
+
+F.Intrinsic.Control.If(V.Args.Column.UCase,=,"DELETE_ROW")
+	F.Intrinsic.UI.Msgbox("Delete Record?","Attention",4,V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.iRet,=,6)
+		F.Data.DataTable.DeleteRow("Punch",V.Args.RowIndex)
+	F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ElseIf(V.Args.Column.UCase,=,"SHAPE","OR",V.Args.Column.UCase,=,"PUNCH")
+	V.Local.sImage.Set(V.Screen.FormRMaint!txtImg1.Text)
+	F.Intrinsic.Control.If(V.Local.sImage.Right1,=,"\")
+		F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImage,V.DataTable.Punch(V.Args.RowIndex).Shape!FieldValTrim,V.Local.sImage)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}\{1}.PNG",V.Local.sImage,V.DataTable.Punch(V.Args.RowIndex).Shape!FieldValTrim,V.Local.sImage)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Try
+		Gui.FormRMaint.pic1.Picture(V.Local.sImage)
+	F.Intrinsic.Control.Catch
+		Gui.FormRMaint.pic1.Picture(V.Local.sGssLogo)
+	F.Intrinsic.Control.EndTry
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridPunch_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGridPunch_RowCellClick.End
+
+Program.Sub.Get_Data.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Data_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+
+V.Local.sSql.Set("Select IMAGE1_PATH, IMAGE2_PATH, IMAGE3_PATH From GCG_6419_IMAGE_PATH")
+F.Data.DataTable.CreateFromSQL("IMAGE","con",V.Local.sSql,True)
+
+F.Intrinsic.Control.If(V.DataTable.IMAGE.RowCount--,<>,-1)
+	Gui.FormRMaint.txtImg1.Text(V.DataTable.IMAGE(V.DataTable.IMAGE.RowCount--).IMAGE1_PATH!FieldValTrim)
+	Gui.FormRMaint.txtImg2.Text(V.DataTable.IMAGE(V.DataTable.IMAGE.RowCount--).IMAGE2_PATH!FieldValTrim)
+	Gui.FormRMaint.txtImg3.Text(V.DataTable.IMAGE(V.DataTable.IMAGE.RowCount--).IMAGE3_PATH!FieldValTrim)
+F.Intrinsic.Control.EndIf
+
+V.Local.sSql.Set("Select Distinct Rec_No, Value From GCG_6419_R_Table Order by Rec_No")
+F.Data.DataTable.CreateFromSQL("RTable","con",V.Local.sSql,True)
+
+F.Data.DataTable.AddColumn("RTable","Delete_Row",String)
+
+V.Local.sSql.Set("Select Distinct Rec_No, Value From GCG_6419_H_Table Order by Rec_No")
+F.Data.DataTable.CreateFromSQL("HTable","con",V.Local.sSql,True)
+
+F.Data.DataTable.AddColumn("HTable","Delete_Row",String)
+
+V.Local.sSql.Set("Select Distinct Shape, Punch, A, B, C, C2, D, E, F, G, I, STATE From GCG_6419_Punch_Mstr Order by Shape,Punch")
+F.Data.DataTable.CreateFromSQL("Punch","con",V.Local.sSql,True)
+
+F.Data.DataTable.AddColumn("Punch","Delete_Row",String)
+
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Data_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Data.End
+
+Program.Sub.Set_Prop.Start
+F.Intrinsic.Control.SetErrorHandler("Set_Prop_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormRMaint.GsGridHTable.AddGridviewFromDatatable("GHTable","HTable")
+Gui.FormRMaint.GsGridHTable.SetGridviewProperty("GHTable","AllowAddRows",True)
+
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Rec_No","Caption","Key")
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Rec_No","ReadOnly",False)
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Rec_No","AllowEdit",True)
+
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Value","Caption","Value")
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Value","ReadOnly",False)
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Value","AllowEdit",True)
+
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Delete_Row","Caption"," ")
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Delete_Row","ReadOnly",True)
+Gui.FormRMaint.GsGridHTable.SetColumnProperty("GHTable","Delete_Row","AllowEdit",False)
+Gui.FormRMaint.GsGridHTable.ColumnEdit("GHTable","Delete_Row","EditorButton","Delete Row")
+
+Gui.FormRMaint.GsGridHTable.MainView("GHTable")
+
+Gui.FormRMaint.GsGridRTable.AddGridviewFromDatatable("GRTable","RTable")
+Gui.FormRMaint.GsGridRTable.SetGridviewProperty("GRTable","AllowAddRows",True)
+
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Rec_No","Caption","Key")
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Rec_No","ReadOnly",False)
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Rec_No","AllowEdit",True)
+
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Value","Caption","Value")
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Value","ReadOnly",False)
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Value","AllowEdit",True)
+
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Delete_Row","Caption"," ")
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Delete_Row","ReadOnly",True)
+Gui.FormRMaint.GsGridRTable.SetColumnProperty("GRTable","Delete_Row","AllowEdit",False)
+Gui.FormRMaint.GsGridRTable.ColumnEdit("GRTable","Delete_Row","EditorButton","Delete Row")
+
+Gui.FormRMaint.GsGridRTable.MainView("GRTable")
+
+Gui.FormRMaint.GsGridPunch.AddGridviewFromDatatable("GPunch","Punch")
+Gui.FormRMaint.GsGridPunch.SetGridviewProperty("GPunch","AllowAddRows",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Shape","Caption","Shape")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Shape","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Shape","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Punch","Caption","Punch")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Punch","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Punch","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","A","Caption","A")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","A","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","A","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","B","Caption","B")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","B","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","B","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","C","Caption","C")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","C","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","C","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","C2","Caption","C2")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","C2","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","C2","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","D","Caption","D")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","D","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","D","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","E","Caption","E")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","E","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","E","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","F","Caption","F")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","F","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","F","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","G","Caption","G")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","G","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","G","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","I","Caption","I")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","I","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","I","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","STATE","Caption","State")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","STATE","ReadOnly",False)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","STATE","AllowEdit",True)
+
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Delete_Row","Caption"," ")
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Delete_Row","ReadOnly",True)
+Gui.FormRMaint.GsGridPunch.SetColumnProperty("GPunch","Delete_Row","AllowEdit",False)
+Gui.FormRMaint.GsGridPunch.ColumnEdit("GPunch","Delete_Row","EditorButton","Delete Row")
+
+Gui.FormRMaint.GsGridPunch.MainView("GPunch")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Prop_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Set_Prop.End
+
+Program.Sub.cmdSave_Click.Start
+F.Intrinsic.Control.SetErrorHandler("Set_Prop_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+
+F.Intrinsic.Control.If(V.DataTable.IMAGE.RowCount--,<>,-1)
+	F.Data.DataTable.SetValue("IMAGE",-1,"IMAGE1_PATH",V.Screen.FormRMaint!txtImg1.Text,"IMAGE2_PATH",V.Screen.FormRMaint!txtImg2.Text,"IMAGE3_PATH",V.Screen.FormRMaint!txtImg3.Text)
+F.Intrinsic.Control.Else
+	F.Data.DataTable.AddRow("IMAGE","IMAGE1_PATH",V.Screen.FormRMaint!txtImg1.Text,"IMAGE2_PATH",V.Screen.FormRMaint!txtImg2.Text,"IMAGE3_PATH",V.Screen.FormRMaint!txtImg3.Text)
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Execute("Delete From GCG_6419_Image_Path")
+F.Data.DataTable.SaveToDB("IMAGE","con","GCG_6419_Image_Path","",128,"IMAGE1_PATH@!@IMAGE1_PATH*!*IMAGE2_PATH@!@IMAGE2_PATH*!*IMAGE3_PATH@!@IMAGE3_PATH")
+
+F.ODBC.Connection!Con.Execute("Delete From GCG_6419_H_Table")
+F.Intrinsic.Control.If(V.DataTable.HTable.RowCount--,<>,-1)
+	F.Data.DataTable.SaveToDB("HTable","con","GCG_6419_H_Table","",128,"Rec_No@!@Rec_No*!*Value@!@Value")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Execute("Delete From GCG_6419_R_Table")
+F.Intrinsic.Control.If(V.DataTable.RTable.RowCount--,<>,-1)
+	F.Data.DataTable.SaveToDB("RTable","con","GCG_6419_R_Table","",128,"Rec_No@!@Rec_No*!*Value@!@Value")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Execute("Delete From GCG_6419_Punch_Mstr")
+F.Intrinsic.Control.If(V.DataTable.Punch.RowCount--,<>,-1)
+	F.Data.DataTable.SaveToDB("Punch","con","GCG_6419_Punch_Mstr","",128,"Shape@!@Shape*!*Punch@!@Punch*!*A@!@A*!*B@!@B*!*C@!@C*!*C2@!@C2*!*D@!@D*!*E@!@E*!*F@!@F*!*G@!@G*!*I@!@I*!*STATE@!@STATE")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.UI.Msgbox("Data Saved","Attention")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Prop_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.txtImg1_GotFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtImg1_GotFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormRMaint.txtImg1.SelectAll
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtImg1_GotFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.txtImg1_GotFocus.End
+
+Program.Sub.txtImg2_GotFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtImg2_GotFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormRMaint.txtImg2.SelectAll
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtImg2_GotFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_R_Image_Maint.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormRMaint_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.txtImg2_GotFocus.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$rking$}$20230718083840125$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXe5+y8wftMo9el6wUPh76mlnt+pj1bXMhBgDzN+lRpL2M=
+Program.Sub.Comments.End
