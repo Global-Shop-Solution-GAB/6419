@@ -1,0 +1,331 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.Form..Create
+Gui.Form..Size(4710,4620)
+Gui.Form..MinX(0)
+Gui.Form..MinY(0)
+Gui.Form..Position(0,0)
+Gui.Form..BackColor(-2147483633)
+Gui.Form..MousePointer(0)
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form.GsGridControl1.Create(GsGridControl)
+Gui.Form.GsGridControl1.Size(4245,3375)
+Gui.Form.GsGridControl1.Position(120,210)
+Gui.Form.GsGridControl1.Event(RowCellClick,GsGridControl1_RowCellClick)
+Gui.Form.cmdSubmit.Create(Button)
+Gui.Form.cmdSubmit.Size(855,375)
+Gui.Form.cmdSubmit.Position(150,3630)
+Gui.Form.cmdSubmit.Caption("Submit")
+Gui.Form.cmdSubmit.Event(Click,cmdSubmit_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+V.Local.sSql.Declare(String,"")
+V.Local.sSel.Declare(String,"")
+V.Local.sOrd_No.Declare(String,"")
+V.Local.bRet.Declare(Boolean,False)
+			
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case("16090")
+		F.Intrinsic.Control.If(V.Passed.009001,=,"000058")
+'			F.Intrinsic.UI.Msgbox("Display only Orders that require samples?","",3,v.Local.iRet)
+			F.Data.DataTable.Create("Selection",True)
+			F.Data.DataTable.AddColumn("Selection","Selection",Boolean)
+			F.Data.DataTable.AddColumn("Selection","Required",String)
+			
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","Samples")
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","Photos")
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","Inspection")
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","None")
+			
+			Gui.Form.GsGridControl1.AddGridviewFromDatatable("GSel","Selection")
+			Gui.Form.GsGridControl1.SetGridviewProperty("GSel","Editable",False)
+			Gui.Form.GsGridControl1.SetGridviewProperty("GSel","ReadOnly",True)
+			
+			Gui.Form.GsGridControl1.MainView("GSel")
+			
+			Gui.Form..Show
+			
+			Gui.Form..WaitForDismiss
+		
+			F.ODBC.Connection!Con.OpenCompanyConnection
+			F.ODBC.Connection!Con.FieldExists("GCG_6419_Ord_Req","None",V.Local.bRet)
+			F.Intrinsic.Control.If(V.Local.bRet.Not)
+				F.ODBC.Connection!Con.Execute("ALTER TABLE GCG_6419_Ord_Req (ADD COLUMN None BIT DEFAULT '0');")
+			F.Intrinsic.Control.EndIf
+			F.ODBC.Connection!Con.Close
+			
+			F.Data.DataView.Create("Selection","Temp",22,"Selection = True","")
+			F.Intrinsic.Control.If(V.DataView.Selection!Temp.RowCount--,<>,-1)
+				F.Intrinsic.Control.For(V.Local.iRet,0,V.DataView.Selection!Temp.RowCount--,1)
+					F.Intrinsic.Control.If(V.Local.sSel,=,"")
+						F.Intrinsic.String.Build("{0} = 1",V.DataView.Selection!Temp(V.Local.iRet).Required!FieldValTrim,V.Local.sSel)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0} OR {1} = 1",V.Local.sSel,V.DataView.Selection!Temp(V.Local.iRet).Required!FieldValTrim,V.Local.sSel)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Next(V.Local.iRet)
+				F.Intrinsic.String.Build("select * from BI_OPENORDER Where Order_Number In(select Order_NO from GCG_6419_Ord_Req where {1}) and Terminal = '{0}'",V.Passed.BIP_Terminal,V.Local.sSel,V.Local.sSql)
+				F.ODBC.Connection!Con.OpenCompanyConnection
+				F.Data.DataTable.CreateFromSQL("OpenOrder","con",V.Local.sSql,True)
+				F.Intrinsic.String.Build("Delete From BI_OpenOrder Where Terminal = '{0}'",V.Passed.BIP_Terminal,V.Local.sSql)
+				F.ODBC.Connection!Con.Execute(V.Local.sSql)
+				F.Data.DataTable.SaveToDB("OpenOrder","con","BI_OPENORDER","",128)
+				F.ODBC.Connection!Con.Close
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.ElseIf(V.Passed.009001,=,"001803","OR",V.Passed.009001,=,"001811")
+			F.Intrinsic.Control.CallSub(Get_Image_Data)
+			
+		F.Intrinsic.Control.EndIf	
+		
+	F.Intrinsic.Control.Case("11930")
+		F.Intrinsic.Control.If(v.Passed.000003.Trim,<>,"")
+			F.Data.DataTable.Create("Selection",True)
+			F.Data.DataTable.AddColumn("Selection","Selection",Boolean)
+			F.Data.DataTable.AddColumn("Selection","Required",String)
+				
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","Samples")
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","Photos")
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","Inspection")
+			F.Data.DataTable.AddRow("Selection","Selection",False,"Required","None")
+			
+			F.ODBC.Connection!con.OpenCompanyConnection(999)
+			F.ODBC.Connection!Con.FieldExists("GCG_6419_Ord_Req","None",V.Local.bRet)
+			F.Intrinsic.Control.If(V.Local.bRet.Not)
+				F.ODBC.Connection!Con.Execute("ALTER TABLE GCG_6419_Ord_Req (ADD COLUMN None BIT DEFAULT '0');")
+			F.Intrinsic.Control.EndIf
+			V.Local.sOrd_No.Set(v.Passed.000003.Format0000000)
+			F.Intrinsic.String.Build("Select * From GCG_6419_Ord_Req Where Order_NO = '{0}'",V.Local.sOrd_No,V.Local.sSql)
+			F.Data.DataTable.CreateFromSQL("Ord","con",V.Local.sSql,True)
+			F.ODBC.Connection!Con.Close
+			
+			F.Intrinsic.Control.If(V.DataTable.Ord.RowCount--,=,-1)
+				F.Data.DataTable.AddRow("Ord","Order_NO",V.Local.sOrd_No,"Samples",False,"Photos",False,"Inspection",False,"None",False)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.For(V.Local.iRet,0,V.DataTable.Selection.RowCount--,1)
+					V.Local.sSel.Set(V.DataTable.Selection(V.Local.iRet).Required!FieldValTrim)
+					F.Data.DataTable.SetValue("Selection",V.Local.iRet,"Selection",V.DataTable.Ord(V.DataTable.Ord.RowCount--).[V.Local.sSel]!FieldVal)
+				F.Intrinsic.Control.Next(V.Local.iRet)
+			F.Intrinsic.Control.EndIf
+			
+			Gui.Form.GsGridControl1.AddGridviewFromDatatable("GSel","Selection")
+			Gui.Form.GsGridControl1.SetGridviewProperty("GSel","Editable",False)
+			Gui.Form.GsGridControl1.SetGridviewProperty("GSel","ReadOnly",True)
+			
+			Gui.Form.GsGridControl1.MainView("GSel")
+				
+			Gui.Form..Show
+				
+			Gui.Form..WaitForDismiss
+			
+			F.Intrinsic.Control.For(V.Local.iRet,0,V.DataTable.Selection.RowCount--,1)
+				V.Local.sSel.Set(V.DataTable.Selection(V.Local.iRet).Required!FieldValTrim)
+				F.Data.DataTable.SetValue("Ord",V.DataTable.Ord.RowCount--,V.Local.sSel,V.DataTable.Selection(V.Local.iRet).Selection!FieldVal)
+			F.Intrinsic.Control.Next(V.Local.iRet)
+			
+			F.ODBC.Connection!con.OpenCompanyConnection(999)
+			F.Data.DataTable.SaveToDB("Ord","con","GCG_6419_Ord_Req","Order_NO",3)
+			F.ODBC.Connection!Con.Close
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("11810")
+		V.Local.sOrd_No.Set(v.Passed.000003.Format0000000)
+		F.ODBC.Connection!con.OpenCompanyConnection(999)
+		F.Intrinsic.String.Build("Select Order_No From GCG_6419_Ord_Req Where Order_No = '{0}'",V.Local.sOrd_No,V.Local.sSql)
+		F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sSel)
+		F.ODBC.Connection!Con.Close
+		F.Intrinsic.Control.If(V.Local.sSel.Trim,=,"")
+			F.Intrinsic.UI.Msgbox("Click Required Button and make a selection before adding SO Lines.","Attention")
+			V.Passed.777777.Set("-1")
+		F.Intrinsic.Control.EndIf
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.CallSub(Exit)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Open_Orders_Samples.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Exit.Start
+F.Intrinsic.Control.SetErrorHandler("Exit_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Exit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Open_Orders_Samples.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Exit.End
+
+Program.Sub.cmdSubmit_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdSubmit_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.Form..Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdSubmit_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Open_Orders_Samples.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdSubmit_Click.End
+
+Program.Sub.Form_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("Form_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Form_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.GsGridControl1_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridControl1_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.If(V.Args.Column.UCase,=,"SELECTION")
+	F.Data.DataTable.SetValue("Selection",V.Args.RowIndex,"Selection",V.DataTable.Selection(V.Args.RowIndex).Selection!FieldValNot)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridControl1_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Open_Orders_Samples.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGridControl1_RowCellClick.End
+
+Program.Sub.Get_Image_Data.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Image_Data_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.sKey1.Declare(String,"")
+V.Local.sKey2.Declare(String,"")
+V.Local.sH.Declare(String,"")
+V.Local.sR.Declare(String,"")
+V.Local.sImg1_Path.Declare(String,"")
+V.Local.sImg2_Path.Declare(String,"")
+V.Local.sImg3_Path.Declare(String,"")
+V.Local.sImg1.Declare(String,"")
+V.Local.sImg2.Declare(String,"")
+V.Local.sImg3.Declare(String,"")
+
+F.ODBC.Connection!con.OpenCompanyConnection(999)
+
+F.Intrinsic.String.Build("Delete From GCG_6419_BAR_IMAGE WHere Terminal = '{0}'",V.Passed.BIP_Terminal,V.Local.sSql)
+F.ODBC.Connection!Con.Execute(V.Local.sSql)
+
+V.Local.sSql.Set("Select rtrim(Image1_Path) From GCG_6419_Image_Path")
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,v.Local.sImg1_Path)
+
+F.Intrinsic.Control.If(V.Local.sImg1_Path.Right1,<>,"\")
+	F.Intrinsic.String.Build("{0}\",V.Local.sImg1_Path,V.Local.sImg1_Path)
+F.Intrinsic.Control.EndIf
+
+V.Local.sSql.Set("Select rtrim(Image2_Path) From GCG_6419_Image_Path")
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,v.Local.sImg2_Path)
+
+F.Intrinsic.Control.If(V.Local.sImg2_Path.Right1,<>,"\")
+	F.Intrinsic.String.Build("{0}\",V.Local.sImg2_Path,V.Local.sImg2_Path)
+F.Intrinsic.Control.EndIf
+
+V.Local.sSql.Set("Select rtrim(Image3_Path) From GCG_6419_Image_Path")
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,v.Local.sImg3_Path)
+
+F.Intrinsic.Control.If(V.Local.sImg3_Path.Right1,<>,"\")
+	F.Intrinsic.String.Build("{0}\",V.Local.sImg3_Path,V.Local.sImg3_Path)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("BIDATA","con","Select * From GCG_6419_BAR_IMAGE Where Terminal = '-1'",True)
+
+F.Intrinsic.String.Build("Select Distinct Terminal, A.Job, A.Suffix, Shape, rtrim(User8) as Punch, User7 as ALUM, User9 as CRNR, User1 as IMG2, User60, A, B, C, C2, D, E, F, G, I From BI_Bar_Head A Join GCG_6419_Quote B on A.Job = B.Job and A.Suffix = B.Suffix Left Join GCG_6419_Punch_Mstr C on Left(B.User8,Length(B.User8)-2) = Left(C.Punch,Length(C.Punch)-2) Where Terminal = '{0}'",V.Passed.BIP_Terminal,V.Local.sSql)
+
+F.Data.DataTable.CreateFromSQL("Head","con",V.Local.sSql,True)
+
+F.Intrinsic.String.Build("Select Distinct Terminal, A.Job, A.Suffix, Shape, rtrim(User8) as Punch, User7 as ALUM, User9 as CRNR, User1 as IMG2, User60, A, B, C, C2, D, E, F, G, I From BI_Bar_Head A Join GCG_6419_SO_SIGNS B on A.Job = B.Job and A.Suffix = B.Suffix Left Join GCG_6419_Punch_Mstr C on Left(B.User8,Length(B.User8)-2) = Left(C.Punch,Length(C.Punch)-2) Where Terminal = '{0}'",V.Passed.BIP_Terminal,V.Local.sSql)
+
+F.Data.DataTable.CreateFromSQL("TempHead","con",V.Local.sSql,True)
+
+F.Data.DataTable.Merge("TempHead","Head",False,2)
+
+F.Data.DataTable.Close("TempHead")
+
+F.Intrinsic.Control.For(V.Local.i,0,V.DataTable.Head.RowCount--,1)
+	F.Intrinsic.String.Right(V.DataTable.Head(V.Local.i).Punch!FieldValTrim,2,V.Local.sKey1)
+	F.Intrinsic.String.Right(V.Local.sKey1,1,V.Local.sKey2)
+	F.Intrinsic.String.Left(V.Local.sKey1,1,V.Local.sKey1)
+	F.Intrinsic.String.Build("Select Value From GCG_6419_R_Table where Rec_No = '{0}'",V.Local.sKey1,V.Local.sSql)
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sR)
+	F.Intrinsic.String.Build("Select Value From GCG_6419_H_Table where Rec_No = '{0}'",V.Local.sKey2,V.Local.sSql)
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sH)
+	F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImg1_Path,V.DataTable.Head(V.Local.i).SHAPE!FieldValTrim,V.Local.sImg1)
+	F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImg2_Path,V.DataTable.Head(V.Local.i).IMG2!FieldValTrim,V.Local.sImg2)
+	F.Intrinsic.String.Build("Select rtrim(User_6) From WO_User_Flds Where Job = '{0}' and Suffix = '{1}'",V.DataTable.Head(V.Local.i).Job!FieldValTrim,V.DataTable.Head(V.Local.i).Suffix!FieldValTrim,V.Local.sSql)
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sImg3)
+	F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImg3_Path,V.Local.sImg3,V.Local.sImg3)
+	F.Data.DataTable.AddRow("BIDATA","Job",V.DataTable.Head(V.Local.i).Job!FieldValTrim,"Suffix",V.DataTable.Head(V.Local.i).Suffix!FieldValTrim,"CRNR",V.DataTable.Head(V.Local.i).CRNR!FieldValTrim,"ALUM",V.DataTable.Head(V.Local.i).CRNR!FieldValTrim,"PUNCH",V.DataTable.Head(V.Local.i).Punch!FieldValTrim)
+	F.Data.DataTable.SetValue("BIDATA",V.DataTable.BIDATA.RowCount--,"SHAPE",V.DataTable.Head(V.Local.i).SHAPE!FieldValTrim,"A",V.DataTable.Head(V.Local.i).A!FieldValTrim,"B",V.DataTable.Head(V.Local.i).B!FieldValTrim,"C",V.DataTable.Head(V.Local.i).C!FieldValTrim,"C2",V.DataTable.Head(V.Local.i).C2!FieldValTrim)
+	F.Data.DataTable.SetValue("BIDATA",V.DataTable.BIDATA.RowCount--,"D",V.DataTable.Head(V.Local.i).D!FieldValTrim,"E",V.DataTable.Head(V.Local.i).E!FieldValTrim,"F",V.DataTable.Head(V.Local.i).F!FieldValTrim,"G",V.DataTable.Head(V.Local.i).G!FieldValTrim,"I",V.DataTable.Head(V.Local.i).I!FieldValTrim)
+	F.Data.DataTable.SetValue("BIDATA",V.DataTable.BIDATA.RowCount--,"IMAGE1",V.Local.sImg1,"IMAGE2",V.Local.sImg2,"IMAGE3",V.Local.sImg3,"R",V.Local.sR,"H",V.Local.sH)
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.Intrinsic.Control.If(V.DataTable.BIDATA.RowCount--,<>,-1)
+	F.Data.DataTable.SetValue("BIDATA",-1,"Terminal",V.Passed.BIP_Terminal)
+	F.Data.DataTable.SaveToDB("BIDATA","con","GCG_6419_BAR_IMAGE","",128)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Close("BIDATA")
+
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Image_Data_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Open_Orders_Samples.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Image_Data.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$rking$}$20230801082954324$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXe/oKChG14rQB7wNeMbbn5G0nFs+Zw05crJ9+vvY7EVpE=
+Program.Sub.Comments.End
