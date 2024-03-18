@@ -1,0 +1,321 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.FormJob..Create(BaseForm)
+Gui.FormJob..Caption("Work Order Due Date Update")
+Gui.FormJob..Size(666,720)
+Gui.FormJob..MinX(0)
+Gui.FormJob..MinY(0)
+Gui.FormJob..Position(0,0)
+Gui.FormJob..AlwaysOnTop(False)
+Gui.FormJob..FontName("Tahoma")
+Gui.FormJob..FontSize(8.25)
+Gui.FormJob..ControlBox(True)
+Gui.FormJob..MaxButton(True)
+Gui.FormJob..MinButton(True)
+Gui.FormJob..MousePointer(0)
+Gui.FormJob..Moveable(True)
+Gui.FormJob..Sizeable(True)
+Gui.FormJob..ShowInTaskBar(True)
+Gui.FormJob..TitleBar(True)
+Gui.FormJob..Event(UnLoad,FormJob_UnLoad)
+Gui.FormJob.GsGridJob.Create(GsGridControl)
+Gui.FormJob.GsGridJob.Enabled(True)
+Gui.FormJob.GsGridJob.Visible(True)
+Gui.FormJob.GsGridJob.Zorder(0)
+Gui.FormJob.GsGridJob.Size(651,577)
+Gui.FormJob.GsGridJob.Position(12,47)
+Gui.FormJob.GsGridJob.Anchor(15)
+Gui.FormJob.cmdUpdate.Create(Button)
+Gui.FormJob.cmdUpdate.Enabled(True)
+Gui.FormJob.cmdUpdate.Visible(True)
+Gui.FormJob.cmdUpdate.Zorder(0)
+Gui.FormJob.cmdUpdate.Size(178,34)
+Gui.FormJob.cmdUpdate.Position(19,632)
+Gui.FormJob.cmdUpdate.Caption("Update/Reschedule")
+Gui.FormJob.cmdUpdate.FontName("Tahoma")
+Gui.FormJob.cmdUpdate.FontSize(8)
+Gui.FormJob.cmdUpdate.Anchor(6)
+Gui.FormJob.cmdUpdate.Event(Click,cmdUpdate_Click)
+Gui.FormJob.dtp1.Create(DatePicker)
+Gui.FormJob.dtp1.Enabled(True)
+Gui.FormJob.dtp1.Visible(True)
+Gui.FormJob.dtp1.Zorder(0)
+Gui.FormJob.dtp1.Size(150,26)
+Gui.FormJob.dtp1.Position(334,10)
+Gui.FormJob.dtp1.CheckBox(False)
+Gui.FormJob.dtp1.FontName("Tahoma")
+Gui.FormJob.dtp1.FontSize(8)
+Gui.FormJob.cmdFill.Create(Button)
+Gui.FormJob.cmdFill.Enabled(True)
+Gui.FormJob.cmdFill.Visible(True)
+Gui.FormJob.cmdFill.Zorder(0)
+Gui.FormJob.cmdFill.Size(168,34)
+Gui.FormJob.cmdFill.Position(489,6)
+Gui.FormJob.cmdFill.Caption("Update All Due Dates")
+Gui.FormJob.cmdFill.FontName("Tahoma")
+Gui.FormJob.cmdFill.FontSize(8)
+Gui.FormJob.cmdFill.Event(Click,cmdFill_Click)
+Gui.FormJob.txtJob.Create(TextBox,"",True,150,26,0,17,9,True,0,"Tahoma",8,,1)
+Gui.FormJob.txtJob.MaxLength(6)
+Gui.FormJob.txtJob.Event(GotFocus,txtJob_GotFocus)
+Gui.FormJob.cmdJob.Create(Button)
+Gui.FormJob.cmdJob.Enabled(True)
+Gui.FormJob.cmdJob.Visible(True)
+Gui.FormJob.cmdJob.Zorder(0)
+Gui.FormJob.cmdJob.Size(47,34)
+Gui.FormJob.cmdJob.Position(170,4)
+Gui.FormJob.cmdJob.Caption("^")
+Gui.FormJob.cmdJob.FontName("Tahoma")
+Gui.FormJob.cmdJob.FontSize(8)
+Gui.FormJob.cmdJob.Event(Click,cmdJob_Click)
+Gui.FormJob.cmdRefresh.Create(Button)
+Gui.FormJob.cmdRefresh.Enabled(True)
+Gui.FormJob.cmdRefresh.Visible(True)
+Gui.FormJob.cmdRefresh.Zorder(0)
+Gui.FormJob.cmdRefresh.Size(67,34)
+Gui.FormJob.cmdRefresh.Position(219,5)
+Gui.FormJob.cmdRefresh.Caption("REFRESH")
+Gui.FormJob.cmdRefresh.FontName("Tahoma")
+Gui.FormJob.cmdRefresh.FontSize(8)
+Gui.FormJob.cmdRefresh.Event(Click,cmdRefresh_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+Gui.FormJob..Show
+Gui.FormJob..AlwaysOnTop(True)
+Gui.FormJob..AlwaysOnTop(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.cmdUpdate_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdUpdate_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.sDueDate.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+Gui.FormJob..Enabled(False)
+F.Data.DataView.Create("Jobs","VJobs",22,"Date_Due <> New_Date_Due","")
+
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Intrinsic.Control.For(V.Local.i,0,V.DataView.Jobs!VJobs.RowCount--,1)
+	F.Intrinsic.String.Format(V.DataView.Jobs!VJobs(V.Local.i).New_Date_Due!FieldVal,"MMDDYY",V.Local.sDueDate)
+	F.Intrinsic.String.Build("Update Job_Header Set Date_Due = '{0}' Where Job = '{1}' and Suffix = '{2}'",V.Local.sDueDate,V.DataView.Jobs!VJobs(V.Local.i).Job!FieldValTrim,V.DataView.Jobs!VJobs(V.Local.i).Suffix!FieldValTrim,V.Local.sSql)
+	F.ODBC.Connection!con.Execute(V.Local.sSql)
+	F.Intrinsic.String.Format(V.DataView.Jobs!VJobs(V.Local.i).New_Date_Due!FieldVal,"MM/DD/YYYY",V.Local.sDueDate)
+	F.Global.APS.ScheduleJob(V.DataView.Jobs!VJobs(V.Local.i).Job!FieldValTrim,V.DataView.Jobs!VJobs(V.Local.i).Suffix!FieldValTrim,"B",V.Local.sDueDate)
+F.Intrinsic.Control.Next(V.Local.i)
+F.Data.DataView.Close("Jobs","VJobs")
+F.ODBC.Connection!Con.Close
+
+Gui.FormJob..Enabled(True)
+Gui.FormJob.txtJob.Text("")
+F.Intrinsic.Control.CallSub(cmdRefresh_Click)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdUpdate_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdUpdate_Click.End
+
+Program.Sub.cmdFill_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdFill_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Data.DataTable.SetValue("Jobs",-1,"New_Date_Due",V.Screen.FormJob!dtp1.Value)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdFill_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdFill_Click.End
+
+Program.Sub.FormJob_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("FormJob_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("FormJob_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.FormJob_UnLoad.End
+
+Program.Sub.cmdJob_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdJob_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sTitles.Declare(String,"")
+V.Local.iWidths.Declare(Long,"")
+	
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+
+F.Intrinsic.String.Split("Job","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1500","*!*",V.Local.iWidths)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Intrinsic.UI.Browser("Select Job:","con","Select Distinct Job From Job_Header where Date_Closed = '000000' Order by Job;",V.Local.sTitles,V.Local.iWidths,"16000","8000",V.Local.sRet)
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	Gui.FormJob.txtJob.Text(V.Local.sRet.Trim)
+F.Intrinsic.Control.EndIf
+			
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdJob_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdJob_Click.End
+
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdRefresh_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormJob..Enabled(False)
+F.Intrinsic.Control.CallSub(Get_Data)
+Gui.FormJob..Enabled(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdRefresh_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.txtJob_GotFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtJob_GotFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormJob.txtJob.SelectAll
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtJob_GotFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.txtJob_GotFocus.End
+
+Program.Sub.Get_Data.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Data_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sJob.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+V.Local.sJob.Set(V.Screen.FormJob!txtJob.Text)
+
+F.Intrinsic.String.Build("select Job,Suffix, Date_Due, Date_Due as New_Date_Due from V_JOB_HEADER Where Job = '{0}' and Date_Closed = '1900-01-01'",V.Local.sJob.Trim,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.Jobs.Exists)
+	F.Data.DataTable.Close("Jobs")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("Jobs",con,V.Local.sSql,True)
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.Control.CallSub(Set_Prop)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Data_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Data.End
+
+Program.Sub.Set_Prop.Start
+F.Intrinsic.Control.SetErrorHandler("Set_Prop_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormJob.GsGridJob.AddGridviewFromDatatable("GJobs","Jobs")
+
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Job","Caption","Job")
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Job","AllowEdit",False)
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Job","ReadOnly",True)
+
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Suffix","Caption","Suffix")
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Suffix","AllowEdit",False)
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Suffix","ReadOnly",True)
+
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Date_Due","Caption","Due Date")
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Date_Due","AllowEdit",False)
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Date_Due","ReadOnly",True)
+
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","New_Date_Due","Caption","New Due Date")
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","New_Date_Due","AllowEdit",True)
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","New_Date_Due","ReadOnly",False)
+
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","Date_Due","DisplayCustomDatetime","d")
+Gui.FormJob.GsGridJob.SetColumnProperty("GJobs","New_Date_Due","DisplayCustomDatetime","d")
+
+Gui.FormJob.GsGridJob.MainView("GJobs")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Prop_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Job_DueDate_Update.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormJob_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Set_Prop.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8577.26074$}$1
+${$6$}$rking$}$20230801094802887$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXe/oKChG14rQBQXMTnbtFWcsFupLuE1zW6E0y60wKrw4k=
+Program.Sub.Comments.End
