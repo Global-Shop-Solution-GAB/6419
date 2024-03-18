@@ -1,0 +1,76 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sOrder.Declare(String,"")
+V.Local.sLine.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.sTemp.Declare(String,"")
+V.Local.sPromDate.Declare(String,"")
+V.Local.sJobDate.Declare(String,"")
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case("12230")
+		'Job Header Due Date is MMDDYY
+		'Promis Date Form YYYYMMDD  V.Passed.000011
+		F.Intrinsic.String.Mid(V.Passed.000011,5,2,V.Local.sTemp)
+		F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Passed.000011.Right2,V.Local.sJobDate)
+		F.Intrinsic.String.Mid(V.Passed.000011,3,2,V.Local.sTemp)
+		F.Intrinsic.String.Build("{0}{1}",V.Local.sJobDate,V.Local.sTemp,V.Local.sJobDate)
+		'Order Num V.Passed.000060
+		F.Intrinsic.String.LPad(V.Passed.000060,"0",7,V.Local.sOrder)
+		'Line V.Passed.000051
+		F.Intrinsic.String.LPad(V.Passed.000051,"0",3,V.Local.sLine)
+		F.Intrinsic.String.RPad(V.Local.sLine,"0",4,V.Local.sLine)
+		F.ODBC.Connection!Con.OpenCompanyConnection
+		F.Intrinsic.String.Build("Select Job, Suffix From V_Order_To_WO Where Order_No = '{0}' and Order_Line = '{1}'",V.Local.sOrder,V.Local.sLine,V.Local.sSql)
+		F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sRet)
+		F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"")
+			F.Intrinsic.String.Build("select Date_Item_Prom from ORDER_LINES Where Order_No = '{0}' and Record_No = '{1}'",V.Local.sOrder,V.Local.sLine,V.Local.sSql)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sPromDate)
+			F.Intrinsic.Control.If(V.Local.sPromDate,<>,"")
+				F.Intrinsic.Control.If(V.Local.sPromDate,<>,V.Passed.000011)
+					F.Intrinsic.String.Split(V.Local.sRet,"#$#",V.Local.sTemp)
+					F.Intrinsic.Control.For(V.Local.i,0,V.Local.sTemp.UBound,1)
+						F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sRet)
+						F.Intrinsic.String.Build("Update Job_Header Set Date_Due = '{0}' Where Job = '{1}' and Suffix = '{2}'",V.Local.sJobDate,V.Local.sRet(0).Trim,V.Local.sRet(1).Trim,v.Local.sSql)
+						F.ODBC.Connection!Con.Execute(V.Local.sSql)
+					F.Intrinsic.Control.Next(V.Local.i)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.ODBC.Connection!Con.Close
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Update_WO_Date.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Exit.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Update_WO_Date.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Exit.End
