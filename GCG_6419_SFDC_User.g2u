@@ -1,0 +1,194 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.iRowCnt.Declare(Long,0)
+V.Local.sReadRow.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sTemp.Declare(String,"")
+V.Local.bGAB1.Declare(Boolean,False)
+V.Local.bGAB2.Declare(Boolean,False)
+V.Local.sTitle.Declare(String,"")
+V.Local.iGab1.Declare(Long,-1)
+V.Local.iGab2.Declare(Long,-1)
+V.Local.sSql.Declare(String,"")
+V.Local.sLine.Declare(String,"")
+V.Local.iPart.Declare(Long,0)
+V.Local.iWO.Declare(Long,0)
+V.Local.sJob.Declare(String,"")
+V.Local.sSuffix.Declare(String,"")
+V.Local.sSOSIGN.Declare(String,"")
+
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(50500)
+		F.ODBC.Connection!Con.OpenCompanyConnection(999)
+
+		F.Intrinsic.BDF.Load("MainFormView-gridViewOperations-bdf","MainFormView-gridViewOperations-bdf")
+		F.Intrinsic.BDF.Clone("MainFormView-gridViewOperations-bdf","Load")
+		
+		F.Intrinsic.BDF.ReadRowCount("MainFormView-gridViewOperations-bdf",V.Local.iRowCnt)
+		F.Intrinsic.BDF.ReadColumnTitle("Load",V.Local.sTemp)
+		
+		
+		'Checking if Gab 1 has already been renamed
+		F.Intrinsic.String.IsInString(V.Local.sTemp,"Code | Size | Color | Message",TRUE,V.Local.bGAB1)
+		
+		F.Intrinsic.Control.If(V.Local.bGAB1,=,False)
+			F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sRet)
+			F.Intrinsic.Control.For(V.Local.i,0,V.Local.sRet.UBound,1)
+				'finding index to gab 1 column and setting that to iGab1 
+				F.Intrinsic.Control.If(V.Local.sRet(V.Local.i).Trim,=,"GabCustomColumn1")
+					V.Local.sTitle.Set("GabCustomColumn1Code | Size | Color | Message")
+'					V.Local.sTitle.Set("Code | Size | Color")
+					F.Intrinsic.BDF.SetColumnTitle("Load",V.Local.i,V.Local.sTitle)
+					V.Local.iGab1.Set(V.Local.i)
+					F.Intrinsic.Control.ExitFor(V.Local.i)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sRet)
+			'finding index to gab 1 if it was already been renamed to Code | Size | Color column and setting that to iGab1 
+			F.Intrinsic.Control.For(V.Local.i,0,V.Local.sRet.UBound,1)
+				'finding index to gab 1 column and setting that to iGab1 
+				F.Intrinsic.Control.If(V.Local.sRet(V.Local.i).Trim,=,"Code | Size | Color | Message")
+					V.Local.iGab1.Set(V.Local.i)
+					F.Intrinsic.Control.ExitFor(V.Local.i)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i)
+		F.Intrinsic.Control.EndIf
+		
+		'Checking if Gab 2 has already been renamed
+		F.Intrinsic.String.IsInString(V.Local.sTemp,"Rocal Job",TRUE,V.Local.bGAB2)
+
+		F.Intrinsic.Control.If(V.Local.bGAB2,=,False)
+			F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sRet)
+			F.Intrinsic.Control.For(V.Local.i,0,V.Local.sRet.UBound,1)
+				'finding index to gab 1 column and setting that to iGab2 
+				F.Intrinsic.Control.If(V.Local.sRet(V.Local.i).Trim,=,"GabCustomColumn2")
+					V.Local.sTitle.Set("GabCustomColumn2Rocal Job")
+'					V.Local.sTitle.Set("Message")
+					F.Intrinsic.BDF.SetColumnTitle("Load",V.Local.i,V.Local.sTitle)
+					V.Local.iGab2.Set(V.Local.i)
+					F.Intrinsic.Control.ExitFor(V.Local.i)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sRet)
+			'finding index to gab 2 if it was already been renamed to Message column and setting that to iGab1 
+			F.Intrinsic.Control.For(V.Local.i,0,V.Local.sRet.UBound,1)
+				'finding index to gab 1 column and setting that to iGab2 
+				F.Intrinsic.Control.If(V.Local.sRet(V.Local.i).Trim,=,"Rocal Job")
+					V.Local.iGab2.Set(V.Local.i)
+					F.Intrinsic.Control.ExitFor(V.Local.i)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i)
+		F.Intrinsic.Control.EndIf
+
+		'getting Part and Work Order Column Index
+		F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sRet)
+		F.Intrinsic.Control.For(V.Local.i,0,V.Local.sRet.UBound,1)
+			F.Intrinsic.Control.If(V.Local.sRet(V.Local.i).Trim,=,"Part")
+				V.Local.iPart.Set(V.Local.i)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.If(V.Local.sRet(V.Local.i).Trim,=,"Work Order")
+				V.Local.iWO.Set(V.Local.i)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.i)
+
+		F.Intrinsic.Math.Sub(V.Local.iRowCnt,1,V.Local.iRowCnt)
+		F.Intrinsic.Control.For(V.Local.i,0,V.Local.iRowCnt,1)
+			F.Intrinsic.BDF.ReadRow("MainFormView-gridViewOperations-bdf",V.Local.i,V.Local.sReadRow)
+			F.Intrinsic.String.Split(V.Local.sReadRow,"|~|",V.Local.sReadRow)
+			
+			F.Intrinsic.String.Split(V.Local.sReadRow(V.Local.iWO),"-",V.Local.sJob)
+			
+			'Spliting the Work Order column out to Job and Suffix
+			F.Intrinsic.Control.If(V.Local.sJob.UBound,=,1)
+				V.Local.sSuffix.Set(V.Local.sJob(1).Trim)
+			F.Intrinsic.Control.Else
+				V.Local.sSuffix.Set("")
+			F.Intrinsic.Control.EndIf
+		
+			F.Intrinsic.String.Build("Select Job From GCG_6419_SO_Signs Where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sSOSIGN)
+			
+			'If Custom 1 Column is found then update that column with info from Custom table GCG_6313_RTR_EXTRA
+			F.Intrinsic.Control.If(V.Local.iGab1,<>,-1)
+				F.Intrinsic.Control.If(v.Local.sSOSIGN.Trim,=,"")
+					F.Intrinsic.String.Build("select rtrim(User1)+' | '+rtrim(User5)+' | '+rtrim(User12) from GCG_6419_Quote where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("select rtrim(User1)+' | '+rtrim(User5)+' | '+rtrim(User12) from GCG_6419_SO_Signs where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+				F.Intrinsic.Control.EndIf
+				
+				F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sTemp)
+				
+				F.Intrinsic.Control.If(v.Local.sSOSIGN.Trim,=,"")
+					F.Intrinsic.String.Build("select '{0}'+' | '+Message from GCG_6419_Quote Where Job = '{1}' and Suffix = '{2}'",V.Local.sTemp,V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("select '{0}'+' | '+Message from GCG_6419_SO_Signs Where Job = '{1}' and Suffix = '{2}'",V.Local.sTemp,V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+				F.Intrinsic.Control.EndIf
+				
+				F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sTemp)
+				
+				V.Local.sReadRow(V.Local.iGab1).Set(V.Local.sTemp)
+'				V.Local.sReadRow(V.Local.iGab1).Set("XR-9|18 X 18|FL-Y")
+			F.Intrinsic.Control.EndIf
+			
+			'If Custom 2 Column is found then update that column with info from Custom table GCG_6419_Quote or GCG_6419_SO_Signs
+			'The work order will only reside in 1 of the tables and never both.
+			F.Intrinsic.Control.If(V.Local.iGab2,<>,-1)
+'				F.Intrinsic.Control.If(v.Local.sSOSIGN.Trim,=,"")
+'					F.Intrinsic.String.Build("select Message from GCG_6419_Quote Where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+'				F.Intrinsic.Control.Else
+'					F.Intrinsic.String.Build("select Message from GCG_6419_SO_Signs Where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+'				F.Intrinsic.Control.EndIf
+				
+				F.Intrinsic.Control.If(v.Local.sSOSIGN.Trim,=,"")
+					F.Intrinsic.String.Build("select UserH1 from GCG_6419_Quote Where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("select UserH1 from GCG_6419_SO_Signs Where Job = '{0}' and Suffix = '{1}'",V.Local.sJob,V.Local.sSuffix,V.Local.sSql)
+				F.Intrinsic.Control.EndIf
+				
+				F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sTemp)
+			
+				V.Local.sReadRow(V.Local.iGab2).Set(V.Local.sTemp)
+'				V.Local.sReadRow(V.Local.iGab2).Set("(9 UNIT DELINEATOR W/SQUARES)(LOGO/STICKER)")
+			F.Intrinsic.Control.EndIf
+			
+			'putting stringback together
+			F.Intrinsic.String.Join(V.Local.sReadRow,"|~|",V.Local.sLine)
+			'adding modified row to the clone bdf.
+			F.Intrinsic.BDF.WriteRow("Load",V.Local.sLine)
+			
+		F.Intrinsic.Control.Next(V.Local.i)
+		'saving updated bdf
+		F.Intrinsic.BDF.Save("Load","MainFormView-gridViewOperations-bdf")
+		
+		F.ODBC.Connection!Con.Close
+		
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.Control.End
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_SFDC_User.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8577.26074$}$1
+${$6$}$rking$}$20230801130359726$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXe/oKChG14rQDLb0J/ThsteCMeMwSvoilzvtVKnwbgKKM=
+Program.Sub.Comments.End
