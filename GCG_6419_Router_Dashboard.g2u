@@ -1,0 +1,1727 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmRouters..Create(BaseForm)
+Gui.frmRouters..Caption("Router Dashboard")
+Gui.frmRouters..Size(15210,10350)
+Gui.frmRouters..MinX(0)
+Gui.frmRouters..MinY(0)
+Gui.frmRouters..Position(0,0)
+Gui.frmRouters..BackColor(-2147483633)
+Gui.frmRouters..MousePointer(0)
+Gui.frmRouters..Event(UnLoad,frmRouters_UnLoad)
+Gui.frmRouters..AlwaysOnTop(False)
+Gui.frmRouters..FontName("Tahoma")
+Gui.frmRouters..FontSize(8.25)
+Gui.frmRouters..ControlBox(True)
+Gui.frmRouters..MaxButton(True)
+Gui.frmRouters..MinButton(True)
+Gui.frmRouters..Moveable(True)
+Gui.frmRouters..Sizeable(True)
+Gui.frmRouters..ShowInTaskBar(True)
+Gui.frmRouters..TitleBar(True)
+Gui.frmRouters.picGSSLogo.Create(PictureBox)
+Gui.frmRouters.picGSSLogo.Size(5265,1200)
+Gui.frmRouters.picGSSLogo.Position(5115,30)
+Gui.frmRouters.picGSSLogo.Anchor(1)
+Gui.frmRouters.picGSSLogo.Enabled(True)
+Gui.frmRouters.picGSSLogo.Visible(True)
+Gui.frmRouters.picGSSLogo.Zorder(0)
+Gui.frmRouters.frameOption.Create(Frame)
+Gui.frmRouters.frameOption.Size(1815,435)
+Gui.frmRouters.frameOption.Position(13230,-45)
+Gui.frmRouters.frameOption.Anchor(9)
+Gui.frmRouters.frameOption.Enabled(True)
+Gui.frmRouters.frameOption.Visible(True)
+Gui.frmRouters.frameOption.Zorder(0)
+Gui.frmRouters.frameOption.Caption("")
+Gui.frmRouters.frameOption.FontName("Tahoma")
+Gui.frmRouters.frameOption.FontSize(8.25)
+Gui.frmRouters.optView.Create(Option)
+Gui.frmRouters.optView.Size(825,255)
+Gui.frmRouters.optView.Position(75,150)
+Gui.frmRouters.optView.Parent("frameOption")
+Gui.frmRouters.optView.Caption("View")
+Gui.frmRouters.optView.Enabled(True)
+Gui.frmRouters.optView.Visible(True)
+Gui.frmRouters.optView.Zorder(0)
+Gui.frmRouters.optView.FontName("Tahoma")
+Gui.frmRouters.optView.FontSize(8.25)
+Gui.frmRouters.optView.Event(Click,optView_Click)
+Gui.frmRouters.optEdit.Create(Option)
+Gui.frmRouters.optEdit.Size(825,255)
+Gui.frmRouters.optEdit.Position(960,150)
+Gui.frmRouters.optEdit.Parent("frameOption")
+Gui.frmRouters.optEdit.Caption("Edit")
+Gui.frmRouters.optEdit.Enabled(True)
+Gui.frmRouters.optEdit.Visible(True)
+Gui.frmRouters.optEdit.Zorder(0)
+Gui.frmRouters.optEdit.FontName("Tahoma")
+Gui.frmRouters.optEdit.FontSize(8.25)
+Gui.frmRouters.optEdit.Event(Click,optEdit_Click)
+Gui.frmRouters.GsGCRouter.Create(GsGridControl)
+Gui.frmRouters.GsGCRouter.Size(14970,8730)
+Gui.frmRouters.GsGCRouter.Position(75,1260)
+Gui.frmRouters.GsGCRouter.Anchor(15)
+Gui.frmRouters.GsGCRouter.Event(RowCellClick,GsGCRouter_RowCellClick)
+Gui.frmRouters.GsGCRouter.Enabled(True)
+Gui.frmRouters.GsGCRouter.Visible(True)
+Gui.frmRouters.GsGCRouter.Zorder(0)
+Gui.frmRouters.lblStatus.Create(Label,"Label",True,2085,255,0,75,120,True,0,"Arial",8,-2147483633,0,0)
+Gui.frmRouters.lblStatus.BorderStyle(0)
+Gui.frmRouters.lblLockMsg.Create(Label,"User: SUPERVSR as 6419 Router Grid Locked.  Date/Time: 10/27/2022 10:07:39 AM",True,6030,195,0,9000,1020,True,1,"Tahoma",8.25,,0,0)
+Gui.frmRouters.lblLockMsg.BorderStyle(0)
+Gui.frmRouters.lblLockMsg.Anchor(9)
+Gui.frmRouters.lblLockMsg.ImageAlign(5)
+Gui.frmRouters.cmdSaveChanges.Create(Button)
+Gui.frmRouters.cmdSaveChanges.Enabled(True)
+Gui.frmRouters.cmdSaveChanges.Visible(True)
+Gui.frmRouters.cmdSaveChanges.Zorder(0)
+Gui.frmRouters.cmdSaveChanges.Size(1275,345)
+Gui.frmRouters.cmdSaveChanges.Position(13770,450)
+Gui.frmRouters.cmdSaveChanges.Caption("Save Changes")
+Gui.frmRouters.cmdSaveChanges.FontName("Tahoma")
+Gui.frmRouters.cmdSaveChanges.FontSize(8.25)
+Gui.frmRouters.cmdSaveChanges.Event(Click,cmdSaveChanges_Click)
+Gui.frmRouters.cmdSaveChanges.Anchor(9)
+Gui.frmRouters.ddlColumn.Create(DropDownList)
+Gui.frmRouters.ddlColumn.Enabled(True)
+Gui.frmRouters.ddlColumn.Visible(True)
+Gui.frmRouters.ddlColumn.Zorder(0)
+Gui.frmRouters.ddlColumn.Size(2085,300)
+Gui.frmRouters.ddlColumn.Position(11100,60)
+Gui.frmRouters.ddlColumn.FontName("Tahoma")
+Gui.frmRouters.ddlColumn.FontSize(8.25)
+Gui.frmRouters.ddlColumn.Anchor(9)
+Gui.frmRouters.ddlColumn.Event(SelectedIndexChanged,ddlColumn_SelectedIndexChanged)
+Gui.frmRouters.lblColumn.Create(Label,"Column",True,525,195,0,10440,120,True,0,"Tahoma",8.25,,0,0)
+Gui.frmRouters.lblColumn.BorderStyle(0)
+Gui.frmRouters.lblColumn.Anchor(9)
+Gui.frmRouters.lblValue.Create(Label,"Value",True,390,195,0,10530,540,True,0,"Tahoma",8.25,,0,0)
+Gui.frmRouters.lblValue.BorderStyle(0)
+Gui.frmRouters.lblValue.Anchor(9)
+Gui.frmRouters.txtValue.Create(TextBox,"",True,2535,300,0,11100,480,True,0,"Tahoma",8.25,,1)
+Gui.frmRouters.txtValue.Anchor(9)
+Gui.frmRouters.txtValue.Event(GotFocus,txtValue_GotFocus)
+Gui.frmRouters.cmdUpdate.Create(Button)
+Gui.frmRouters.cmdUpdate.Enabled(True)
+Gui.frmRouters.cmdUpdate.Visible(True)
+Gui.frmRouters.cmdUpdate.Zorder(0)
+Gui.frmRouters.cmdUpdate.Size(1125,345)
+Gui.frmRouters.cmdUpdate.Position(11130,840)
+Gui.frmRouters.cmdUpdate.Caption("Update")
+Gui.frmRouters.cmdUpdate.FontName("Tahoma")
+Gui.frmRouters.cmdUpdate.FontSize(8.25)
+Gui.frmRouters.cmdUpdate.Anchor(9)
+Gui.frmRouters.cmdUpdate.Event(Click,cmdUpdate_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.bViewRouter.Declare(Boolean)
+V.Global.bEditRouter.Declare(Boolean)
+V.Global.bCreateRouter.Declare(Boolean)
+V.Global.bLoadData.Declare(Boolean)
+V.Global.bOpen.Declare(Boolean)
+V.Global.bEditGrid.Declare(Boolean)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sIcon.Declare(String,"")
+V.Local.sGssLogo.Declare(String,"")
+
+Gui.frmRouters.lblLockMsg.Caption("")
+
+'Open DB Connection
+F.ODBC.Connection!con.OpenCompanyConnection(999)
+V.Global.bOpen.Set(True)
+
+'Set Icons and Gss Logo
+F.Intrinsic.String.Build("{0}\gss2.ico", V.Caller.ArtDir, V.Local.sIcon)
+Gui.frmRouters..Icon(V.Local.sIcon)
+
+F.Intrinsic.String.Build("{0}\GAB_GSS_Logo_Green_Dash.png", V.Caller.ArtDir, V.Local.sGssLogo)
+Gui.frmRouters.picGSSLogo.Picture(V.Local.sGssLogo)
+
+'Set View as default button
+Gui.frmRouters.optView.Value(1)
+
+'Check Permissions
+F.Intrinsic.Control.CallSub(CheckPermissions)
+F.Intrinsic.Control.CallSub(SetContextMenu)
+
+'Show Form
+Gui.frmRouters..Show
+
+'Load Grid
+F.Intrinsic.Control.CallSub(LoadRouterData)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.frmRouters_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("frmRouters_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sLockFile.Declare(String,"")
+
+F.Intrinsic.Control.If(V.Caller.FilesDir.Right1,=,"\")
+	F.Intrinsic.String.Build("{0}{1}6419_Rout_Dashboard_Lock.text",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sLockFile)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("{0}\{1}6419_Rout_Dashboard_Lock.text",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sLockFile)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Global.bEditGrid)
+	F.Intrinsic.File.DeleteFile(V.Local.sLockFile)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub("Serialize")
+
+F.Intrinsic.Control.If(V.Global.bOpen)
+	'Close DB Connection
+	F.ODBC.Connection!con.Close
+	V.Global.bOpen.Set(False)
+F.Intrinsic.Control.EndIf
+'Close Program
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("frmRouters_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End 
+Function.Intrinsic.Control.EndIf
+Program.Sub.frmRouters_UnLoad.End
+
+Program.Sub.CheckPermissions.Start
+F.Intrinsic.Control.SetErrorHandler("CheckPermissions_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.bChecked.Declare(Boolean,False)
+
+'Checking Permissions
+'Check to see if they can view Estimating/Standard Routers
+F.Global.Security.CheckUserAccessIPM(483,0,V.Global.bViewRouter)
+F.Intrinsic.Control.If(V.Global.bViewRouter,=,True)
+	Gui.frmRouters.optView.Enabled(True)
+	F.Intrinsic.Control.If(V.Local.bChecked.Declare,=,False)
+		Gui.frmRouters.optView.Value(True)
+		V.Local.bChecked.Set(True)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	Gui.frmRouters.optView.Enabled(False)
+	Gui.frmRouters.optView.Value(False)
+	V.Local.bChecked.Set(False)
+F.Intrinsic.Control.EndIf
+
+'Check to see if they can edit Estimating/Standard Routers
+F.Global.Security.CheckUserAccessIPM(482,1,V.Global.bEditRouter)
+'V.Global.bEditRouter.Set(False)
+F.Intrinsic.Control.If(V.Global.bEditRouter,=,True)
+	Gui.frmRouters.optEdit.Enabled(True)
+	F.Intrinsic.Control.If(V.Local.bChecked.Declare,=,False)
+		Gui.frmRouters.optEdit.Value(True)
+		V.Local.bChecked.Set(True)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	Gui.frmRouters.optEdit.Enabled(False)
+	Gui.frmRouters.optEdit.Value(False)
+	V.Local.bChecked.Set(False)
+F.Intrinsic.Control.EndIf
+
+'Check to see if they can create Estimating/Standard Routers
+F.Global.Security.CheckUserAccessIPM(482,2,V.Global.bCreateRouter)
+F.Intrinsic.Control.If(V.Global.bCreateRouter,=,True)
+	F.Intrinsic.Control.If(V.Local.bChecked.Declare,=,False)
+		V.Local.bChecked.Set(True)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	V.Local.bChecked.Set(False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("CheckPermissions_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.CheckPermissions.End
+
+Program.Sub.SetContextMenu.Start
+F.Intrinsic.Control.SetErrorHandler("SetContextMenu_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.frmRouters..ContextMenuCreate("ctxMenu")
+Gui.frmRouters.GsGCRouter.ContextMenuAttach("ctxMenu")
+Gui.frmRouters..ContextMenuAddItem("ctxMenu", "Refresh", 0, "Refresh")
+Gui.frmRouters..ContextMenuAddItem("ctxMenu", "Export", 0, "Export")
+F.Intrinsic.Control.If(V.Global.bCreateRouter,=,True)
+	Gui.frmRouters..ContextMenuAddItem("ctxMenu", "New", 0, "New Router")
+	Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenu", "New", "MenuClickNew")
+F.Intrinsic.Control.EndIf
+Gui.frmRouters..ContextMenuAddItem("ctxMenu", "ResetColumns", 0, "Reset Columns")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenu", "Refresh", "MenuClickRefresh")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenu", "Export", "MenuClickExport")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenu", "ResetColumns", "MenuClickResetColumns")
+
+Gui.frmRouters..ContextMenuCreate("ctxMenuEdit")
+Gui.frmRouters..ContextMenuAddItem("ctxMenuEdit", "Refresh", 0, "Refresh")
+Gui.frmRouters..ContextMenuAddItem("ctxMenuEdit", "Export", 0, "Export")
+F.Intrinsic.Control.If(V.Global.bCreateRouter,=,True)
+	Gui.frmRouters..ContextMenuAddItem("ctxMenuEdit", "New", 0, "New Router")
+	Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenuEdit", "New", "MenuClickNew")
+F.Intrinsic.Control.EndIf
+
+Gui.frmRouters..ContextMenuAddItem("ctxMenuEdit", "Sel", 0, "Check Delete for Filtered Grid")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenuEdit", "Sel", "MenuClickSel")
+
+Gui.frmRouters..ContextMenuAddItem("ctxMenuEdit", "ResetColumns", 0, "Reset Columns")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenuEdit", "Refresh", "MenuClickRefresh")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenuEdit", "Export", "MenuClickExport")
+Gui.frmRouters..ContextMenuSetItemEventHandler("ctxMenuEdit", "ResetColumns", "MenuClickResetColumns")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SetContextMenu_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.SetContextMenu.End
+
+Program.Sub.LoadRouterData.Start
+F.Intrinsic.Control.SetErrorHandler("LoadRouterData_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iCount.Declare(Long)
+V.Local.iProgress.Declare(Long)
+V.Local.iUser.Declare(Long)
+V.Local.sSql.Declare(String,"")
+V.Local.sFields.Declare(String,"rtrim(User1) as User1")
+V.Local.sLinqFields.Declare(String,"a.Router*!*a.Description_Router*!*a.Customer*!*a.Name_Customer*!*a.Date_Original*!*a.Prod_Line*!*a.Complete*!*a.Inactive*!*a.Drawing_Customer*!*a.Sort_1*!*a.Sort_2*!*b.User1")
+
+F.Intrinsic.Control.For(v.Local.iUser,2,60,1)
+	F.Intrinsic.String.Build("{0},rtrim(User{1}) as User{1}",V.Local.sFields,V.Local.iUser,V.Local.sFields)
+	F.Intrinsic.String.Build("{0}*!*b.User{1}",V.Local.sLinqFields,V.Local.iUser,V.Local.sLinqFields)
+F.Intrinsic.Control.Next(V.Local.iUser)
+
+F.Intrinsic.String.Build("{0}*!*b.Mat1*!*b.Mat2*!*b.Mat3*!*b.Mat4*!*b.Mat5*!*b.Mat6",V.Local.sLinqFields,V.Local.sLinqFields)
+
+F.Intrinsic.Control.If(v.DataTable.dtRouter.Exists,=,True)
+	f.Data.DataTable.Close("dtRouter")
+F.Intrinsic.Control.EndIf
+
+Gui.frmRouters.lblStatus.Visible(True)
+Gui.frmRouters.lblStatus.Caption("Loading Routers...")
+
+V.Global.bLoadData.Set(True)
+
+'Create data table from SQL
+'F.Intrinsic.String.Build("Select Distinct RTRIM(A.ROUTER) AS Router, A.Description_Router, A.Customer, C.NAME_CUSTOMER, IF(A.DATE_ORIGINAL = '1900-01-01', CONVERT(NULL, SQL_DATE), A.DATE_ORIGINAL) AS DATE_ORIGINAL, A.Prod_Line, Cast(Case When B.Complete Is Null Then 0 Else B.Complete End As Bit) As Complete, Cast(ISNULL(B.INACTIVE, 0) as Bit) as Inactive, A.Drawing_Customer, A.Sort_1, A.Sort_2, '' as Mat1, '' as Mat2, '' as Mat3, '' as Mat4, '' as Mat5, '' as Mat6, {0} From V_Router_Header A  left Join V_ROUTER_SUPP_HDR B ON A.ROUTER = B.RTR_NUM LEFT JOIN V_CUSTOMER_MASTER C ON A.CUSTOMER = C.CUSTOMER left Join GCG_6313_RTR_EXTRA D on A.ROUTER = D.ROUTER",V.Local.sFields,V.Local.sSql)
+'F.Data.DataTable.CreateFromSQL("dtRouter", "con", V.Local.sSql, True)
+
+F.Intrinsic.UI.InvokeWaitDialog("Loading dtRouter Table.............")
+
+F.Intrinsic.String.Build("Select Distinct RTRIM(A.ROUTER) AS Router, rtrim(A.Description_Router) as Description_Router, rtrim(A.Customer) as Customer,  C.NAME_CUSTOMER, IF(A.DATE_ORIGINAL = '1900-01-01', CONVERT(NULL, SQL_DATE), A.DATE_ORIGINAL) AS DATE_ORIGINAL, rtrim(A.Prod_Line) as Prod_Line, Cast(Case When B.Complete Is Null Then 0 Else B.Complete End As Bit) As Complete, Cast(ISNULL(B.INACTIVE, 0) as Bit) as Inactive, rtrim(A.Drawing_Customer) as Drawing_Customer, rtrim(A.Sort_1) as Sort_1, rtrim(A.Sort_2) as Sort_2 From V_Router_Header A  left Join V_ROUTER_SUPP_HDR B ON A.ROUTER = B.RTR_NUM LEFT JOIN V_CUSTOMER_MASTER C ON A.CUSTOMER = C.CUSTOMER",V.Local.sFields,V.Local.sSql)
+F.Data.DataTable.CreateFromSQL("dtRouterTemp", "con", V.Local.sSql, True)
+
+F.Intrinsic.String.Build("Select RTRIM(ROUTER) AS Router, '' as Mat1, '' as Mat2, '' as Mat3, '' as Mat4, '' as Mat5, '' as Mat6, {0} From GCG_6313_RTR_EXTRA",V.Local.sFields,V.Local.sSql)
+F.Data.DataTable.CreateFromSQL("CustUsers", "con", V.Local.sSql, True)
+
+F.Data.Linq.Join("LeftJoin", "Datatable", "dtRouterTemp*!*a",  "Datatable", "CustUsers*!*b", "a.Router=b.Router",V.Local.sLinqFields, "", "", "", "dtRouter", True)
+
+F.Data.DataTable.Close("dtRouterTemp")
+F.Data.DataTable.Close("CustUsers")
+
+F.Data.DataTable.AddColumn("dtRouter","Delete_Router",Boolean,False)
+
+F.Data.DataTable.CreateFromSQL("MATERIAL","con","Select rtrim(Router) as Router, rtrim(Part_WC_Outside) as Part_WC_Outside, rtrim(Operation) as Operation From V_Router_Line Where LMO = 'M' and Operation like 'MAT%'",True)
+
+F.Data.DataView.Create("MATERIAL","MAT1",22,"Operation = 'MAT-1'","")
+F.Data.Dictionary.CreateFromDataView("MAT1","MATERIAL","MAT1","ROUTER","Part_WC_Outside")
+F.Data.DataView.Close("MATERIAL","MAT1")
+F.Data.Dictionary.SetDefaultReturn("MAT1","")
+
+F.Data.DataView.Create("MATERIAL","MAT2",22,"Operation = 'MAT-2'","")
+F.Data.Dictionary.CreateFromDataView("MAT2","MATERIAL","MAT2","ROUTER","Part_WC_Outside")
+F.Data.DataView.Close("MATERIAL","MAT2")
+F.Data.Dictionary.SetDefaultReturn("MAT2","")
+
+F.Data.DataView.Create("MATERIAL","MAT3",22,"Operation = 'MAT-3'","")
+F.Data.Dictionary.CreateFromDataView("MAT3","MATERIAL","MAT3","ROUTER","Part_WC_Outside")
+F.Data.DataView.Close("MATERIAL","MAT3")
+F.Data.Dictionary.SetDefaultReturn("MAT3","")
+
+F.Data.DataView.Create("MATERIAL","MAT4",22,"Operation = 'MAT-4'","")
+F.Data.Dictionary.CreateFromDataView("MAT4","MATERIAL","MAT4","ROUTER","Part_WC_Outside")
+F.Data.DataView.Close("MATERIAL","MAT4")
+F.Data.Dictionary.SetDefaultReturn("MAT4","")
+
+F.Data.DataView.Create("MATERIAL","MAT5",22,"Operation = 'MAT-5'","")
+F.Data.Dictionary.CreateFromDataView("MAT5","MATERIAL","MAT5","ROUTER","Part_WC_Outside")
+F.Data.DataView.Close("MATERIAL","MAT5")
+F.Data.Dictionary.SetDefaultReturn("MAT5","")
+
+F.Data.DataView.Create("MATERIAL","MAT6",22,"Operation = 'MAT-6'","")
+F.Data.Dictionary.CreateFromDataView("MAT6","MATERIAL","MAT6","ROUTER","Part_WC_Outside")
+F.Data.DataView.Close("MATERIAL","MAT6")
+F.Data.Dictionary.SetDefaultReturn("MAT6","")
+
+F.Data.DataTable.Close("MATERIAL")
+
+'F.Intrinsic.UI.ChangeWaitStatus("Getting Mat 1")
+'F.Data.Dictionary.CreateFromSQL("MAT1",con,"Select RTRIM(A.ROUTER), (Select Part_WC_Outside From V_Router_Line B Where LMO = 'M' and RTRIM(A.ROUTER) = RTRIM(B.ROUTER) Order by Line_Router Limit 1) From V_Router_Header A;")
+'F.Data.Dictionary.SetDefaultReturn("MAT1","")
+'F.Intrinsic.UI.ChangeWaitStatus("Getting Mat 2")
+'F.Data.Dictionary.CreateFromSQL("MAT2",con,"Select RTRIM(A.ROUTER), (Select Part_WC_Outside From V_Router_Line B Where LMO = 'M' and RTRIM(A.ROUTER) = RTRIM(B.ROUTER) Order by Line_Router Limit 1 offset 1) From V_Router_Header A;")
+'F.Data.Dictionary.SetDefaultReturn("MAT2","")
+'F.Intrinsic.UI.ChangeWaitStatus("Getting Mat 3")
+'F.Data.Dictionary.CreateFromSQL("MAT3",con,"Select RTRIM(A.ROUTER), (Select Part_WC_Outside From V_Router_Line B Where LMO = 'M' and RTRIM(A.ROUTER) = RTRIM(B.ROUTER) Order by Line_Router Limit 1 offset 2) From V_Router_Header A;")
+'F.Data.Dictionary.SetDefaultReturn("MAT3","")
+'F.Intrinsic.UI.ChangeWaitStatus("Getting Mat 4")
+'F.Data.Dictionary.CreateFromSQL("MAT4",con,"Select RTRIM(A.ROUTER), (Select Part_WC_Outside From V_Router_Line B Where LMO = 'M' and RTRIM(A.ROUTER) = RTRIM(B.ROUTER) Order by Line_Router Limit 1 offset 3) From V_Router_Header A;")
+'F.Data.Dictionary.SetDefaultReturn("MAT4","")
+'F.Intrinsic.UI.ChangeWaitStatus("Getting Mat 5")
+'F.Data.Dictionary.CreateFromSQL("MAT5",con,"Select RTRIM(A.ROUTER), (Select Part_WC_Outside From V_Router_Line B Where LMO = 'M' and RTRIM(A.ROUTER) = RTRIM(B.ROUTER) Order by Line_Router Limit 1 offset 4) From V_Router_Header A;")
+'F.Data.Dictionary.SetDefaultReturn("MAT5","")
+'F.Intrinsic.UI.ChangeWaitStatus("Getting Mat 6")
+'F.Data.Dictionary.CreateFromSQL("MAT6",con,"Select RTRIM(A.ROUTER), (Select Part_WC_Outside From V_Router_Line B Where LMO = 'M' and RTRIM(A.ROUTER) = RTRIM(B.ROUTER) Order by Line_Router Limit 1 offset 5) From V_Router_Header A;")
+'F.Data.Dictionary.SetDefaultReturn("MAT6","")
+
+F.Intrinsic.UI.CloseWaitDialog
+
+F.Data.DataTable.FillFromDictionary("dtRouter","MAT1","Router","MAT1")
+F.Data.DataTable.FillFromDictionary("dtRouter","MAT2","Router","MAT2")
+F.Data.DataTable.FillFromDictionary("dtRouter","MAT3","Router","MAT3")
+F.Data.DataTable.FillFromDictionary("dtRouter","MAT4","Router","MAT4")
+F.Data.DataTable.FillFromDictionary("dtRouter","MAT5","Router","MAT5")
+F.Data.DataTable.FillFromDictionary("dtRouter","MAT6","Router","MAT6")
+F.Data.Dictionary.Close("MAT1")
+F.Data.Dictionary.Close("MAT2")
+F.Data.Dictionary.Close("MAT3")
+F.Data.Dictionary.Close("MAT4")
+F.Data.Dictionary.Close("MAT5")
+F.Data.Dictionary.Close("MAT6")
+F.Data.DataTable.AcceptChanges("dtRouter")
+
+F.Data.DataView.Create("dtRouter","dvChanged",16,"","")
+
+F.Intrinsic.Control.CallSub(LoadRouterDataGV)
+
+Gui.frmRouters.lblStatus.Visible(False)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("LoadRouterData_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.LoadRouterData.End
+
+Program.Sub.LoadRouterDataGV.Start
+F.Intrinsic.Control.SetErrorHandler("LoadRouterDataGV_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iCnt.Declare(Long)
+V.Local.iUser.Declare(Long)
+V.Local.sColumn.Declare(String)
+V.Local.sUser.Declare(String)
+
+Gui.frmRouters.ddlColumn.ClearItems
+
+F.Intrinsic.Control.If(V.DataTable.DDL.Exists)
+	F.Data.DataTable.Close("DDL")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("DDL",True)
+F.Data.DataTable.AddColumn("DDL","Col",String)
+F.Data.DataTable.AddColumn("DDL","Cap",String)
+
+F.Data.DataTable.AddRow("DDL","Col","DESCRIPTION_ROUTER","Cap","DESCRIPTION")
+F.Data.DataTable.AddRow("DDL","Col","PROD_LINE","Cap","PL")
+F.Data.DataTable.AddRow("DDL","Col","COMPLETE","Cap","COMPLETE")
+F.Data.DataTable.AddRow("DDL","Col","INACTIVE","Cap","INACTIVE")
+F.Data.DataTable.AddRow("DDL","Col","DRAWING_CUSTOMER","Cap","DRAWING")
+F.Data.DataTable.AddRow("DDL","Col","SORT_1","Cap","USER 1")
+F.Data.DataTable.AddRow("DDL","Col","SORT_2","Cap","USER 2")
+
+'Creates GridView
+Gui.frmRouters.GsGCRouter.SuspendLayout()
+Gui.frmRouters.GsGCRouter.AddGridviewFromDataTable("gvRouter","dtRouter")
+'Set Grid Properties
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","MultiSelect",True)
+'Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","Editable",False)
+'Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","ReadOnly",True)
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","AllowSort",True)
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","AllowFilter",True)
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","ShowDetailTabs",False)
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","ShowGroupPanel",True)
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","EnableAppearanceOddRow",True)
+Gui.frmRouters.GsGCRouter.SetGridviewProperty("gvRouter","OptionsViewColumnAutoWidth",False)
+
+'Loop through columns names by using the V.DataTable.dtName.FieldNames
+F.Intrinsic.String.Split(V.DataTable.dtRouter.FieldNames,"*!*",V.Local.sColumn)
+F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumn.UBound,1)
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sColumn(V.Local.iCnt),"HeaderFontBold",True)
+F.Intrinsic.Control.Next(V.Local.iCnt)
+
+'ROUTER
+V.Local.sColumn.Set("ROUTER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Router")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "120")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellForeColor", "Blue")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.AddSummaryItem("gvRouter", V.Local.sColumn, V.Local.sColumn, "COUNT", "Count: ", "", n0)
+
+'DESCRIPTION_ROUTER
+V.Local.sColumn.Set("DESCRIPTION_ROUTER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Description")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "150")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "30")
+
+'CUSTOMER
+V.Local.sColumn.Set("CUSTOMER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Customer")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "65")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+
+'NAME_CUSTOMER
+V.Local.sColumn.Set("NAME_CUSTOMER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Customer Name")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "150")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+
+'DATE_ORIGINAL
+V.Local.sColumn.Set("DATE_ORIGINAL")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Date Created")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "85")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "displayCustomDateTime", "d")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+
+'PROD_LINE
+V.Local.sColumn.Set("PROD_LINE")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "PL")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "65")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "2")
+
+'COMPLETE
+V.Local.sColumn.Set("COMPLETE")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Complete")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "65")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+
+'INACTIVE
+V.Local.sColumn.Set("INACTIVE")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Inactive")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "65")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+
+'DRAWING_CUSTOMER
+V.Local.sColumn.Set("DRAWING_CUSTOMER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Drawing")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+'SORT_1
+V.Local.sColumn.Set("SORT_1")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "User 1")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+'SORT_2
+V.Local.sColumn.Set("SORT_2")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "User 2")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+F.Intrinsic.Control.If(V.Global.bEditRouter,=,"True")
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", "COMPLETE", "CellBackColor", "LightYellow")
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", "INACTIVE", "CellBackColor", "LightYellow")
+F.Intrinsic.Control.EndIf
+
+V.Local.sColumn.Set("MAT1")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "MAT-1")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+V.Local.sColumn.Set("MAT2")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "MAT-2")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+V.Local.sColumn.Set("MAT3")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "MAT-3")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+V.Local.sColumn.Set("MAT4")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "MAT-4")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+V.Local.sColumn.Set("MAT5")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "MAT-5")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+V.Local.sColumn.Set("MAT6")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "MAT-6")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "115")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Left")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MaxLength", "20")
+
+F.Data.DataTable.CreateFromSQL("Title","con","Select * From GCG_6313_RTR_EXT_TIT",True)
+
+F.Intrinsic.Control.For(v.Local.iUser,1,60,1)
+	F.Intrinsic.String.Build("User{0}",V.Local.iUser,V.Local.sUser)
+	F.Intrinsic.Control.If(V.DataTable.Title.RowCount--,<>,-1)
+		F.Intrinsic.Control.If(V.DataTable.Title(V.DataTable.Title.RowCount--).[V.Local.sUser]!FieldValTrim,<>,"")
+			Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sUser,"Caption",V.DataTable.Title(V.DataTable.Title.RowCount--).[V.Local.sUser]!FieldValTrim)
+			Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sUser,"Visible",True)
+			V.Local.sColumn.Set(V.DataTable.Title(V.DataTable.Title.RowCount--).[V.Local.sUser]!FieldValTrim)
+			F.Data.DataTable.AddRow("DDL","Col",V.Local.sUser.UCase,"Cap",V.Local.sColumn.UCase)
+		F.Intrinsic.Control.Else
+			Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sUser,"Caption",V.Local.sUser)
+			Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sUser,"Visible",True)
+			F.Data.DataTable.AddRow("DDL","Col",V.Local.sUser.UCase,"Cap",V.Local.sUser.UCase)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sUser,"Visible",False)
+		F.Data.DataTable.AddRow("DDL","Col",V.Local.sUser.UCase,"Cap",V.Local.sUser.UCase)
+	F.Intrinsic.Control.EndIf
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "MinWidth", "115")
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "HeaderHAlignment", "Left")
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "CellHAlignment", "Left")
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "AllowEdit", False)
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "ReadOnly", True)
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "MaxLength", "70")
+F.Intrinsic.Control.Next(V.Local.iUser)
+
+'INACTIVE
+V.Local.sColumn.Set("DELETE_ROUTER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Caption", "Delete Rtr")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "MinWidth", "65")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "HeaderHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "CellHAlignment", "Center")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", True)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Visible", False)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowShowHide", False)
+
+'Setting Gridview for routers as the main one
+Gui.frmRouters.GsGCRouter.ResumeLayout()
+Gui.frmRouters.GsGCRouter.MainView("gvRouter")
+	
+F.Intrinsic.Control.CallSub("Deserialize")
+
+Gui.frmRouters.ddlColumn.AddItems("DataTable","DDL","Col","Cap")
+
+F.Intrinsic.Control.For(v.Local.iUser,1,60,1)
+	F.Intrinsic.String.Build("User{0}",V.Local.iUser,V.Local.sUser)
+	F.Intrinsic.Control.If(V.DataTable.Title.RowCount--,<>,-1)
+		Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter",V.Local.sUser,"Caption",V.DataTable.Title(V.DataTable.Title.RowCount--).[V.Local.sUser]!FieldValTrim)
+	F.Intrinsic.Control.Else
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iUser)
+
+F.Data.DataTable.Close("Title")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("LoadRouterDataGV_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.LoadRouterDataGV.End
+
+Program.Sub.GsGCRouter_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGCRouter_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSQLQuery.Declare(String)
+V.Local.sRouter.Declare(String)
+V.Local.sComplete.Declare(String)
+V.Local.sInactive.Declare(String)
+V.Local.sSQLUpdate.Declare(String)
+V.Local.sRouterNew.Declare(String)
+V.Local.iReturn.Declare(Long)
+V.Local.sRet.Declare(String,"")
+
+F.Intrinsic.Control.SelectCase(v.Args.Column.UCase)
+	'Check if Column Router was clicked
+	F.Intrinsic.Control.Case("ROUTER")
+		F.Intrinsic.Control.If(v.Screen.frmRouters!optView.Value,=,True)
+			'Writes a string of which router you clicked
+			V.Local.sRouter.Set(V.DataTable.dtRouter(v.Args.rowindex).Router!fieldVal)
+			'Open the screen for "View Router"
+			F.Intrinsic.String.Build("V!*!{0}",V.Local.sRouter,V.Local.sRouterNew)
+			f.Global.General.CallWrapperSync(400000,V.Local.sRouterNew)
+		F.Intrinsic.Control.EndIf		
+		
+		F.Intrinsic.Control.If(v.Screen.frmRouters!optEdit.Value,=,True)
+			V.Local.sRouter.Set(V.DataTable.dtRouter(v.Args.rowindex).Router!fieldVal)
+			'Open the screen for "Open Router"
+			F.Intrinsic.String.Build("O!*!{0}",V.Local.sRouter,V.Local.sRouterNew)
+			f.Global.General.CallWrapperSync(400000,V.Local.sRouterNew)
+		F.Intrinsic.Control.EndIf		
+			
+	'Checks if Column Complete was clicked
+	F.Intrinsic.Control.Case("COMPLETE")
+		V.Local.sComplete.Set(V.DataTable.dtRouter(v.Args.rowindex).Complete!fieldVal)
+		V.Local.sRouter.Set(V.DataTable.dtRouter(v.Args.rowindex).Router!fieldVal)
+			
+		F.Intrinsic.Control.If(V.Global.bEditRouter)
+			F.Intrinsic.Control.If(V.Local.sComplete, =, True)
+				V.Local.sComplete.Set("0")
+				Gui.frmRouters.GsGCRouter.SetCellValue("gvRouter", 6, v.Args.rowindex, False)
+			F.Intrinsic.Control.ElseIf(V.Local.sComplete, =, False)
+				V.Local.sComplete.Set("1")
+				Gui.frmRouters.GsGCRouter.SetCellValue("gvRouter", 6, v.Args.rowindex, True)
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("update ROUTER_SUPP_HDR set complete = {0} where rtr_num = '{1}'", V.Local.sComplete, V.Local.sRouter, V.Local.sSQLUpdate)
+			f.ODBC.Connection!con.Execute(V.Local.sSQLUpdate)
+		F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.Case("INACTIVE")
+		V.Local.sInactive.Set(V.DataTable.dtRouter(v.Args.rowindex).Inactive!fieldVal)
+		V.Local.sRouter.Set(V.DataTable.dtRouter(v.Args.rowindex).Router!fieldVal)
+		
+		F.Intrinsic.Control.If(V.Global.bEditRouter)
+			F.Intrinsic.Control.If(V.Local.sInactive,=,True)
+				V.Local.sInactive.Set("0")
+				Gui.frmRouters.GsGCRouter.SetCellValue("gvRouter",7,v.Args.rowindex,False)
+			F.Intrinsic.Control.ElseIf(V.Local.sInactive,=,False)
+				V.Local.sInactive.Set("1")
+				Gui.frmRouters.GsGCRouter.SetCellValue("gvRouter",7,v.Args.rowindex,True)
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("UPDATE ROUTER_SUPP_HDR SET INACTIVE = {0} WHERE RTR_NUM = '{1}'", V.Local.sInactive,V.Local.sRouter, V.Local.sSQLUpdate)
+			F.ODBC.Connection!con.Execute(V.Local.sSQLUpdate)
+		F.Intrinsic.Control.EndIf	
+	
+	F.Intrinsic.Control.Case("CUSTOMER")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(205,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"CUSTOMER",V.Local.sRet.Trim,"NAME_CUSTOMER",V.Local.sRet(1).Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("MAT1")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(105,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"MAT1",V.Local.sRet.Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("MAT2")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(105,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"MAT2",V.Local.sRet.Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("MAT3")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(105,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"MAT3",V.Local.sRet.Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("MAT4")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(105,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"MAT4",V.Local.sRet.Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("MAT5")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(105,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"MAT5",V.Local.sRet.Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Case("MAT6")
+		F.Intrinsic.Control.If(V.Global.bEditGrid)
+			F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+			F.Intrinsic.UI.SetBrowserOOT(True)
+			F.Intrinsic.UI.Browser(105,"",V.Local.sRet)
+			
+			F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"***CANCEL")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Data.DataTable.SetValue("dtRouter",V.Args.RowIndex,"MAT6",V.Local.sRet.Trim)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.EndSelect
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGCRouter_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGCRouter_RowCellClick.End
+
+Program.Sub.MenuClickRefresh.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickRefresh_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+	
+F.Intrinsic.Control.If(V.Global.bLoadData)
+	F.Intrinsic.Control.CallSub(Serialize)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(LoadRouterData)
+F.Intrinsic.Control.CallSub(Deserialize)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickRefresh_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickRefresh.End
+
+Program.Sub.MenuClickExport.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickExport_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sFileExport.Declare(String)
+V.Local.sMsg.Declare(String)
+V.Local.sExt.Declare(String)
+V.Local.bExcel.Declare(Boolean)
+V.Local.bFileLocked.Declare(Boolean)
+
+F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+F.Intrinsic.Control.If(V.Local.bExcel)
+	V.Local.sExt.Set("xlsx")
+F.Intrinsic.Control.Else
+	V.Local.sExt.Set("csv")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\GAB_5477_Router_Dashboard.{1}",V.Caller.LocalGssTempDir,V.Local.sExt,V.Local.sFileExport)
+F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+F.Intrinsic.Control.If(V.Local.bFileLocked)
+	F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+	F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+F.Intrinsic.Control.Else
+	Gui.frmRouters.GsGCRouter.Export(V.Local.sFileExport,V.Local.sExt)
+	F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickExport_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickExport.End
+
+Program.Sub.MenuClickNew.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickNew_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sRouter.Declare
+V.Local.sRouterNew.Declare
+
+F.Intrinsic.String.Build("N!*!",V.Local.sRouter,V.Local.sRouterNew)
+f.Global.General.CallWrapperSync(400000,V.Local.sRouterNew)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickNew_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickNew.End
+
+Program.Sub.MenuClickResetColumns.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickResetColumns_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Global.Registry.AddValue(v.Caller.User,v.Caller.CompanyCode,"gvRouter",6419,1000,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,"")
+
+V.Global.bLoadData.Set(False)
+F.Intrinsic.Control.CallSub(MenuClickRefresh)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickResetColumns_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickResetColumns.End
+
+Program.Sub.Serialize.Start
+F.Intrinsic.Control.SetErrorHandler("Serialize_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSerialize.Declare
+
+Gui.frmRouters.GsGCRouter.Serialize("gvRouter",V.Local.sSerialize)
+F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GCG_6419_ROUTER_DASHBOARD.G2U",6419,1001,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,V.Local.sSerialize)
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Serialize_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Serialize.End
+
+Program.Sub.Deserialize.Start
+F.Intrinsic.Control.SetErrorHandler("Deserialize_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSerialize.Declare
+
+'Delete old registry records
+F.Global.Registry.ReadValue(V.Caller.User,V.Caller.CompanyCode,"GCG_6419_ROUTER_DASHBOARD.G2U",6419,1001,5,"",V.Local.sSerialize)
+F.Intrinsic.Control.If(V.Local.sSerialize,<>,"")
+	F.ODBC.Connection!common.OpenConnection(V.Ambient.Ccon,V.Ambient.Cuser,V.Ambient.Cpass)
+	F.ODBC.Connection!common.Execute("Delete From Gs_Registry Where Reg_ID = 6419 And Seq < 1001 and Program = 'GCG_6419_ROUTER_DASHBOARD.G2U';")
+	F.ODBC.Connection!common.Close
+F.Intrinsic.Control.EndIf
+	
+F.Global.Registry.ReadValue(V.Caller.User,V.Caller.CompanyCode, "GCG_6419_ROUTER_DASHBOARD.G2U",6419,1001,6,"",V.Local.sSerialize)
+F.Intrinsic.Control.If(V.Local.sSerialize.Trim,<>,"")
+	Gui.frmRouters.GsGCRouter.Deserialize(V.Local.sSerialize)
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Deserialize_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Deserialize.End
+
+Program.Sub.optEdit_Click.Start
+F.Intrinsic.Control.SetErrorHandler("optEdit_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sLockFile.Declare(String,"")
+V.Local.bLock.Declare(String,"")
+V.Local.sMsg.Declare(String,"")
+
+'put this code it.  for some reason this sub is being called when click on the save button after making changes to the grid
+F.Intrinsic.Control.If(V.Global.bEditGrid)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Caller.FilesDir.Right1,=,"\")
+	F.Intrinsic.String.Build("{0}{1}6419_Rout_Dashboard_Lock.text",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sLockFile)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("{0}\{1}6419_Rout_Dashboard_Lock.text",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sLockFile)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.File.Exists(V.Local.sLockFile,V.Local.bLock)
+
+F.Intrinsic.Control.If(V.Local.bLock)
+	V.Global.bEditGrid.Set(False)
+	F.Intrinsic.File.File2String(V.Local.sLockFile,V.Local.sMsg)
+	Gui.frmRouters.lblLockMsg.Caption(V.Local.sMsg)
+	Gui.frmRouters.cmdSaveChanges.Visible(False)
+	Gui.frmRouters.cmdUpdate.Visible(False)
+	Gui.frmRouters.ddlColumn.Visible(False)
+	Gui.frmRouters.txtValue.Visible(False)
+	Gui.frmRouters.lblColumn.Visible(False)
+	Gui.frmRouters.lblValue.Visible(False)
+F.Intrinsic.Control.Else
+	V.Global.bEditGrid.Set(True)
+	F.Intrinsic.String.Build("User: {0} as 6419 Router Grid Locked.  Date/Time: {1}",V.Caller.User,V.Ambient.Now,V.Local.sMsg)
+	F.Intrinsic.File.String2File(V.Local.sLockFile,V.Local.sMsg)
+	Gui.frmRouters.lblLockMsg.Caption("")
+	F.Intrinsic.Control.CallSub(Set_Editable,"Allow","True","Read","False")
+	Gui.frmRouters.cmdSaveChanges.Visible(True)
+	Gui.frmRouters.cmdUpdate.Visible(True)
+	Gui.frmRouters.ddlColumn.Visible(True)
+	Gui.frmRouters.txtValue.Visible(True)
+	Gui.frmRouters.lblColumn.Visible(True)
+	Gui.frmRouters.lblValue.Visible(True)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("optEdit_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.optEdit_Click.End
+
+Program.Sub.optView_Click.Start
+F.Intrinsic.Control.SetErrorHandler("optView_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sLockFile.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+
+F.Intrinsic.Control.If(V.Caller.FilesDir.Right1,=,"\")
+	F.Intrinsic.String.Build("{0}{1}6419_Rout_Dashboard_Lock.text",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sLockFile)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("{0}\{1}6419_Rout_Dashboard_Lock.text",V.Caller.FilesDir,V.Caller.CompanyCode,V.Local.sLockFile)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Global.bEditGrid)
+	F.Intrinsic.Control.If(V.DataView.dtRouter!dvChanged.RowCount--,<>,-1)
+		F.Intrinsic.UI.Msgbox("Changes have been made.  Do you want to save changes?","Attention",4,V.Local.iRet)
+		F.Intrinsic.Control.If(V.Local.iRet,=,6)
+			F.Intrinsic.Control.CallSub(cmdSaveChanges_Click)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.CallSub(MenuClickRefresh)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.CallSub(Set_Editable,"Allow","False","Read","True")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.File.DeleteFile(V.Local.sLockFile)
+F.Intrinsic.Control.EndIf
+
+V.Global.bEditGrid.Set(False)
+
+Gui.frmRouters.lblLockMsg.Caption("")
+
+Gui.frmRouters.cmdSaveChanges.Visible(False)
+Gui.frmRouters.cmdUpdate.Visible(False)
+Gui.frmRouters.ddlColumn.Visible(False)
+Gui.frmRouters.txtValue.Visible(False)
+Gui.frmRouters.lblColumn.Visible(False)
+Gui.frmRouters.lblValue.Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("optView_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.optView_Click.End
+
+Program.Sub.Set_Editable.Start
+F.Intrinsic.Control.SetErrorHandler("optView_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sColumn.Declare(String,"")
+V.Local.iUser.Declare(Long,0)
+V.Local.sUser.Declare(String,"")
+
+Gui.frmRouters.GsGCRouter.Enabled(False)
+
+F.Intrinsic.Control.If(V.Args.Allow,=,"True")
+	F.Intrinsic.Control.Try
+		Gui.frmRouters.GsGCRouter.ContextMenuDetach("ctxMenu")
+	F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.EndTry
+	Gui.frmRouters.GsGCRouter.ContextMenuAttach("ctxMenuEdit")
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.Try
+		Gui.frmRouters.GsGCRouter.ContextMenuDetach("ctxMenuEdit")
+	F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.EndTry
+	Gui.frmRouters.GsGCRouter.ContextMenuAttach("ctxMenu")
+F.Intrinsic.Control.EndIf
+
+'DESCRIPTION_ROUTER
+V.Local.sColumn.Set("DESCRIPTION_ROUTER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'PROD_LINE
+V.Local.sColumn.Set("PROD_LINE")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'COMPLETE
+V.Local.sColumn.Set("COMPLETE")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'INACTIVE
+V.Local.sColumn.Set("INACTIVE")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'DRAWING_CUSTOMER
+V.Local.sColumn.Set("DRAWING_CUSTOMER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'SORT_1
+V.Local.sColumn.Set("SORT_1")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'SORT_2
+V.Local.sColumn.Set("SORT_2")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'V.Local.sColumn.Set("MAT1")
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'V.Local.sColumn.Set("MAT2")
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'V.Local.sColumn.Set("MAT3")
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'V.Local.sColumn.Set("MAT4")
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'V.Local.sColumn.Set("MAT5")
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+'V.Local.sColumn.Set("MAT6")
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowEdit", V.Args.Allow)
+'Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "ReadOnly", V.Args.Read)
+
+F.Intrinsic.Control.For(v.Local.iUser,1,60,1)
+	F.Intrinsic.String.Build("User{0}",V.Local.iUser,V.Local.sUser)
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "AllowEdit", V.Args.Allow)
+	Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sUser, "ReadOnly", V.Args.Read)
+F.Intrinsic.Control.Next(V.Local.iUser)
+
+V.Local.sColumn.Set("DELETE_ROUTER")
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "Visible", V.Args.Allow)
+Gui.frmRouters.GsGCRouter.SetColumnProperty("gvRouter", V.Local.sColumn, "AllowShowHide", V.Args.Allow)
+
+Gui.frmRouters.GsGCRouter.Enabled(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("optView_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Set_Editable.End
+
+Program.Sub.cmdSaveChanges_Click.Start
+F.Intrinsic.Control.SetErrorHandler("optView_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSeq.Declare(String,"000000")
+V.Local.sField.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.iJ.Declare(Long,0)
+V.Local.sLastSeq.Declare(String,"")
+V.Local.lOp.Declare(Long,0)
+V.Local.sDesc.Declare(String,"")
+V.Local.sUM.Declare(String,"")
+V.Local.sOp.Declare(String,"")
+V.Local.sRouterDesc.Declare(String,"")
+V.Local.sRouter.Declare(String,"")
+
+Gui.frmRouters.cmdSaveChanges.Enabled(False)
+
+Gui.frmRouters.GsGCRouter.Enabled(False)
+
+F.Global.General.ReadOption("401113",3,"","0000",V.Local.lOp)
+
+F.Intrinsic.Control.If(V.DataView.dtRouter!dvChanged.RowCount--,<>,-1)
+	F.Data.DataView.ToDataTable("dtRouter","dvChanged","RouterSave",True)
+	F.Data.DataTable.AddColumn("RouterSave","Router_Type",String,"H")
+'	F.Data.DataTable.SaveToDB("RouterSave",con,"Router_Header","Router*!*Router_Type",256,"Router@!@Router*!*Router_Type@!@Router_Type@!@Description_Router@!@Description_Router@!@Prod_Line@!@Prod_Line*!*Customer@!@Customer*!*Drawing_Customer@!@Drawing_Customer*!*Sort_1@!@Sort_1*!*Sort_2@!@Sort_2")
+	
+	F.Intrinsic.Control.For(V.Local.iJ,0,V.DataTable.RouterSave.RowCount--,1)
+		V.Local.sRouterDesc.Set(V.DataTable.RouterSave(V.Local.iJ).Description_Router!FieldValTrim)
+		V.Local.sRouter.Set(V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim)
+		F.Intrinsic.String.Build("Select Top 1 Router From Router_Header Where Router = '{0}' and Router_Type = 'H'",V.Local.sRouter.PSQLFriendly,V.Local.sSql)
+		F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sSeq)
+		
+		F.Intrinsic.Control.If(V.Local.sSeq.Trim,<>,"")
+			F.Intrinsic.String.Build("Update Router_Header set Description_Router = '{1}', Prod_Line = '{2}', Customer = '{3}', Drawing_Customer = '{4}', Sort_1 = '{5}', Sort_2 = '{6}' Where Router = '{0}' and Line_Router = 'H'",V.Local.sRouter.PSQLFriendly,V.Local.sRouterDesc.PSQLFriendly,V.DataTable.RouterSave(V.Local.iJ).Prod_Line!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Customer!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Drawing_Customer!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Sort_1!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Sort_2!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("Insert Into Router_Header (Router,Router_Type,Description_Router,Prod_Line,Customer,Drawing_Customer,Sort_1,Sort_2) Values('{0}','H','{1}','{2}','{3}','{4}','{5}','{6}')",V.Local.sRouter.PSQLFriendly,V.Local.sRouterDesc.PSQLFriendly,V.DataTable.RouterSave(V.Local.iJ).Prod_Line!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Customer!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Drawing_Customer!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Sort_1!FieldValTrim,V.DataTable.RouterSave(V.Local.iJ).Sort_2!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.EndIf
+		V.Local.sSeq.Set("000000")
+		F.Intrinsic.Control.If(V.DataTable.RouterSave(V.Local.iJ).Delete_Router!FieldVal,=,False)
+			F.Intrinsic.Control.For(V.Local.i,1,6,1)
+				F.Intrinsic.String.Build("MAT{0}",V.Local.i,V.Local.sField)
+				F.Intrinsic.Control.If(V.Local.sField,=,"MAT1")
+					V.Local.sOp.Set("MAT-1")
+				F.Intrinsic.Control.ElseIf(V.Local.sField,=,"MAT2")
+					V.Local.sOp.Set("MAT-2")
+				F.Intrinsic.Control.ElseIf(V.Local.sField,=,"MAT3")
+					V.Local.sOp.Set("MAT-3")
+				F.Intrinsic.Control.ElseIf(V.Local.sField,=,"MAT4")
+					V.Local.sOp.Set("MAT-4")
+				F.Intrinsic.Control.ElseIf(V.Local.sField,=,"MAT5")
+					V.Local.sOp.Set("MAT-5")
+				F.Intrinsic.Control.ElseIf(V.Local.sField,=,"MAT6")
+					V.Local.sOp.Set("MAT-6")
+				F.Intrinsic.Control.EndIf
+			
+				F.Intrinsic.Control.If(V.DataTable.RouterSave(V.Local.iJ).[V.Local.sField]!FieldValTrim,<>,"PLACEHOLDER")
+					F.Intrinsic.String.Build("Select Top 1 Line_Router From Router_Line Where Router = '{0}' and Router_Type = 'L' and LMO = 'M' and Operation like '{1}%' Order by Line_Router",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sOp,V.Local.sSql)
+					F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sSeq)
+					F.Intrinsic.Control.If(V.Local.sSeq.Trim,<>,"")
+						F.Intrinsic.String.Build("Select Top 1 Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.RouterSave(V.Local.iJ).[V.Local.sField]!FieldValTrim,V.Local.sSql)
+						F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sDesc)
+						F.Intrinsic.String.Build("Select Top 1 UM_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.RouterSave(V.Local.iJ).[V.Local.sField]!FieldValTrim,V.Local.sSql)
+						F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sUM)
+						F.Intrinsic.String.Build("Update Router_Line set Part_WC_Outside = '{0}', Desc_Rt_Line = '{1}', UM_Inventory = '{2}' Where Router = '{3}' and Line_Router = '{4}'",V.DataTable.RouterSave(V.Local.iJ).[V.Local.sField]!FieldValTrim,V.Local.sDesc.PSQLFriendly,V.Local.sUM,V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSeq,V.Local.sSql)
+						F.ODBC.Connection!Con.Execute(V.Local.sSql)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.Control.If(V.DataTable.RouterSave(V.Local.iJ).[V.Local.sField]!FieldValTrim,<>,"")
+							F.Intrinsic.Math.Add(V.Local.sLastSeq.Long,V.Local.lOp,V.Local.sLastSeq)
+							F.Intrinsic.String.LPad(V.Local.sLastSeq,"0",6,V.Local.sLastSeq)
+							V.Local.sSeq.Set(V.Local.sLastSeq)
+		'					F.Data.DataTable.SaveToDB("RouterSave","con","ROUTER_LINE","Router*!*Line_Router",256,"Router@!@Router*!*Line_Router@!@Line_Router*!*Part_WC_OutSide@!@Part_WC_OutSide*!*Desc_Rt_Line@!@Desc_Rt_Line*!*UM_Inventory@!@UM_Inventory")
+							F.Intrinsic.String.Build("Insert Into Router_Line (Router,Line_Router,Part_WC_Outside,Desc_RT_Line,Router_Type,UM_Inventory,Operation) Values('{0}','{1}','{2}','{3}','L','{4}','{5}')",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSeq,V.DataTable.RouterSave(V.Local.iJ).[V.Local.sField]!FieldValTrim,V.Local.sDesc.PSQLFriendly,V.Local.sUM,V.Local.sOp,V.Local.sSql)
+							F.ODBC.Connection!Con.Execute(V.Local.sSql)
+						F.Intrinsic.Control.EndIf
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i)
+			
+			F.Intrinsic.String.Build("Select * From GCG_6313_RTR_EXTRA Where Router = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.Data.DataTable.CreateFromSQL("RTR",Con,V.Local.sSql,True)
+			F.Intrinsic.Control.If(V.DataTable.RTR.RowCount--,<>,-1)
+				F.Data.DataTable.SetValue("RTR",-1,"User1",V.DataTable.RouterSave(V.Local.iJ).User1!FieldValTrim,"User2",V.DataTable.RouterSave(V.Local.iJ).User2!FieldValTrim,"User3",V.DataTable.RouterSave(V.Local.iJ).User3!FieldValTrim,"User4",V.DataTable.RouterSave(V.Local.iJ).User4!FieldValTrim,"User5",V.DataTable.RouterSave(V.Local.iJ).User5!FieldValTrim,"User6",V.DataTable.RouterSave(V.Local.iJ).User6!FieldValTrim,"User7",V.DataTable.RouterSave(V.Local.iJ).User7!FieldValTrim,"User8",V.DataTable.RouterSave(V.Local.iJ).User8!FieldValTrim,"User9",V.DataTable.RouterSave(V.Local.iJ).User9!FieldValTrim,"User10",V.DataTable.RouterSave(V.Local.iJ).User10!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User11",V.DataTable.RouterSave(V.Local.iJ).User11!FieldValTrim,"User12",V.DataTable.RouterSave(V.Local.iJ).User12!FieldValTrim,"User13",V.DataTable.RouterSave(V.Local.iJ).User13!FieldValTrim,"User14",V.DataTable.RouterSave(V.Local.iJ).User14!FieldValTrim,"User15",V.DataTable.RouterSave(V.Local.iJ).User15!FieldValTrim,"User16",V.DataTable.RouterSave(V.Local.iJ).User16!FieldValTrim,"User17",V.DataTable.RouterSave(V.Local.iJ).User17!FieldValTrim,"User18",V.DataTable.RouterSave(V.Local.iJ).User18!FieldValTrim,"User19",V.DataTable.RouterSave(V.Local.iJ).User19!FieldValTrim,"User20",V.DataTable.RouterSave(V.Local.iJ).User20!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User21",V.DataTable.RouterSave(V.Local.iJ).User21!FieldValTrim,"User22",V.DataTable.RouterSave(V.Local.iJ).User22!FieldValTrim,"User23",V.DataTable.RouterSave(V.Local.iJ).User23!FieldValTrim,"User24",V.DataTable.RouterSave(V.Local.iJ).User24!FieldValTrim,"User25",V.DataTable.RouterSave(V.Local.iJ).User25!FieldValTrim,"User26",V.DataTable.RouterSave(V.Local.iJ).User26!FieldValTrim,"User27",V.DataTable.RouterSave(V.Local.iJ).User27!FieldValTrim,"User28",V.DataTable.RouterSave(V.Local.iJ).User28!FieldValTrim,"User29",V.DataTable.RouterSave(V.Local.iJ).User29!FieldValTrim,"User30",V.DataTable.RouterSave(V.Local.iJ).User30!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User31",V.DataTable.RouterSave(V.Local.iJ).User31!FieldValTrim,"User32",V.DataTable.RouterSave(V.Local.iJ).User32!FieldValTrim,"User33",V.DataTable.RouterSave(V.Local.iJ).User33!FieldValTrim,"User34",V.DataTable.RouterSave(V.Local.iJ).User34!FieldValTrim,"User35",V.DataTable.RouterSave(V.Local.iJ).User35!FieldValTrim,"User36",V.DataTable.RouterSave(V.Local.iJ).User36!FieldValTrim,"User37",V.DataTable.RouterSave(V.Local.iJ).User37!FieldValTrim,"User38",V.DataTable.RouterSave(V.Local.iJ).User38!FieldValTrim,"User39",V.DataTable.RouterSave(V.Local.iJ).User39!FieldValTrim,"User40",V.DataTable.RouterSave(V.Local.iJ).User40!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User41",V.DataTable.RouterSave(V.Local.iJ).User41!FieldValTrim,"User42",V.DataTable.RouterSave(V.Local.iJ).User42!FieldValTrim,"User43",V.DataTable.RouterSave(V.Local.iJ).User43!FieldValTrim,"User44",V.DataTable.RouterSave(V.Local.iJ).User44!FieldValTrim,"User45",V.DataTable.RouterSave(V.Local.iJ).User45!FieldValTrim,"User46",V.DataTable.RouterSave(V.Local.iJ).User46!FieldValTrim,"User47",V.DataTable.RouterSave(V.Local.iJ).User47!FieldValTrim,"User48",V.DataTable.RouterSave(V.Local.iJ).User48!FieldValTrim,"User49",V.DataTable.RouterSave(V.Local.iJ).User49!FieldValTrim,"User50",V.DataTable.RouterSave(V.Local.iJ).User50!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User51",V.DataTable.RouterSave(V.Local.iJ).User51!FieldValTrim,"User52",V.DataTable.RouterSave(V.Local.iJ).User52!FieldValTrim,"User53",V.DataTable.RouterSave(V.Local.iJ).User53!FieldValTrim,"User54",V.DataTable.RouterSave(V.Local.iJ).User54!FieldValTrim,"User55",V.DataTable.RouterSave(V.Local.iJ).User55!FieldValTrim,"User56",V.DataTable.RouterSave(V.Local.iJ).User56!FieldValTrim,"User57",V.DataTable.RouterSave(V.Local.iJ).User57!FieldValTrim,"User58",V.DataTable.RouterSave(V.Local.iJ).User58!FieldValTrim,"User59",V.DataTable.RouterSave(V.Local.iJ).User59!FieldValTrim,"User60",V.DataTable.RouterSave(V.Local.iJ).User60!FieldValTrim)
+				F.Data.DataTable.SaveToDB("RTR",con,"GCG_6313_RTR_EXTRA","Router",2)
+			F.Intrinsic.Control.Else
+				F.Data.DataTable.AddRow("RTR","Router",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,"User1",V.DataTable.RouterSave(V.Local.iJ).User1!FieldValTrim,"User2",V.DataTable.RouterSave(V.Local.iJ).User2!FieldValTrim,"User3",V.DataTable.RouterSave(V.Local.iJ).User3!FieldValTrim,"User4",V.DataTable.RouterSave(V.Local.iJ).User4!FieldValTrim,"User5",V.DataTable.RouterSave(V.Local.iJ).User5!FieldValTrim,"User6",V.DataTable.RouterSave(V.Local.iJ).User6!FieldValTrim,"User7",V.DataTable.RouterSave(V.Local.iJ).User7!FieldValTrim,"User8",V.DataTable.RouterSave(V.Local.iJ).User8!FieldValTrim,"User9",V.DataTable.RouterSave(V.Local.iJ).User9!FieldValTrim,"User10",V.DataTable.RouterSave(V.Local.iJ).User10!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User11",V.DataTable.RouterSave(V.Local.iJ).User11!FieldValTrim,"User12",V.DataTable.RouterSave(V.Local.iJ).User12!FieldValTrim,"User13",V.DataTable.RouterSave(V.Local.iJ).User13!FieldValTrim,"User14",V.DataTable.RouterSave(V.Local.iJ).User14!FieldValTrim,"User15",V.DataTable.RouterSave(V.Local.iJ).User15!FieldValTrim,"User16",V.DataTable.RouterSave(V.Local.iJ).User16!FieldValTrim,"User17",V.DataTable.RouterSave(V.Local.iJ).User17!FieldValTrim,"User18",V.DataTable.RouterSave(V.Local.iJ).User18!FieldValTrim,"User19",V.DataTable.RouterSave(V.Local.iJ).User19!FieldValTrim,"User20",V.DataTable.RouterSave(V.Local.iJ).User20!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User21",V.DataTable.RouterSave(V.Local.iJ).User21!FieldValTrim,"User22",V.DataTable.RouterSave(V.Local.iJ).User22!FieldValTrim,"User23",V.DataTable.RouterSave(V.Local.iJ).User23!FieldValTrim,"User24",V.DataTable.RouterSave(V.Local.iJ).User24!FieldValTrim,"User25",V.DataTable.RouterSave(V.Local.iJ).User25!FieldValTrim,"User26",V.DataTable.RouterSave(V.Local.iJ).User26!FieldValTrim,"User27",V.DataTable.RouterSave(V.Local.iJ).User27!FieldValTrim,"User28",V.DataTable.RouterSave(V.Local.iJ).User28!FieldValTrim,"User29",V.DataTable.RouterSave(V.Local.iJ).User29!FieldValTrim,"User30",V.DataTable.RouterSave(V.Local.iJ).User30!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User31",V.DataTable.RouterSave(V.Local.iJ).User31!FieldValTrim,"User32",V.DataTable.RouterSave(V.Local.iJ).User32!FieldValTrim,"User33",V.DataTable.RouterSave(V.Local.iJ).User33!FieldValTrim,"User34",V.DataTable.RouterSave(V.Local.iJ).User34!FieldValTrim,"User35",V.DataTable.RouterSave(V.Local.iJ).User35!FieldValTrim,"User36",V.DataTable.RouterSave(V.Local.iJ).User36!FieldValTrim,"User37",V.DataTable.RouterSave(V.Local.iJ).User37!FieldValTrim,"User38",V.DataTable.RouterSave(V.Local.iJ).User38!FieldValTrim,"User39",V.DataTable.RouterSave(V.Local.iJ).User39!FieldValTrim,"User40",V.DataTable.RouterSave(V.Local.iJ).User40!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User41",V.DataTable.RouterSave(V.Local.iJ).User41!FieldValTrim,"User42",V.DataTable.RouterSave(V.Local.iJ).User42!FieldValTrim,"User43",V.DataTable.RouterSave(V.Local.iJ).User43!FieldValTrim,"User44",V.DataTable.RouterSave(V.Local.iJ).User44!FieldValTrim,"User45",V.DataTable.RouterSave(V.Local.iJ).User45!FieldValTrim,"User46",V.DataTable.RouterSave(V.Local.iJ).User46!FieldValTrim,"User47",V.DataTable.RouterSave(V.Local.iJ).User47!FieldValTrim,"User48",V.DataTable.RouterSave(V.Local.iJ).User48!FieldValTrim,"User49",V.DataTable.RouterSave(V.Local.iJ).User49!FieldValTrim,"User50",V.DataTable.RouterSave(V.Local.iJ).User50!FieldValTrim)
+				F.Data.DataTable.SetValue("RTR",-1,"User51",V.DataTable.RouterSave(V.Local.iJ).User51!FieldValTrim,"User52",V.DataTable.RouterSave(V.Local.iJ).User52!FieldValTrim,"User53",V.DataTable.RouterSave(V.Local.iJ).User53!FieldValTrim,"User54",V.DataTable.RouterSave(V.Local.iJ).User54!FieldValTrim,"User55",V.DataTable.RouterSave(V.Local.iJ).User55!FieldValTrim,"User56",V.DataTable.RouterSave(V.Local.iJ).User56!FieldValTrim,"User57",V.DataTable.RouterSave(V.Local.iJ).User57!FieldValTrim,"User58",V.DataTable.RouterSave(V.Local.iJ).User58!FieldValTrim,"User59",V.DataTable.RouterSave(V.Local.iJ).User59!FieldValTrim,"User60",V.DataTable.RouterSave(V.Local.iJ).User60!FieldValTrim)
+				F.Data.DataTable.SaveToDB("RTR",con,"GCG_6313_RTR_EXTRA","Router",1)
+			F.Intrinsic.Control.EndIf
+			F.Data.DataTable.Close("RTR")
+		F.Intrinsic.Control.Else
+			'Delete Router
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_HEADER WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_LINE WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_DESC WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_CHANGES WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_OP_CODES WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_SUPP_HDR WHERE RTR_NUM = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_SUPP_LINE WHERE RTR_NUM = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM ROUTER_XREF WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+			
+			F.Intrinsic.String.Build("DELETE FROM GCG_6313_RTR_EXTRA WHERE ROUTER = '{0}'",V.DataTable.RouterSave(V.Local.iJ).Router!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.iJ)
+	F.Data.DataTable.Close("RouterSave")
+F.Intrinsic.Control.EndIf
+
+Gui.frmRouters.GsGCRouter.Enabled(True)
+Gui.frmRouters.cmdSaveChanges.Enabled(True)
+
+F.Intrinsic.Control.CallSub(MenuClickRefresh)
+F.Intrinsic.Control.BlockEvents
+Gui.frmRouters.optView.Value(True)
+F.Intrinsic.Control.CallSub(optView_Click)
+F.Intrinsic.Control.UnBlockEvents
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("optView_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdSaveChanges_Click.End
+
+Program.Sub.MenuClickSel.Start
+F.Intrinsic.Control.SetErrorHandler("MenuClickSel_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sFilter.Declare(String,"")
+
+'Gui.frmRouters.GsGCRouter.GetGridviewProperty("gvRouter","ActiveFilterString",V.Local.sFilter)
+
+'F.Intrinsic.Control.CallSub(GridViewFilterToDataViewFilter,"Filter",V.Local.sFilter)
+
+'F.Intrinsic.Control.Try
+'		F.Data.DataView.Create("dtRouter","Temp",22,V.Args.Filter,"")
+'F.Intrinsic.Control.Catch
+'	F.Intrinsic.UI.Msgbox("Unable to Convert Grid Filter to a usuable DataView Filter","Attention")
+'	F.Intrinsic.Control.If(V.DataView.dtRouter!Temp.Exists)
+'		F.Data.DataView.Close("dtRouter","Temp")
+'	F.Intrinsic.Control.EndIf
+'	F.Intrinsic.Control.ExitSub
+'F.Intrinsic.Control.EndTry
+
+Gui.frmRouters.GsGCRouter.CreateDataView("gvRouter","dtRouter","Temp")
+
+F.Intrinsic.Control.If(V.DataView.dtRouter!Temp.RowCount--,<>,-1)
+	F.Data.DataView.SetValue("dtRouter","Temp",-1,"Delete_Router",True)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataView.Close("dtRouter","Temp")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("MenuClickSel_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.MenuClickSel.End
+
+Program.Sub.GridViewFilterToDataViewFilter.Start
+F.Intrinsic.Control.SetErrorHandler("GridViewFilterToDataViewFilter_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+'Thanks Trey!
+'this sub is for converting the active filter string of a gridview into a dataview friendly version
+'FILTER	-	The Active Filter String
+'will return FILTER
+
+'valid operators: =, >, <, >=, <=, <>, in, is null, not, like
+
+V.Local.sFilter.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.iCounter.Declare(Long)
+V.Local.sFields.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.sTemp2.Declare(String)
+V.Local.sFindString.Declare(String)
+V.Local.sReplaceString.Declare(String)
+V.Local.sValues.Declare(String)
+V.Local.sValueReturn.Declare(String)
+V.Local.sFieldReturn.Declare(String)
+V.Local.sValueRegEx.Declare(String, "\'[^']*\'")
+V.Local.sFieldRegEx.Declare(String, "\[[A-Za-z0-9_-]+\]")
+V.Local.sNumberRegEx.Declare(String, "-?[0-9]+(\.[0-9]+)?")
+V.Local.sRegEx.Declare(String)
+V.Local.sMatch.Declare(String)
+V.Local.ilength.Declare(Long)
+V.Local.sValueReturn2.Declare(String)
+
+V.Local.sFilter.Set(V.Args.Filter)
+
+'fix all IsNullOrEmpty
+F.Intrinsic.String.Build("IsNullOrEmpty\({0}\)", V.Local.sFieldRegEx, V.Local.sRegEx)
+F.Intrinsic.String.RegExMatch(V.Local.sFilter, V.Local.sRegEx, True, V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim, !=, "")
+	F.Intrinsic.String.Split(V.Local.sRet, "@!@", V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.iCounter, 0, V.Local.sRet.UBound, 1)
+		
+		'get match
+		F.Intrinsic.String.Split(V.Local.sRet(V.Local.iCounter), "*!*", V.Local.sTemp)
+		V.Local.sMatch.Set(V.Local.sTemp(1))
+		
+		'get the field, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sFieldRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sFieldReturn.Set(V.Local.sTemp(1))
+		
+		'Replace
+		F.Intrinsic.String.Build("({0} is Null or {0} = '')", V.Local.sFieldReturn, V.Local.sReplaceString)
+		F.Intrinsic.String.Replace(V.Local.sFilter, V.Local.sMatch, V.Local.sReplaceString, V.Local.sFilter)
+	F.Intrinsic.Control.Next(V.Local.iCounter)
+F.Intrinsic.Control.EndIf
+
+'fix all StartsWith
+F.Intrinsic.String.Build("StartsWith\({0},\s*{1}\)", V.Local.sFieldRegEx, V.Local.sValueRegEx, V.Local.sRegEx)
+F.Intrinsic.String.RegExMatch(V.Local.sFilter, V.Local.sRegEx, True, V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim, !=, "")
+	F.Intrinsic.String.Split(V.Local.sRet, "@!@", V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.iCounter, 0, V.Local.sRet.UBound, 1)
+		
+		'get match
+		F.Intrinsic.String.Split(V.Local.sRet(V.Local.iCounter), "*!*", V.Local.sTemp)
+		V.Local.sMatch.Set(V.Local.sTemp(1))
+		
+		'get the field, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sFieldRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sFieldReturn.Set(V.Local.sTemp(1))
+		
+		'get the value, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sValueRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sValueReturn.Set(V.Local.sTemp(1))
+		F.Intrinsic.String.TrimChar(V.Local.sValueReturn, "'", V.Local.sValueReturn)
+		
+		'Replace
+		F.Intrinsic.String.Build("{0} like '{1}%'", V.Local.sFieldReturn, V.Local.sValueReturn, V.Local.sReplaceString)
+		F.Intrinsic.String.Replace(V.Local.sFilter, V.Local.sMatch, V.Local.sReplaceString, V.Local.sFilter)
+	F.Intrinsic.Control.Next(V.Local.iCounter)
+F.Intrinsic.Control.EndIf
+
+'fix all EndsWith
+F.Intrinsic.String.Build("EndsWith\({0},\s*{1}\)", V.Local.sFieldRegEx, V.Local.sValueRegEx, V.Local.sRegEx)
+F.Intrinsic.String.RegExMatch(V.Local.sFilter, V.Local.sRegEx, True, V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim, !=, "")
+	F.Intrinsic.String.Split(V.Local.sRet, "@!@", V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.iCounter, 0, V.Local.sRet.UBound, 1)
+		
+		'get match
+		F.Intrinsic.String.Split(V.Local.sRet(V.Local.iCounter), "*!*", V.Local.sTemp)
+		V.Local.sMatch.Set(V.Local.sTemp(1))
+		
+		'get the field, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sFieldRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sFieldReturn.Set(V.Local.sTemp(1))
+		
+		'get the value, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sValueRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sValueReturn.Set(V.Local.sTemp(1))
+		F.Intrinsic.String.TrimChar(V.Local.sValueReturn, "'", V.Local.sValueReturn)
+		
+		'Replace
+		F.Intrinsic.String.Build("{0} like '%{1}'", V.Local.sFieldReturn, V.Local.sValueReturn, V.Local.sReplaceString)
+		F.Intrinsic.String.Replace(V.Local.sFilter, V.Local.sMatch, V.Local.sReplaceString, V.Local.sFilter)
+	F.Intrinsic.Control.Next(V.Local.iCounter)
+F.Intrinsic.Control.EndIf
+
+'fix all Contains
+F.Intrinsic.String.Build("Contains\({0},\s*{1}\)", V.Local.sFieldRegEx, V.Local.sValueRegEx, V.Local.sRegEx)
+F.Intrinsic.String.RegExMatch(V.Local.sFilter, V.Local.sRegEx, True, V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim, !=, "")
+	F.Intrinsic.String.Split(V.Local.sRet, "@!@", V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.iCounter, 0, V.Local.sRet.UBound, 1)
+		
+		'get match
+		F.Intrinsic.String.Split(V.Local.sRet(V.Local.iCounter), "*!*", V.Local.sTemp)
+		V.Local.sMatch.Set(V.Local.sTemp(1))
+		
+		'get the field, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sFieldRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sFieldReturn.Set(V.Local.sTemp(1))
+		
+		'get the value, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sValueRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sValueReturn.Set(V.Local.sTemp(1))
+		F.Intrinsic.String.TrimChar(V.Local.sValueReturn, "'", V.Local.sValueReturn)
+		
+		'Replace
+		F.Intrinsic.String.Build("{0} like '%{1}%'", V.Local.sFieldReturn, V.Local.sValueReturn, V.Local.sReplaceString)
+		F.Intrinsic.String.Replace(V.Local.sFilter, V.Local.sMatch, V.Local.sReplaceString, V.Local.sFilter)
+	F.Intrinsic.Control.Next(V.Local.iCounter)
+F.Intrinsic.Control.EndIf
+
+'fix between
+F.Intrinsic.String.Build("{0} Between\({1}m?, {1}m?\)", V.Local.sFieldRegEx, V.Local.sNumberRegEx, V.Local.sRegEx)
+F.Intrinsic.String.RegExMatch(V.Local.sFilter, V.Local.sRegEx, True, V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet.Trim, !=, "")
+	F.Intrinsic.String.Split(V.Local.sRet, "@!@", V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.iCounter, 0, V.Local.sRet.UBound, 1)
+		
+		'get match
+		F.Intrinsic.String.Split(V.Local.sRet(V.Local.iCounter), "*!*", V.Local.sTemp)
+		V.Local.sMatch.Set(V.Local.sTemp(1))
+		
+		'get the field, only one
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sFieldRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "*!*", V.Local.sTemp)
+		V.Local.sFieldReturn.Set(V.Local.sTemp(1))
+		
+		'get the values, two
+		F.Intrinsic.String.RegExMatch(V.Local.sMatch, V.Local.sNumberRegEx, True, V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp, "@!@", V.Local.sTemp)
+		F.Intrinsic.String.Split(V.Local.sTemp(0), "*!*", V.Local.sTemp2)
+		V.Local.sValueReturn.Set(V.Local.sTemp2(1))
+		F.Intrinsic.String.Split(V.Local.sTemp(1), "*!*", V.Local.sTemp2)
+		V.Local.sValueReturn2.Set(V.Local.sTemp2(1))
+		
+		'Replace
+		F.Intrinsic.String.Build("({0} >= {1} and {0} <= {2})", V.Local.sFieldReturn, V.Local.sValueReturn, V.Local.sValueReturn2, V.Local.sReplaceString)
+		F.Intrinsic.String.Replace(V.Local.sFilter, V.Local.sMatch, V.Local.sReplaceString, V.Local.sFilter)
+	F.Intrinsic.Control.Next(V.Local.iCounter)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Variable.AddRV("FILTER", V.Local.sFilter)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GridViewFilterToDataViewFilter_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GridViewFilterToDataViewFilter.End
+
+Program.Sub.txtValue_GotFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtValue_GotFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.frmRouters.txtValue.SelectAll
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtValue_GotFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.txtValue_GotFocus.End
+
+Program.Sub.ddlColumn_SelectedIndexChanged.Start
+F.Intrinsic.Control.SetErrorHandler("txtValue_GotFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.frmRouters.txtValue.Text("")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtValue_GotFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.ddlColumn_SelectedIndexChanged.End
+
+Program.Sub.cmdUpdate_Click.Start
+F.Intrinsic.Control.SetErrorHandler("txtValue_GotFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sFilter.Declare(String,"")
+V.Local.sCol.Declare(String,"")
+V.Local.sTemp.Declare(String,"")
+
+V.Local.sTemp.Set(V.Screen.frmRouters!txtValue.Text)
+V.Local.sTemp.Set(V.Local.sTemp.Trim)
+F.Intrinsic.Control.If(V.Screen.frmRouters!ddlColumn.Value,=,"INACTIVE","OR",V.Screen.frmRouters!ddlColumn.Value,=,"COMPLETE")
+	F.Intrinsic.Control.If(V.Local.sTemp.UCase,<>,"Y","AND",V.Local.sTemp.UCase,<>,"N")
+		F.Intrinsic.UI.Msgbox("For Updating INACTIVE or COMPLETE Column. Use Y or N")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Cap = '{0}'",V.Screen.frmRouters!ddlColumn.Value,V.Local.sFilter)
+F.Data.DataView.Create("DDL","VDDL",22,V.Local.sFilter,"")
+
+F.Intrinsic.Control.If(V.DataView.DDL!VDDL.RowCount--,<>,-1)
+'	Gui.frmRouters.GsGCRouter.GetGridviewProperty("gvRouter","ActiveFilterString",V.Local.sFilter)
+
+'	F.Intrinsic.Control.CallSub(GridViewFilterToDataViewFilter,"Filter",V.Local.sFilter)
+
+'	F.Intrinsic.Control.Try
+'		F.Data.DataView.Create("dtRouter","Vupdate",22,V.Args.Filter,"")
+'	F.Intrinsic.Control.Catch
+'		F.Intrinsic.UI.Msgbox("Unable to Convert Grid Filter to a usuable DataView Filter","Attention")
+'		F.Intrinsic.Control.If(V.DataView.dtRouter!Vupdate.Exists)
+'			F.Data.DataView.Close("dtRouter","Vupdate")
+'		F.Intrinsic.Control.EndIf
+'		F.Intrinsic.Control.ExitSub
+'	F.Intrinsic.Control.EndTry
+	
+	Gui.frmRouters.GsGCRouter.CreateDataView("gvRouter","dtRouter","Vupdate")
+	
+	F.Intrinsic.Control.If(V.Screen.frmRouters!ddlColumn.Value,=,"INACTIVE","OR",V.Screen.frmRouters!ddlColumn.Value,=,"COMPLETE")
+		F.Intrinsic.Control.If(V.Local.sTemp.UCase,=,"Y")
+			F.Data.DataView.SetValue("dtRouter","Vupdate",-1,V.DataView.DDL!VDDL(V.DataView.DDL!VDDL.RowCount--).Col!FieldValTrim,True)
+		F.Intrinsic.Control.Else
+			F.Data.DataView.SetValue("dtRouter","Vupdate",-1,V.DataView.DDL!VDDL(V.DataView.DDL!VDDL.RowCount--).Col!FieldValTrim,False)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.Data.DataView.SetValue("dtRouter","Vupdate",-1,V.DataView.DDL!VDDL(V.DataView.DDL!VDDL.RowCount--).Col!FieldValTrim,V.Local.sTemp.Trim)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataView.Close("dtRouter","Vupdate")
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("Selected Column not found")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataView.Close("DDL","VDDL")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtValue_GotFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(frmRouters_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdUpdate_Click.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$rking$}$20230706135414706$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXeT3d5VcVauDGxRwQ6CkFdJ7BjttlGp7RE+yWwt+QmiEA=
+Program.Sub.Comments.End
