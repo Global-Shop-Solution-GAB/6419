@@ -1,0 +1,55 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sQuote.Declare(String,"")
+V.Local.sSO.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.iPID.Declare(Long,0)
+
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(11920)
+		F.Intrinsic.String.LPad(V.Passed.000003,"0",7,V.Local.sSO)
+		'Check for a blank Order
+		F.Intrinsic.Control.If(V.Passed.000003,=,"")
+			F.Intrinsic.UI.Msgbox("Please select an Order.","Order Missing")
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.EndIf
+		F.ODBC.Connection!Con.OpenCompanyConnection
+		F.Intrinsic.String.Build("Select Quote From V_Order_Header where Order_No = '{0}'",V.Local.sSO,V.Local.sSql)
+		F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sQuote)
+		F.ODBC.Connection!con.Close
+		'Check for a blank Quote
+		F.Intrinsic.Control.If(V.Local.sQuote.Trim,<>,"")
+			F.Global.DocumentControl.Invoke(V.Local.sQuote,50,V.Passed.000008,V.Local.iPID)
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.Else
+			F.Intrinsic.UI.Msgbox("No Quote associated with the Sales Order","Attention")
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.Control.End
+		
+F.Intrinsic.Control.EndSelect
+	
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Quote_Doc.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8210.19558$}$1
+${$6$}$rking$}$20220712130151657$}$QNdZLVy4bWuiWa9jh1ZTiKVzNnEzrvL4uLRHFNCpE7fF2Jy5qMdloe3wNuJY1SqJxYvirtKZDts=
+Program.Sub.Comments.End
