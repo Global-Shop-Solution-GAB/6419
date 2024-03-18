@@ -1,0 +1,356 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+V.Local.sSO.Declare
+
+F.ODBC.Connection!con.OpenCompanyConnection(300)
+
+'Format SO & Qte Number
+F.Intrinsic.String.LPad(V.Passed.000003,"0",7,V.Local.sSO)
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(11560)
+		'Label SO Header Script 1 Button / Label Qte Header Script 1 Button
+		V.Passed.000201.Set("Upload Lines")
+		V.Passed.000202.Set("Quote Docs")
+		V.Passed.000203.Set("Required")
+'		F.Intrinsic.Control.Case(10710)
+'			'Label SO Header Script 1 Button / Label Qte Header Script 1 Button
+'			V.Passed.000201.Set("Upload Lines")
+		
+	F.Intrinsic.Control.Case(11910)
+		'Check for a blank Order
+		F.Intrinsic.Control.If(V.Passed.000003,=,"")
+			F.Intrinsic.UI.Msgbox("Please select an Order.","Order Missing")
+		F.Intrinsic.Control.Else
+			'Upload SO Lines
+			F.Intrinsic.Control.CallSub(Upload_ORDADLN,"Type","O","SO",V.Local.sSO)
+		F.Intrinsic.Control.EndIf
+		
+'		F.Intrinsic.Control.Case(10960)
+'			'Check for a blank Quote
+'			F.Intrinsic.Control.If(V.Passed.000003,=,"")
+'				F.Intrinsic.UI.Msgbox("Please select a Quote.","Quote Missing")
+'			F.Intrinsic.Control.Else
+'				'Upload Qte Lines
+'				F.Intrinsic.Control.CallSub(Upload_ORDADLN,"Type","Q","SO",V.Local.sSO)
+'			F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.EndSelect
+
+F.ODBC.Connection!con.Close
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End 
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.Upload_ORDADLN.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare(String,"")
+V.Local.bMSExcel.Declare(Boolean,False)
+V.Local.sFile.Declare(String,"")
+V.Local.sMoveFile.Declare(String,"")
+V.Local.sFileContents.Declare(String,"")
+V.Local.sSO.Declare(String,"")
+V.Local.iCnt.Declare(Long,0)
+V.Local.iRow.Declare(Long,0)
+V.Local.sRow.Declare(String,"")
+V.Local.sPart.Declare(String,"")
+V.Local.sCol.Declare(String,"")
+V.Local.sSQL.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.sRetInv.Declare(String,"")
+V.Local.fDiscount.Declare(Float,0)
+V.Local.fDiscountPrice.Declare(Float,0)
+V.Local.sCustNo.Declare(String,"")
+V.Local.sTemp.Declare(String,"")
+V.Local.sParams.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+V.Local.bExists.Declare(Boolean,False)
+V.Local.sLines.Declare(String,"")
+V.Local.dPromDate.Declare(Date)
+
+'Excel Layout - No Header Row
+'Column A - 0 - Part also set as description
+
+'Price will be from the first SO line already on the Order.  If line doesn't exist prompt user and not upload parts.
+F.Intrinsic.String.Build("Select Top 1 Record_No, Price From V_Order_Lines Where Order_No = '{0}' and Product_Line = 'GS' Order by Record_No;",V.Args.SO,V.Local.sSQL)
+
+F.Data.DataTable.CreateFromSQL("dtPrice","con",V.Local.sSQL,True)
+
+F.Intrinsic.Control.If(V.DataTable.dtPrice.RowCount--,=,-1)
+	F.Intrinsic.UI.Msgbox("No GS Line on Sales Order to retrieve Price From.  Create that line before uploading Part Lines.","Attention")
+	F.Data.DataTable.Close("dtPrice")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Check to see if MS Excel is installed and end program if not
+F.Automation.MSExcel.CheckPresence(V.Local.bMSExcel)
+F.Intrinsic.Control.If(V.Local.bMSExcel,=,False)
+	F.Intrinsic.UI.Msgbox("MS Excel is not installed. Please install and try again.","MS Excel Check")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+'Open Windows File Explorer to browse for upload file
+F.Intrinsic.UI.ShowOpenFileDialog("","xlsx|*.xlsx",,V.Local.sFile)
+F.Intrinsic.Control.If(V.Local.sFile,=,"***CANCEL***")
+	'Exit program if no file is selected or user cancels out
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Show progress bar on loading selected excel file
+F.Intrinsic.UI.InvokeWaitDialog("Loading...","Please wait...")
+
+'Pull Customer Number and Order Discount from Sales Order Header
+V.Local.sCustNo.Set(V.Passed.000006)
+V.Local.fDiscount.Set(V.Passed.000068)
+F.Intrinsic.Control.If(V.Args.Type,=,"Q")
+	F.Intrinsic.Date.ConvertDString(V.Passed.000024,"MMDDYY",V.Local.dPromDate)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Date.ConvertDString(V.Passed.000024,"YYYYMMDD",V.Local.dPromDate)
+F.Intrinsic.Control.EndIf
+
+'Get a list of lines that already exists on the Qte/Order
+F.Intrinsic.Control.If(V.Args.Type,=,"Q")
+	F.Intrinsic.String.Build("Select Record_No From V_Quote_Lines Where Quote_No = '{0}';",V.Args.SO,V.Local.sSQL)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("Select Record_No From V_Order_Lines Where Order_No = '{0}';",V.Args.SO,V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.CreateFromSQL("dtLines","con",V.Local.sSQL,True)
+V.Local.sLines.Set("''")
+F.Intrinsic.Control.For(V.Local.iCnt,0,V.DataTable.dtLines.RowCount--,1)
+	F.Intrinsic.Control.If(V.Local.iCnt,=,0)
+		F.Intrinsic.String.Build("'{0}'",V.DataTable.dtLines(V.Local.iCnt).Record_No!FieldVal,V.Local.sLines)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0},'{1}'",V.Local.sLines,V.DataTable.dtLines(V.Local.iCnt).Record_No!FieldVal,V.Local.sLines)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iCnt)
+
+'Open MS Excel Spreadsheet
+F.Automation.MSExcel.CreateAppObject("MSExcel")
+F.Automation.MSExcel.OpenWorkbook("MSExcel","Workbook",V.Local.sFile)
+F.Automation.MSExcel.OpenWorksheet("Workbook","Worksheet",1)
+F.Automation.MSExcel.RowCount("Worksheet",V.Local.iRow)
+F.Automation.MSExcel.DestroyAllObjects("MSExcel","Workbook","Worksheet")
+F.Automation.MSExcel.ReadSpreadsheet(V.Local.sFile,4,V.Local.iRow,V.Local.sFile)
+F.Intrinsic.String.Split(V.Local.sFile,"$!$",V.Local.sRow)
+'Loop through Rows
+F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sRow.UBound,1)
+	F.Intrinsic.UI.ChangeWaitStatus("Generating Lines...",V.Local.iCnt,V.Local.sRow.LBound,V.Local.sRow.UBound)
+	F.Intrinsic.String.Split(V.Local.sRow(v.Local.iCnt),"*!*",V.Local.sCol)
+	V.Local.sCol.RedimPreserve(0,1)
+	'If the Part Number is missing we are going to skip the line
+	F.Intrinsic.Control.If(V.Local.sCol(0),<>,"")
+		V.Local.sPart.Set(V.Local.sCol(0))	
+		'Create ORDADLN file for upload
+		'Transaction, 1,1 Transaction Code:  ""O"" for sales order or ""Q"" for Quote    ***REQUIRED***
+		V.Local.sTemp.Set(V.Args.Type)
+
+		'Customer, 7,2 Customer Number: ***REQUIRED*** unless using ordupmnu to choose customer id.
+			F.Intrinsic.String.RPad(V.Local.sCustNo.Trim," ",7,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+
+		'OrderNo, 7,9 If AutoNumbering Turned on can be left blank, otherwise a required field with leading zeros
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.LPad(V.Args.SO,"0",7,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",15,V.Local.sTemp)
+			
+		'*** 20 Char Part# - PART, 20,16***REQUIRED***
+		'Part Number,17,16,17 character part number
+		'Part Rev,3,33,***REQUIRED*** if using part rev and a revision exists OR if NOT using part revision and part is longer than 17 characters long.
+			V.Local.sRet.Set(V.Local.sPart)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,v.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",53,V.Local.sTemp)
+
+		'Filler,18,36,Not in Use - Leave Blank
+
+		'Part Location,2,54,Location code
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",55,V.Local.sTemp)
+			
+		'Product Line,5,56,Product Line of part number
+			V.Local.sRet.Set("GX")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",61,V.Local.sTemp)
+			
+		'DescriptionPart,30,61,Description of the Part Number Length of 30
+			V.Local.sRet.Set(V.Local.sPart)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",90,V.Local.sTemp)
+			
+		'Line Number,3,91,Not ***REQUIRED*** Valid input is 1 through 999
+			V.Local.sRet.Set("000")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",93,V.Local.sTemp)
+			
+		'Line Type,1,94,Line Type up to 1 character
+			V.Local.sRet.Set("S")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",94,V.Local.sTemp)
+			
+		'Qty Ordered,13,95,9.4; REQUIRED  Must enter numeric values with a filler or zeroes- do not enter spaces.  Example entry of 10  0000000100000
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Format("1","0.0000",V.Local.sRet)
+			F.Intrinsic.String.Replace(V.Local.sRet,".","",V.Local.sRet)
+			F.Intrinsic.String.LPad(V.Local.sRet,"0",13,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",107,V.Local.sTemp)
+			
+		'Weight,10,108,7.3 Must enter numeric values with a filler of zeroes- do not use spaces. Example entry of 2.50 would be 0000002500
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Format("0","0.00",V.Local.sRet)
+			F.Intrinsic.String.Replace(V.Local.sRet,".","",V.Local.sRet)
+			F.Intrinsic.String.LPad(V.Local.sRet,"0",10,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",117,V.Local.sTemp)
+			
+		'Quoted Price,16,118,10.6; REQUIRED in company currency.
+			F.Intrinsic.String.Format(V.DataTable.dtPrice(V.DataTable.dtPrice.RowCount--).Price!FieldValFloat,"0.000000",V.Local.sRet)
+			F.Intrinsic.String.Replace(V.Local.sRet,".","",V.Local.sRet)
+			F.Intrinsic.String.LPad(V.Local.sRet,"0",16,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",133,V.Local.sTemp)
+			
+		'User Field 1,30,134,User Field forLine up to 30 characters
+			V.Local.sRet.Set(V.Local.sCol(1))
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",163,V.Local.sTemp)
+
+		'User Field 2,30,164,User Field forLine up to 30 characters
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",193,V.Local.sTemp)
+
+		'User Field 3,30,194,User Field forLine up to 30 characters
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",223,V.Local.sTemp)
+
+		'User Field 4,30,224,User Field forLine up to 30 characters
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",253,V.Local.sTemp)
+
+		'User Field 5,30,254,User Field forLine up to 30 characters
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",283,V.Local.sTemp)
+			
+		'Unit Of Measure,2,284,Unit of Measure
+			V.Local.sRet.Set("EA")
+			F.Intrinsic.String.RPad(V.Local.sRet," ",2,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",285,V.Local.sTemp)
+			
+		'Price Flag,1,286,"""1"" = Accept zero price for this line.
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",286,V.Local.sTemp)
+
+		'Survey No ,8,287
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",294,V.Local.sTemp)
+
+		'Router Val Flag 1,295
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",295,V.Local.sTemp)
+
+		'Length ,12,296 Numeric(8,4)
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",307,V.Local.sTemp)
+
+		'Width ,12,308 Numeric(8,4)
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",319,V.Local.sTemp)
+			
+		'Cost Flag,1,320,1 = Accept Cost Override
+			V.Local.sRet.Set("1")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",320,V.Local.sTemp)
+			
+		'Cost,16,321,10.6; Cost of the Part in company currency.
+		'Enter leading zeros - do not enter spaces.   Example of 12.50  00000012500000
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Format(V.Local.sRetInv(0),"0.000000",V.Local.sRet)
+			F.Intrinsic.String.Replace(V.Local.sRet,".","",V.Local.sRet)
+			F.Intrinsic.String.LPad(V.Local.sRet,"0",16,V.Local.sRet)
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",336,V.Local.sTemp)
+			
+		'Tax Override Flag,1,337,1 = Accept Tax Override
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",337,V.Local.sTemp)
+			
+		'Tax Flag,1,338,"""E"" for exempt, ""T"" for taxable
+			V.Local.sRet.Set("")
+			F.Intrinsic.String.Build("{0}{1}",V.Local.sTemp,V.Local.sRet,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",339,V.Local.sTemp)
+			
+		'Filler,45,339,Not Used- Leave Blank
+		'***Total Record length of 339 if all used
+
+		'Build File Contents in Separate Temp Var
+		F.Intrinsic.String.Build("{0}{1}{2}",V.Local.sFileContents,V.Local.sTemp,V.Ambient.NewLine,V.Local.sFileContents)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iCnt)
+
+'Create Web_Order Directories
+F.Intrinsic.String.Build("{0}\WEB_ORDERS",V.Caller.FilesDir,v.Local.sFile)
+F.Intrinsic.File.CreateDir(v.Local.sFile)
+F.Intrinsic.String.Build("{0}\WEB_ORDERS\CONVERTED",V.Caller.FilesDir,v.Local.sFile)
+F.Intrinsic.File.CreateDir(v.Local.sFile)
+F.Intrinsic.String.Build("{0}\WEB_ORDERS\UPLOADED",V.Caller.FilesDir,v.Local.sFile)
+F.Intrinsic.File.CreateDir(v.Local.sFile)
+F.Intrinsic.String.Build("{0}\WEB_ORDERS\WEB_ERRORS",V.Caller.FilesDir,v.Local.sFile)
+F.Intrinsic.File.CreateDir(v.Local.sFile)
+
+'String to File containing sFileContents to V.Local.sFile
+F.Intrinsic.String.Build("{0}\WEB_ORDERS\LNADD{1}{2}.txt",V.Caller.FilesDir,V.Caller.CompanyCode,V.Ambient.Time.FormatHHNNSS,V.Local.sFile)
+F.Intrinsic.String.Build("{0}\WEB_ORDERS\UPLOADED\LNADD{1}{2}.txt",V.Caller.FilesDir,V.Caller.CompanyCode,V.Ambient.Time.FormatHHNNSS,V.Local.sMoveFile)
+F.Intrinsic.File.String2File(V.Local.sFile,V.Local.sFileContents)
+V.Local.sFileContents.Set("")
+
+'CallWrapper 7020 (ORDADLN) (File: GSSPARAM.txt)
+F.Intrinsic.String.ConcatCallWrapperArgs(V.Args.SO,V.Args.Type,V.Local.sFile,V.Local.sParams)
+F.Intrinsic.UI.ChangeWaitStatus("Uploading Lines...")
+F.Global.General.CallWrapperSync(7020,V.Local.sParams)
+F.Intrinsic.UI.ChangeWaitStatus("Upload Complete")
+
+'Move file if not moved already
+F.Intrinsic.Control.If(V.Args.SO,<>,"")
+	F.Intrinsic.File.Exists(V.Local.sFile,V.Local.bExists)
+	F.Intrinsic.Control.If(V.Local.bExists)
+		F.Intrinsic.File.MoveFile(V.Local.sFile,V.Local.sMoveFile,V.Local.iRet)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'Update all line due dates to match the sales order due date
+F.Intrinsic.Control.If(V.Args.Type,=,"Q")
+	F.Intrinsic.String.Build("Update Quote_Lines Set Date_Item_Prom = '{0}', Item_Promise_Dt = '{1}' Where Quote_No = '{2}' And Record_Type = 'L' And Record_No Not In ({3});",V.Local.dPromDate.FormatYYYYMMDD,V.Local.dPromDate.FormatMMDDYY,V.Args.SO,V.Local.sLines,V.Local.sSQL)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("Update Order_Lines Set Date_Item_Prom = '{0}', Item_Promise_Dt = '{1}' Where Order_No = '{2}' And Record_Type = 'L' And Record_No Not In ({3});",V.Local.dPromDate.FormatYYYYMMDD,V.Local.dPromDate.FormatMMDDYY,V.Args.SO,V.Local.sLines,V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+F.ODBC.Connection!con.Execute(V.Local.sSQL)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End 
+F.Intrinsic.Control.EndTry
+Program.Sub.Upload_ORDADLN.End
