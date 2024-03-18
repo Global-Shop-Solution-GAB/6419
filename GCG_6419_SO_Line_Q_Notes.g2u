@@ -1,0 +1,133 @@
+Program.Sub.ScreenSU.Start
+Gui.FormNotes..Create
+Gui.FormNotes..Caption("Sales Order Line Quote Notes")
+Gui.FormNotes..Size(5685,5445)
+Gui.FormNotes..MinX(0)
+Gui.FormNotes..MinY(0)
+Gui.FormNotes..Position(0,0)
+Gui.FormNotes..BackColor(-2147483633)
+Gui.FormNotes..MousePointer(0)
+Gui.FormNotes..Event(UnLoad,FormNotes_UnLoad)
+Gui.FormNotes.txt1.Create(TextBoxR)
+Gui.FormNotes.txt1.Size(5235,4395)
+Gui.FormNotes.txt1.Position(75,75)
+Gui.FormNotes.txt1.Enabled(False)
+Gui.FormNotes.cmdClose.Create(Button)
+Gui.FormNotes.cmdClose.Size(855,375)
+Gui.FormNotes.cmdClose.Position(120,4515)
+Gui.FormNotes.cmdClose.Caption("Close")
+Gui.FormNotes.cmdClose.Event(Click,cmdClose_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sOrder.Declare(String,"")
+V.Local.sLine.Declare(String,"")
+V.Local.sQuote.Declare(String,"")
+V.Local.sQuoteLine.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sNote.Declare(String,"")
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(12010)
+		V.Passed.000162.Set("Notes")
+	
+	F.Intrinsic.Control.Case(12410)
+		F.Intrinsic.String.Format(V.Passed.000060,"0000000",V.Local.sOrder)
+		F.Intrinsic.String.Format(V.Passed.000051,"000",V.Local.sLine)
+		F.Intrinsic.String.RPad(V.Local.sLine,"0",4,V.Local.sLine)
+		
+		F.ODBC.Connection!Con.OpenCompanyConnection
+		F.Intrinsic.String.Build("select Quote from V_ORDER_HEADER Where Order_No = '{0}'",V.Local.sOrder,V.Local.sSql)
+		F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sQuote)
+		
+		F.Intrinsic.String.Build("select Orig_Order_Line from V_ORDER_LINES Where Order_No = '{0}' and Record_No = '{1}'",V.Local.sOrder,V.Local.sLine,V.Local.sSql)
+		F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sQuoteLine)
+		
+		F.Intrinsic.Control.If(V.Local.sQuote.Trim,<>,"","AND",V.Local.sQuoteLine.Trim,<>,"")
+			F.Intrinsic.String.Build("select rtrim(Text) from V_QTE_LN_NOTE Where Quote_No = '{0}' and Line = '{1}'",V.Local.sQuote,V.Local.sQuoteLine,V.Local.sSql)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sNote)
+			Gui.FormNotes.txt1.Text(V.Local.sNote)
+		F.Intrinsic.Control.EndIf
+		
+		F.ODBC.Connection!Con.Close
+		
+		Gui.FormNotes..Show
+		Gui.FormNotes..AlwaysOnTop(True)
+		Gui.FormNotes..AlwaysOnTop(False)
+		Gui.FormNotes..WaitForDismiss
+		
+		F.Intrinsic.Control.CallSub(Exit)
+		
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.Control.CallSub(Exit)
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_SO_Line_Q_Notes.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Exit.Start
+F.Intrinsic.Control.SetErrorHandler("Exit_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Exit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Exit.End
+
+Program.Sub.cmdClose_Click.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.CallSub(FormNotes_UnLoad)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_SO_Line_Q_Notes.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdClose_Click.End
+
+Program.Sub.FormNotes_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("FormNotes_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormNotes..Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("FormNotes_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_SO_Line_Q_Notes.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.FormNotes_UnLoad.End
