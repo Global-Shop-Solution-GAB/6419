@@ -1,0 +1,190 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.FormLock..Create
+Gui.FormLock..Caption("Clear Custom Quote Lock")
+Gui.FormLock..Size(11850,4710)
+Gui.FormLock..MinX(0)
+Gui.FormLock..MinY(0)
+Gui.FormLock..Position(0,0)
+Gui.FormLock..BackColor(-2147483633)
+Gui.FormLock..MousePointer(0)
+Gui.FormLock..Event(UnLoad,FormLock_UnLoad)
+Gui.FormLock.GsGridLock.Create(GsGridControl)
+Gui.FormLock.GsGridLock.Size(11475,3660)
+Gui.FormLock.GsGridLock.Position(120,480)
+Gui.FormLock.GsGridLock.Anchor(15)
+Gui.FormLock.GsGridLock.Event(RowCellClick,GsGridLock_RowCellClick)
+Gui.FormLock.cmdRefresh.Create(Button)
+Gui.FormLock.cmdRefresh.Size(855,375)
+Gui.FormLock.cmdRefresh.Position(105,60)
+Gui.FormLock.cmdRefresh.Caption("REFRESH")
+Gui.FormLock.cmdRefresh.Event(Click,cmdRefresh_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.CallSub(Get_Data)
+F.Intrinsic.Control.CallSub(Set_Prop)
+
+Gui.FormLock..Show
+Gui.FormLock..AlwaysOnTop(True)
+Gui.FormLock..AlwaysOnTop(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Cust_Quote_Gen.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormLock_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.GsGridLock_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridLock_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+
+F.Intrinsic.Control.If(V.Args.Column.UCase,=,"DELETE_ROW")
+	F.ODBC.Connection!con.OpenCompanyConnection
+	F.Intrinsic.String.Build("Delete From GCG_6419_C_Qte_Lock Where Cust_Quote = '{0}' and User_ID = '{1}'",V.DataTable.Lock(V.Args.RowIndex).Cust_Quote!FieldValTrim,V.DataTable.Lock(V.Args.RowIndex).User_ID!FieldValTrim,V.Local.sSql)
+	F.ODBC.Connection!Con.Execute(V.Local.sSql)
+	F.ODBC.Connection!con.Close
+	F.Data.DataTable.DeleteRow("Lock",V.Args.RowIndex)
+	F.Data.DataTable.AcceptChanges("Lock")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridLock_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Cust_Quote_Gen.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormLock_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GsGridLock_RowCellClick.End
+
+Program.Sub.FormLock_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("FormLock_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("FormLock_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.FormLock_UnLoad.End
+
+Program.Sub.Get_Data.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Data_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.Intrinsic.Control.If(v.DataTable.Lock.Exists)
+	F.Data.DataTable.CreateFromSQL("Temp","con","Select Cust_Quote, User_ID, Lock_Date, Lock_Time From GCG_6419_C_Qte_Lock",True)
+	F.Data.DataTable.DeleteRow("Lock")
+	F.Data.DataTable.AcceptChanges("Lock")
+	F.Data.DataTable.Merge("Temp","Lock",False,4)
+F.Intrinsic.Control.Else
+	F.Data.DataTable.CreateFromSQL("Lock","con","Select Cust_Quote, User_ID, Lock_Date, Lock_Time From GCG_6419_C_Qte_Lock",True)
+	F.Data.DataTable.AddColumn("Lock","Delete_Row",String)
+F.Intrinsic.Control.EndIf
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Data_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Cust_Quote_Gen.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormLock_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Data.End
+
+Program.Sub.Set_Prop.Start
+F.Intrinsic.Control.SetErrorHandler("Set_Prop_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormLock.GsGridLock.AddGridviewFromDatatable("GLock","Lock")
+Gui.FormLock.GsGridLock.SetGridviewProperty("GLock","Editable",False)
+Gui.FormLock.GsGridLock.SetGridviewProperty("GLock","ReadOnly",True)
+Gui.FormLock.GsGridLock.SetGridviewProperty("GLock","AllowSort",False)
+Gui.FormLock.GsGridLock.SetGridviewProperty("GLock","AllowFilter",False)
+Gui.FormLock.GsGridLock.SetGridviewProperty("GLock","Enableappearanceoddrow",True)
+Gui.FormLock.GsGridLock.SetGridviewProperty("GLock","AllowColumnMoving",False)
+
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Cust_Quote","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Cust_Quote","headerfontbold", true)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Cust_Quote","caption","CUSTOM QUOTE")
+
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","User_ID","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","User_ID","headerfontbold", true)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","User_ID","caption","USER")
+
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Date","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Date","headerfontbold", true)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Date","caption","LOCK DATE")
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Date","DisplayCustomDatetime","d")
+
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Time","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Time","headerfontbold", true)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Lock_Time","caption","LOCK TIME")
+
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Delete_Row","headerforecolor", v.Color.PRI-GSS-00)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Delete_Row","headerfontbold", true)
+Gui.FormLock.GsGridLock.SetColumnProperty("GLock","Delete_Row","caption"," ")
+Gui.FormLock.GsGridLock.ColumnEdit("GLock","Delete_Row","EditorButton","Clear Record")
+
+Gui.FormLock.GsGridLock.MainView("GLock")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Prop_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Cust_Quote_Gen.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormLock_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Set_Prop.End
+
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdRefresh_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormLock..Enabled(False)
+F.Intrinsic.Control.CallSub(Get_Data)
+Gui.FormLock..Enabled(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdRefresh_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Cust_Quote_Gen.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(FormLock_UnLoad)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$rking$}$20230413123809588$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXeyPzizwrGMQNhyAlcBn2KqQDawfd9ThbAOVp1wEB2Jbg=
+Program.Sub.Comments.End
