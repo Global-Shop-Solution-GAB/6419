@@ -1,0 +1,114 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(35015)
+		F.Intrinsic.Control.CallSub(Copy_Quote_Info)
+		
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.Control.End
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Copy_Quote.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Exit.Start
+F.Intrinsic.Control.SetErrorHandler("Exit_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Exit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Exit.End
+
+Program.Sub.Copy_Quote_Info.Start
+F.Intrinsic.Control.SetErrorHandler("Copy_Quote_Info_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sOldQuote.Declare(String,"")
+v.Local.sNewQuote.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sRet.Declare(String,"")
+V.Local.iNewID.Declare(Long,0)
+
+F.Intrinsic.String.LPad(V.Passed.000001,"0",7,V.Local.sOldQuote)
+F.Intrinsic.String.LPad(V.Passed.000003,"0",7,V.Local.sNewQuote)
+
+F.Intrinsic.String.Build("select Quote_No, Record_No, Date_Quote, Mark_Info, Code_Sort, SalesPerson, Ship_Via, Quote_Sort_2, Code_FOB from QUOTE_HEADER where Quote_No = '{0}' and Record_No = '  A'",V.Local.sOldQuote,V.Local.sSql)
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+
+F.Data.DataTable.CreateFromSQL("Qte",con,V.Local.sSql,True)
+
+F.Intrinsic.Control.If(V.DataTable.Qte.RowCount--,<>,-1)
+	F.Data.DataTable.SetValue("Qte",-1,"Quote_No",V.Local.sNewQuote)
+	F.Data.DataTable.SaveToDB("Qte",con,"QUOTE_HEADER","Quote_No*!*Record_No",2)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Close("Qte")
+
+F.Intrinsic.String.Build("select Quote_No, Record_No, SalesPerson_Ship from QUOTE_SHIP_TO where Quote_No = '{0}' and Record_No = '  C'",V.Local.sOldQuote,V.Local.sSql)
+
+F.Data.DataTable.CreateFromSQL("Qte",con,V.Local.sSql,True)
+
+F.Intrinsic.Control.If(V.DataTable.Qte.RowCount--,<>,-1)
+	F.Data.DataTable.SetValue("Qte",-1,"Quote_No",V.Local.sNewQuote)
+	F.Data.DataTable.SaveToDB("Qte",con,"QUOTE_SHIP_TO","Quote_No*!*Record_No",2)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Close("Qte")
+
+F.Intrinsic.String.Build("select Link_ID from LINK_DATA where Type = '00050' and ID = '{0}'",V.Local.sOldQuote,V.Local.sSql)
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"")
+	F.Global.DocumentControl.CreateReference(V.Local.sNewQuote,50,V.Local.iNewID)
+	F.Intrinsic.String.Build("select * from ATG_DOC_ASSOC Where Link_ID = {0}",V.Local.sRet.Long,V.Local.sSql)
+	F.Data.DataTable.CreateFromSQL("Doc",Con,V.Local.sSql,True)
+	F.Intrinsic.Control.If(V.DataTable.Doc.RowCount--,<>,-1)
+		F.Data.DataTable.SetValue("Doc",-1,"File_Num",0,"Link_ID",V.Local.iNewID)
+		F.Data.DataTable.SaveToDB("Doc",Con,"ATG_DOC_ASSOC","",128)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("Doc")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Copy_Quote_Info_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Copy_Quote.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Copy_Quote_Info.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8474.24170$}$1
+${$6$}$rking$}$20230426145622545$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXeWC/bDL1pfMu5gWb9IUtyGkGrXA7xh1FH+fr3raPoQvo=
+Program.Sub.Comments.End
