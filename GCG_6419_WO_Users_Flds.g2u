@@ -1,0 +1,1703 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.Form..Create(BaseForm)
+Gui.Form..Caption("Work Order User Fields Update")
+Gui.Form..Size(1024,720)
+Gui.Form..MinX(0)
+Gui.Form..MinY(0)
+Gui.Form..Position(0,0)
+Gui.Form..AlwaysOnTop(False)
+Gui.Form..FontName("Tahoma")
+Gui.Form..FontSize(8.25)
+Gui.Form..ControlBox(True)
+Gui.Form..MaxButton(True)
+Gui.Form..MinButton(True)
+Gui.Form..MousePointer(0)
+Gui.Form..Moveable(True)
+Gui.Form..Sizeable(True)
+Gui.Form..ShowInTaskBar(True)
+Gui.Form..TitleBar(True)
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form.tab1.Create(Tab)
+Gui.Form.tab1.Enabled(True)
+Gui.Form.tab1.Visible(True)
+Gui.Form.tab1.Zorder(0)
+Gui.Form.tab1.Size(1013,607)
+Gui.Form.tab1.Position(9,49)
+Gui.Form.tab1.FontName("Tahoma")
+Gui.Form.tab1.FontSize(8.25)
+Gui.Form.tab1.Anchor(15)
+Gui.Form.tab1.Tabs(2)
+Gui.Form.tab1.SetTab(0)
+Gui.Form.tab1.Caption("Custom Quote")
+Gui.Form.tab1.SetTab(1)
+Gui.Form.tab1.Caption("Engineering")
+Gui.Form.GsGridEng.Create(GsGridControl)
+Gui.Form.GsGridEng.Enabled(True)
+Gui.Form.GsGridEng.Visible(True)
+Gui.Form.GsGridEng.Zorder(0)
+Gui.Form.GsGridEng.Size(999,558)
+Gui.Form.GsGridEng.Position(9,15)
+Gui.Form.GsGridEng.Anchor(15)
+Gui.Form.GsGridEng.Parent("tab1",1)
+Gui.Form.GsGridQuote.Create(GsGridControl)
+Gui.Form.GsGridQuote.Enabled(True)
+Gui.Form.GsGridQuote.Visible(True)
+Gui.Form.GsGridQuote.Zorder(0)
+Gui.Form.GsGridQuote.Size(999,558)
+Gui.Form.GsGridQuote.Position(9,15)
+Gui.Form.GsGridQuote.Anchor(15)
+Gui.Form.GsGridQuote.Parent("tab1",0)
+Gui.Form.cmdSave.Create(Button)
+Gui.Form.cmdSave.Enabled(True)
+Gui.Form.cmdSave.Visible(True)
+Gui.Form.cmdSave.Zorder(0)
+Gui.Form.cmdSave.Size(130,23)
+Gui.Form.cmdSave.Position(12,663)
+Gui.Form.cmdSave.Caption("Save Updated Records")
+Gui.Form.cmdSave.FontName("Tahoma")
+Gui.Form.cmdSave.FontSize(8.25)
+Gui.Form.cmdSave.Anchor(6)
+Gui.Form.cmdSave.Event(Click,cmdSave_Click)
+Gui.Form.txtValue.Create(TextBox,"",True,236,20,0,13,23,True,0,"Tahoma",8.25,,1)
+Gui.Form.txtValue.MaxLength(70)
+Gui.Form.lblUserData.Create(Label,"Value",True,26,13,0,13,6,True,0,"Tahoma",8.25,,0,0)
+Gui.Form.lblUserData.BorderStyle(0)
+Gui.Form.lblCol.Create(Label,"Column Name",True,65,13,0,274,6,True,0,"Tahoma",8.25,,0,0)
+Gui.Form.lblCol.BorderStyle(0)
+Gui.Form.ddlColumn.Create(DropDownList)
+Gui.Form.ddlColumn.Enabled(True)
+Gui.Form.ddlColumn.Visible(True)
+Gui.Form.ddlColumn.Zorder(0)
+Gui.Form.ddlColumn.Size(184,20)
+Gui.Form.ddlColumn.Position(274,24)
+Gui.Form.ddlColumn.FontName("Tahoma")
+Gui.Form.ddlColumn.FontSize(8.25)
+Gui.Form.cmdUpdate.Create(Button)
+Gui.Form.cmdUpdate.Enabled(True)
+Gui.Form.cmdUpdate.Visible(True)
+Gui.Form.cmdUpdate.Zorder(0)
+Gui.Form.cmdUpdate.Size(144,23)
+Gui.Form.cmdUpdate.Position(476,22)
+Gui.Form.cmdUpdate.Caption("Update Filtered Gridview")
+Gui.Form.cmdUpdate.FontName("Tahoma")
+Gui.Form.cmdUpdate.FontSize(8.25)
+Gui.Form.cmdUpdate.Event(Click,cmdUpdate_Click)
+Gui.Form.cmdRefresh.Create(Button)
+Gui.Form.cmdRefresh.Enabled(True)
+Gui.Form.cmdRefresh.Visible(True)
+Gui.Form.cmdRefresh.Zorder(0)
+Gui.Form.cmdRefresh.Size(53,23)
+Gui.Form.cmdRefresh.Position(964,24)
+Gui.Form.cmdRefresh.Caption("REFRESH")
+Gui.Form.cmdRefresh.FontName("Tahoma")
+Gui.Form.cmdRefresh.FontSize(8.25)
+Gui.Form.cmdRefresh.Anchor(9)
+Gui.Form.cmdRefresh.Event(Click,cmdRefresh_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sFieldMap.Declare(String,"Job@!@Job*!*Suffix@!@Suffix*!*SF_EACH@!@SF_EACH*!*UNIT@!@UNIT*!*MESSAGE@!@MESSAGE")
+Program.External.Include.Library("900100.lib")
+V.Global.sOrders.Declare(String,"")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+F.Intrinsic.UI.InvokeWaitDialog("Gather Data..................")
+F.Intrinsic.Control.CallSub(Get_Data)
+F.Intrinsic.Control.CallSub(Set_Prop)
+F.Intrinsic.UI.CloseWaitDialog
+
+Gui.Form.tab1.SetTab(0)
+
+Gui.Form..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form_Unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Get_Data.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Data_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sUsers.Declare(String,"rtrim(a.User1) as User1")
+V.Local.sUser.Declare(String,"")
+V.Local.i.Declare(String,"")
+
+F.Intrinsic.Control.For(V.Local.i,2,60,1)
+	F.Intrinsic.String.Build("{0}, rtrim(a.User{1}) as User{1}",V.Local.sUsers,V.Local.i,V.Local.sUsers)
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.Intrinsic.String.Build("Select a.Unit, SF_EACH, a.Order_No, a.Order_Line, a.Customer, a.Job, a.Suffix, Sign_Router, rtrim(Message) as Message, {0} From GCG_6419_SO_SIGNS a Join V_Job_Header b on a.Job = b.Job and a.Suffix = b.Suffix Where Date_Closed = '1900-01-01'",V.Local.sUsers,V.Local.sSql)
+
+F.ODBC.Connection!Con.OpenCompanyConnection
+
+F.Data.Dictionary.CreateFromSQL("Cust","con","Select Customer, Name_Customer From V_Customer_Master")
+F.Data.Dictionary.SetDefaultReturn("Cust","")
+
+F.Intrinsic.Control.If(V.DataTable.UserCap.Exists,=,False)
+	Gui.Form.ddlColumn.AddItem(" ",0)
+	F.Data.Datatable.Create("User",True)
+	F.Data.Datatable.AddColumn("User","Column",String)
+	F.Data.Datatable.AddColumn("User","Caption",String)
+	F.Data.DataTable.CreateFromSQL("UserCap","con","Select * From GCG_6313_RTR_EXT_TIT",True)
+	F.Intrinsic.Control.For(V.Local.i,1,60,1)
+		F.Intrinsic.String.Build("USER{0}",V.Local.i,V.Local.sUser)
+		F.Intrinsic.String.Build("{0}*!*{1}@!@{1}",V.Global.sFieldMap,V.Local.sUser,V.Global.sFieldMap)
+		F.Intrinsic.Control.If(V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim,<>,"")
+			F.Data.Datatable.AddRow("User","Column",V.Local.sUser,"Caption",V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim)
+			Gui.Form.ddlColumn.AddItem(V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim,V.Local.i)
+		F.Intrinsic.Control.Else
+			F.Data.Datatable.AddRow("User","Column",V.Local.sUser,"Caption",V.Local.sUser)
+			Gui.Form.ddlColumn.AddItem(V.Local.sUser,V.Local.i)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.SOSIGN.Exists,=,False)
+	F.Data.Datatable.CreateFromSQL("SOSIGN","con",V.Local.sSql,True)
+	F.Data.DataTable.AddExpressionColumn("SOSIGN","TOTL_SF",Float,"[SF_EACH] * [Unit]")
+	
+	F.Data.DataTable.Clone("SOSIGN","SOSIGNCHECK",True)
+	
+	F.Data.DataView.Create("SOSIGN","SOSIGNSAVE",16,"","")
+F.Intrinsic.Control.Else
+	F.Data.Datatable.CreateFromSQL("TEMP","con",V.Local.sSql,True)
+	F.Data.DataTable.AddExpressionColumn("TEMP","TOTL_SF",Float,"[SF_EACH] * [Unit]")
+	F.Data.Datatable.DeleteRow("SOSIGN")
+	F.Data.Datatable.AcceptChanges("SOSIGN")
+	F.Data.Datatable.DeleteRow("SOSIGNCHECK")
+	F.Data.Datatable.AcceptChanges("SOSIGNCHECK")
+	F.Data.Datatable.Merge("TEMP","SOSIGN",False,2)
+	F.Data.Datatable.Close("TEMP")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Select a.Unit, SF_EACH, a.Order_No, a.Order_Line, a.Customer, a.Job, a.Suffix, Sign_Router, rtrim(Message) as Message, {0} From GCG_6419_Quote a Join V_Job_Header b on a.Job = b.Job and a.Suffix = b.Suffix Where Date_Closed = '1900-01-01'",V.Local.sUsers,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.CQUOTE.Exists,=,False)
+	F.Data.Datatable.CreateFromSQL("CQUOTE","con",V.Local.sSql,True)
+	F.Data.DataTable.AddExpressionColumn("CQUOTE","TOTL_SF",Float,"[SF_EACH] * [Unit]")
+	F.Data.DataTable.Clone("CQUOTE","CQUOTECHECK",True)
+	F.Data.DataView.Create("CQUOTE","CQUOTESAVE",16,"","")
+F.Intrinsic.Control.Else
+	F.Data.Datatable.CreateFromSQL("TEMP","con",V.Local.sSql,True)
+	F.Data.DataTable.AddExpressionColumn("TEMP","TOTL_SF",Float,"[SF_EACH] * [Unit]")
+	F.Data.Datatable.DeleteRow("CQUOTE")
+	F.Data.Datatable.AcceptChanges("CQUOTE")
+	F.Data.Datatable.DeleteRow("CQUOTECHECK")
+	F.Data.Datatable.AcceptChanges("CQUOTECHECK")
+	F.Data.Datatable.Merge("TEMP","CQUOTE",False,2)
+	F.Data.Datatable.Close("TEMP")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!Con.Close
+
+F.Data.Datatable.FillFromDictionary("SOSIGN","Cust","Customer","Customer")
+
+F.Data.Datatable.FillFromDictionary("CQUOTE","Cust","Customer","Customer")
+
+F.Data.Dictionary.Close("Cust")
+
+F.Data.Datatable.AcceptChanges("SOSIGN")
+F.Data.Datatable.AcceptChanges("CQUOTE")
+
+F.Data.Datatable.Merge("SOSIGN","SOSIGNCHECK",False,2)
+F.Data.Datatable.Merge("CQUOTE","CQUOTECHECK",False,2)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Data_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form_Unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Data.End
+
+Program.Sub.Set_Prop.Start
+F.Intrinsic.Control.SetErrorHandler("Set_Prop_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.sUser.Declare(String,"")
+V.Local.sSerialize.Declare(String,"")
+
+Gui.Form.GsGridEng.AddGridviewFromDatatable("GSOSIGN","SOSIGN")
+gui.Form.GsGridEng.SetGridviewProperty("GSOSIGN", "OptionsViewColumnAutoWidth", False)
+gui.Form.GsGridEng.SetGridviewProperty("GSOSIGN","OptionsViewShowAutoFilterRow",True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","caption","# OF SIGNS")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","readonly", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","allowedit", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","Visible", True)
+'gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Unit","Allowshowhide", False)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SF_EACH","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SF_EACH","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SF_EACH","caption","SF EACH")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SF_EACH","readonly", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SF_EACH","allowedit", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SF_EACH","Visible", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","TOTL_SF","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","TOTL_SF","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","TOTL_SF","caption","TOTAL SF")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","TOTL_SF","readonly", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","TOTL_SF","allowedit", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Customer","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Customer","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Customer","caption","CUSTOMER")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Customer","readonly", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Customer","allowedit", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Customer","Visible", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_No","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_No","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_No","caption","ORDER NO")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_No","readonly", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_No","allowedit", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_No","Visible", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_Line","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_Line","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_Line","caption","ORDER LINE")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_Line","readonly", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_Line","allowedit", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Order_Line","Visible", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Job","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Job","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Job","caption","JOB")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Job","readonly", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Job","allowedit", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Job","Visible", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Suffix","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Suffix","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Suffix","caption","SUFFIX")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Suffix","readonly", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Suffix","allowedit", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","Suffix","Visible", True)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SIGN_ROUTER","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SIGN_ROUTER","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SIGN_ROUTER","caption","SIGN ROUTER")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SIGN_ROUTER","readonly", True)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","SIGN_ROUTER","allowedit", False)
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","headerfontbold", true)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","caption","SALES ORDER MESSAGE")
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","readonly", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","allowedit", True)
+
+Gui.Form.GsGridEng.MainView("GSOSIGN")
+
+F.Global.Registry.ReadValue(V.Caller.User,V.Caller.CompanyCode,"GSOSIGN",6419,1003,6,"",V.Local.sSerialize)
+F.Intrinsic.Control.If(V.Local.sSerialize.Trim,<>,"")
+	F.ODBC.Connection!common.OpenConnection(V.Ambient.Ccon,V.Ambient.Cuser,V.Ambient.Cpass)
+	F.ODBC.Connection!common.Execute("Delete From Gs_Registry Where Program = 'GSOSIGN' and Reg_ID = 6419 And Seq < 1003;")
+	F.ODBC.Connection!common.Close
+	Gui.Form.GsGridEng.Deserialize(V.Local.sSerialize)
+F.Intrinsic.Control.EndIf
+
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","readonly", False)
+gui.Form.GsGridEng.SetColumnProperty("GSOSIGN","MESSAGE","allowedit", True)
+
+F.Intrinsic.Control.For(V.Local.i,1,60,1)
+	F.Intrinsic.String.Build("USER{0}",V.Local.i,V.Local.sUser)
+	F.Intrinsic.Control.If(V.DataTable.UserCap.RowCount--,<>,-1)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"headerforecolor", v.Color.PRI-GSS-00)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"headerfontbold", true)
+		F.Intrinsic.Control.If(V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim,<>,"")
+			gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"caption",V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim)
+			gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"Visible", True)
+		F.Intrinsic.Control.Else
+			gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"caption",V.Local.sUser)
+			gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"Visible", False)
+		F.Intrinsic.Control.EndIf
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"readonly", False)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"allowedit", True)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"MaxLength","70")
+	F.Intrinsic.Control.Else
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"headerforecolor", v.Color.PRI-GSS-00)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"headerfontbold", true)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"caption",V.Local.sUser)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"Visible", False)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"readonly", False)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"allowedit", True)
+		gui.Form.GsGridEng.SetColumnProperty("GSOSIGN",V.Local.sUser,"MaxLength","70")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i)
+
+Gui.Form.GsGridQuote.AddGridviewFromDatatable("GCQUOTE","CQUOTE")
+gui.Form.GsGridQuote.SetGridviewProperty("GCQUOTE", "OptionsViewColumnAutoWidth", False)
+gui.Form.GsGridQuote.SetGridviewProperty("GCQUOTE","OptionsViewShowAutoFilterRow",True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","caption","# OF SIGNS")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","readonly", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","allowedit", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","Visible", True)
+'gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Unit","Allowshowhide", False)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SF_EACH","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SF_EACH","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SF_EACH","caption","SF EACH")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SF_EACH","readonly", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SF_EACH","allowedit", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SF_EACH","Visible", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","TOTL_SF","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","TOTL_SF","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","TOTL_SF","caption","TOTAL SF")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","TOTL_SF","readonly", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","TOTL_SF","allowedit", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Customer","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Customer","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Customer","caption","CUSTOMER")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Customer","readonly", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Customer","allowedit", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Customer","Visible", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_No","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_No","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_No","caption","ORDER NO")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_No","readonly", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_No","allowedit", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_No","Visible", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_Line","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_Line","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_Line","caption","ORDER LINE")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_Line","readonly", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_Line","allowedit", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Order_Line","Visible", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Job","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Job","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Job","caption","JOB")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Job","readonly", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Job","allowedit", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Job","Visible", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Suffix","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Suffix","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Suffix","caption","SUFFIX")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Suffix","readonly", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Suffix","allowedit", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","Suffix","Visible", True)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SIGN_ROUTER","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SIGN_ROUTER","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SIGN_ROUTER","caption","SIGN ROUTER")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SIGN_ROUTER","readonly", True)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","SIGN_ROUTER","allowedit", False)
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","headerforecolor", v.Color.PRI-GSS-00)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","headerfontbold", true)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","caption","SALES ORDER MESSAGE")
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","readonly", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","allowedit", True)
+
+Gui.Form.GsGridQuote.MainView("GCQUOTE")
+
+F.Global.Registry.ReadValue(V.Caller.User,V.Caller.CompanyCode,"GCQUOTE",6419,1003,6,"",V.Local.sSerialize)
+F.Intrinsic.Control.If(V.Local.sSerialize.Trim,<>,"")
+	F.ODBC.Connection!common.OpenConnection(V.Ambient.Ccon,V.Ambient.Cuser,V.Ambient.Cpass)
+	F.ODBC.Connection!common.Execute("Delete From Gs_Registry Where Program = 'GCQUOTE' and Reg_ID = 6419 And Seq < 1003;")
+	F.ODBC.Connection!common.Close
+	Gui.Form.GsGridQuote.Deserialize(V.Local.sSerialize)
+F.Intrinsic.Control.EndIf
+
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","readonly", False)
+gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE","MESSAGE","allowedit", True)
+
+F.Intrinsic.Control.For(V.Local.i,1,60,1)
+	F.Intrinsic.String.Build("USER{0}",V.Local.i,V.Local.sUser)
+	F.Intrinsic.Control.If(V.DataTable.UserCap.RowCount--,<>,-1)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"headerforecolor", v.Color.PRI-GSS-00)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"headerfontbold", true)
+		F.Intrinsic.Control.If(V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim,<>,"")
+			gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"caption",V.DataTable.UserCap(V.DataTable.UserCap.RowCount--).[V.Local.sUser]!FieldValTrim)
+			gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"Visible", True)
+		F.Intrinsic.Control.Else
+			gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"caption",V.Local.sUser)
+			gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"Visible", False)
+		F.Intrinsic.Control.EndIf
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"readonly", False)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"allowedit", True)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"MaxLength","70")
+	F.Intrinsic.Control.Else
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"headerforecolor", v.Color.PRI-GSS-00)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"headerfontbold", true)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"caption",V.Local.sUser)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"Visible", False)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"readonly", False)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"allowedit", True)
+		gui.Form.GsGridQuote.SetColumnProperty("GCQUOTE",V.Local.sUser,"MaxLength","70")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Set_Prop_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form_Unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Set_Prop.End
+
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdRefresh_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.Form..Enabled(False)
+F.Intrinsic.Control.CallSub(Get_Data)
+Gui.Form..Enabled(True)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdRefresh_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form_Unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.cmdUpdate_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdUpdate_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sFilter.Declare(String,"")
+
+F.Intrinsic.String.Build("Caption = '{0}'",V.Screen.Form!ddlColumn.Text,V.Local.sFilter)
+
+F.Data.DataView.Create("User","TEMP",22,V.Local.sFilter,"")
+
+F.Intrinsic.Control.If(V.DataView.User!TEMP.RowCount--,<>,-1)
+	F.Intrinsic.Control.If(V.Screen.Form!tab1.Tab,=,0)
+		Gui.Form.GsGridQuote.CreateDataView("GCQUOTE","CQUOTE","TEMP")
+		F.Data.DataView.SetValue("CQUOTE","TEMP",-1,V.DataView.User!TEMP(V.DataView.User!TEMP.RowCount--).Column!FieldValTrim,V.Screen.Form!txtValue.Text)
+		F.Data.DataView.Close("CQUOTE","TEMP")
+	F.Intrinsic.Control.Else
+		Gui.Form.GsGridEng.CreateDataView("GSOSIGN","SOSIGN","TEMP")
+		F.Data.DataView.SetValue("SOSIGN","TEMP",-1,V.DataView.User!TEMP(V.DataView.User!TEMP.RowCount--).Column!FieldValTrim,V.Screen.Form!txtValue.Text)
+		F.Data.DataView.Close("SOSIGN","TEMP")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Data.DataView.Close("User","TEMP")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdUpdate_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form_Unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdUpdate_Click.End
+
+Program.Sub.Form_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("Form_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.iRet.Declare(Long,0)
+V.Local.sSerialize.Declare(String,"")
+
+F.Intrinsic.Control.If(V.DataView.CQUOTE!CQUOTESAVE.RowCount--,<>,-1,"OR",V.DataView.SOSIGN!SOSIGNSAVE.RowCount--,<>,-1)
+	F.Intrinsic.UI.Msgbox("Records have been Modified.  Do you want to save before exiting?","Save Records",4,V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.iRet,=,6)
+		F.Intrinsic.Control.CallSub(cmdSave_Click)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+Gui.Form.GsGridQuote.Serialize("GCQUOTE",V.Local.sSerialize)
+F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GCQUOTE",6419,1003,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,V.Local.sSerialize)
+
+Gui.Form.GsGridEng.Serialize("GSOSIGN",V.Local.sSerialize)
+F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GSOSIGN",6419,1003,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,V.Local.sSerialize)
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Form_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.cmdSave_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdSave_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sDesc.Declare(String,"")
+V.Local.sText.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.i.Declare(Long,0)
+V.Local.bMatl.Declare(Boolean)
+V.Local.bOut.Declare(Boolean)
+V.Local.bComment.Declare(Boolean)
+V.Local.sParams.Declare(String)
+V.Local.sParamValues.Declare(String)
+V.Local.sKey1.Declare(String,"")
+V.Local.sKey2.Declare(String,"")
+V.Local.sH.Declare(String,"")
+V.Local.sR.Declare(String,"")
+V.Local.sImg1_Path.Declare(String,"")
+V.Local.sImg2_Path.Declare(String,"")
+V.Local.sImg3_Path.Declare(String,"")
+V.Local.sImg1.Declare(String,"")
+V.Local.sImg2.Declare(String,"")
+V.Local.sImg3.Declare(String,"")
+V.Local.iIncrement.Declare(Long,0)
+V.Local.sIncrement.Declare(String,"")
+V.Local.bReprint.Declare(Boolean,False)
+V.Local.sWorkOrders.Declare(String,"")
+V.Local.sData.Declare(String,"")
+V.Local.iCount.Declare(Long,0)
+V.Local.iRet.Declare(Long,0)
+V.Local.sFilter.Declare(String,"")
+V.Local.fEst.Declare(Float,0)
+V.Local.sDueDate.Declare(String,"")
+
+V.Global.sOrders.Set("")
+
+F.Intrinsic.UI.Msgbox("Reprint Barcode Work Order Report for Updated Jobs?","Reprint",4,V.Local.iRet)
+F.Intrinsic.Control.If(V.Local.iRet,=,6)
+	V.Local.bReprint.Set(True)
+F.Intrinsic.Control.EndIf
+F.Global.General.ReadOption("400725",0,False,V.Local.bMatl)
+F.Global.General.ReadOption("400727",0,False,V.Local.bOut)
+F.Global.General.ReadOption("400151",0,False,V.Local.bComment)
+	
+F.Intrinsic.UI.InvokeWaitDialog("Saveing Modified Records...............")
+
+F.Intrinsic.Control.If(V.DataView.CQUOTE!CQUOTESAVE.RowCount--,<>,-1)
+	F.Data.DataView.ToDataTable("CQUOTE","CQUOTESAVE","Quote",True)
+	F.Data.DataTable.AcceptChanges("CQUOTE")
+	
+	F.ODBC.Connection!con.OpenCompanyConnection(999)
+	F.Data.DataTable.SaveToDB("Quote","Con","GCG_6419_Quote","JOB*!*Suffix",256,V.Global.sFieldMap)
+	
+	F.Intrinsic.Control.For(V.Local.i,0,V.DataTable.Quote.RowCount--,1)
+		F.Intrinsic.String.Left(V.DataTable.Quote(V.Local.i).Message!FieldValTrim,30,V.Local.sDesc)
+		V.Local.sText.Set(V.DataTable.Quote(V.Local.i).Message!FieldValTrim)
+		F.Intrinsic.String.Build("Update Job_Header Set Description = '{0}' Where Job = '{1}' and Suffix = '{2}'",V.Local.sDesc.Trim,V.DataTable.Quote(V.Local.i).Job!FieldValTrim,V.DataTable.Quote(V.Local.i).Suffix!FieldValTrim,V.Local.sSql)
+		F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.If(V.Local.sWorkOrders.Trim,=,"")
+			F.Intrinsic.String.Build("{0}@!@{1}",V.DataTable.Quote(V.Local.i).Job!FieldValTrim,V.DataTable.Quote(V.Local.i).Suffix!FieldValTrim,V.Local.sWorkOrders)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("{0}*!*{1}@!@{2}",V.Local.sWorkOrders,V.DataTable.Quote(V.Local.i).Job!FieldValTrim,V.DataTable.Quote(V.Local.i).Suffix!FieldValTrim,V.Local.sWorkOrders)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.If(V.DataTable.Quote(V.Local.i).Order_No!FieldValTrim,<>,"")
+			F.Intrinsic.String.Build("Update Order_Lines Set Description = '{0}' Where Order_No = '{1}' and Record_No = '{2}'",V.Local.sDesc.Trim,V.DataTable.Quote(V.Local.i).Order_No!FieldValTrim,V.DataTable.Quote(V.Local.i).Order_Line!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.Execute(V.Local.sSql)
+			F.Intrinsic.String.Build("Update ORDER_LN_TEXT Set Text = '{0}' Where Order_Num = '{1}' and Order_Line = '{2}' and Order_Type = 1",V.Local.sText.Trim,V.DataTable.Quote(V.Local.i).Order_No!FieldValTrim,V.DataTable.Quote(V.Local.i).Order_Line!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.EndIf
+
+'		F.Intrinsic.Control.If(V.Caller.CompanyCode,=,"TST")
+			F.Intrinsic.Control.CallSub(Check_UserFields,"Index",V.Local.i,"DT","Quote","CheckDT","CQUOTECHECK")
+'		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i)
+
+	F.Data.DataTable.Close("Quote")
+				
+	F.ODBC.Connection!con.Close
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataView.SOSIGN!SOSIGNSAVE.RowCount--,<>,-1)
+	F.Data.DataView.ToDataTable("SOSIGN","SOSIGNSAVE","Quote",True)
+	F.Data.DataTable.AcceptChanges("SOSIGN")
+	
+	F.ODBC.Connection!con.OpenCompanyConnection(999)
+	F.Data.DataTable.SaveToDB("Quote","Con","GCG_6419_SO_SIGNS","JOB*!*Suffix",256,V.Global.sFieldMap)
+	
+	F.Intrinsic.Control.For(V.Local.i,0,V.DataTable.Quote.RowCount--,1)
+		F.Intrinsic.String.Left(V.DataTable.Quote(V.Local.i).Message!FieldValTrim,30,V.Local.sDesc)
+		V.Local.sText.Set(V.DataTable.Quote(V.Local.i).Message!FieldValTrim)
+		F.Intrinsic.String.Build("Update Job_Header Set Description = '{0}' Where Job = '{1}' and Suffix = '{2}'",V.Local.sDesc.Trim,V.DataTable.Quote(V.Local.i).Job!FieldValTrim,V.DataTable.Quote(V.Local.i).Suffix!FieldValTrim,V.Local.sSql)
+		F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.If(V.Local.sWorkOrders.Trim,=,"")
+			F.Intrinsic.String.Build("{0}@!@{1}",V.DataTable.Quote(V.Local.i).Job!FieldValTrim,V.DataTable.Quote(V.Local.i).Suffix!FieldValTrim,V.Local.sWorkOrders)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("{0}*!*{1}@!@{2}",V.Local.sWorkOrders,V.DataTable.Quote(V.Local.i).Job!FieldValTrim,V.DataTable.Quote(V.Local.i).Suffix!FieldValTrim,V.Local.sWorkOrders)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.If(V.DataTable.Quote(V.Local.i).Order_No!FieldValTrim,<>,"")
+			F.Intrinsic.String.Build("Update Order_Lines Set Description = '{0}' Where Order_No = '{1}' and Record_No = '{2}'",V.Local.sDesc.Trim,V.DataTable.Quote(V.Local.i).Order_No!FieldValTrim,V.DataTable.Quote(V.Local.i).Order_Line!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.Execute(V.Local.sSql)
+			F.Intrinsic.String.Build("Update ORDER_LN_TEXT Set Text = '{0}' Where Order_Num = '{1}' and Order_Line = '{2}' and Order_Type = 1",V.Local.sText.Trim,V.DataTable.Quote(V.Local.i).Order_No!FieldValTrim,V.DataTable.Quote(V.Local.i).Order_Line!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.Control.EndIf
+'		F.Intrinsic.Control.If(V.Caller.CompanyCode,=,"TST")
+			F.Intrinsic.Control.CallSub(Check_UserFields,"Index",V.Local.i,"DT","Quote","CheckDT","SOSIGNCHECK")
+'		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i)
+	
+	F.Data.DataTable.Close("Quote")
+	F.ODBC.Connection!con.Close
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Local.bReprint)
+	F.ODBC.Connection!con.OpenCompanyConnection(999)
+	V.Local.sSql.Set("Select rtrim(Image1_Path) From GCG_6419_Image_Path")
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,v.Local.sImg1_Path)
+	
+	F.Intrinsic.Control.If(V.Local.sImg1_Path.Right1,<>,"\")
+		F.Intrinsic.String.Build("{0}\",V.Local.sImg1_Path,V.Local.sImg1_Path)
+	F.Intrinsic.Control.EndIf
+	
+	V.Local.sSql.Set("Select rtrim(Image2_Path) From GCG_6419_Image_Path")
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,v.Local.sImg2_Path)
+	
+	F.Intrinsic.Control.If(V.Local.sImg2_Path.Right1,<>,"\")
+		F.Intrinsic.String.Build("{0}\",V.Local.sImg2_Path,V.Local.sImg2_Path)
+	F.Intrinsic.Control.EndIf
+	
+	V.Local.sSql.Set("Select rtrim(Image3_Path) From GCG_6419_Image_Path")
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,v.Local.sImg3_Path)
+	
+	F.Intrinsic.Control.If(V.Local.sImg3_Path.Right1,<>,"\")
+		F.Intrinsic.String.Build("{0}\",V.Local.sImg3_Path,V.Local.sImg3_Path)
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.DataTable.CreateFromSQL("BIDATA","con","Select * From GCG_6419_BAR_IMAGE Where Terminal = '-1'",True)
+	F.Data.DataTable.CreateFromSQL("Head","con","Select * From BI_Bar_Head Where Terminal = -1",True)
+	F.Data.DataTable.CreateFromSQL("Detail","con","Select * From BI_Bar_Detail Where Terminal = -1",True)
+	
+	F.Intrinsic.String.Split(V.Local.sWorkOrders,"*!*",V.Local.sWorkOrders)
+	F.Intrinsic.Control.For(V.Local.iCount,0,V.Local.sWorkOrders.UBound,1)
+		F.Intrinsic.String.Split(V.Local.sWorkOrders(V.Local.iCount),"@!@",V.Local.sData)
+		F.Data.DataTable.AddRow("900100","WO_Num",V.Local.sData(0).Trim,"WO_Suf",V.Local.sData(1).Trim,"WO_RPTID","1811")
+		
+		F.Intrinsic.Control.CallSub(900100SyncBio)
+
+		F.Data.DataTable.DeleteRow("900100")
+		F.Data.DataTable.AcceptChanges("900100")
+		F.Intrinsic.String.Build("Select * From BI_Bar_Head Where Terminal = '{0}'",V.Caller.Terminal,V.Local.sSql)
+		F.Data.DataTable.CreateFromSQL("TempHead","Con",V.Local.sSql,True)
+		F.Intrinsic.String.Build("Select * From BI_Bar_Detail Where Terminal = '{0}'",V.Caller.Terminal,V.Local.sSql)
+		F.Data.DataTable.CreateFromSQL("TempDetail","Con",V.Local.sSql,True)
+
+		F.Intrinsic.String.Build("Select Distinct Terminal, A.Job, A.Suffix, Shape, rtrim(User8) as Punch, User7 as ALUM, User9 as CRNR, User1 as IMG2, User60, A, B, C, C2, D, E, F, G, I From BI_Bar_Head A Join GCG_6419_Quote B on A.Job = B.Job and A.Suffix = B.Suffix Left Join GCG_6419_Punch_Mstr C on Left(B.User8,Length(B.User8)-2) = Left(C.Punch,Length(C.Punch)-2) Where Terminal = '{0}'",V.Caller.Terminal,V.Local.sSql)
+		F.Data.DataTable.CreateFromSQL("RPTHead","Con",V.Local.sSql,True)
+			
+		F.Intrinsic.String.Build("Select Distinct Terminal, A.Job, A.Suffix, Shape, rtrim(User8) as Punch, User7 as ALUM, User9 as CRNR, User1 as IMG2, User60, A, B, C, C2, D, E, F, G, I From BI_Bar_Head A Join GCG_6419_SO_SIGNS B on A.Job = B.Job and A.Suffix = B.Suffix Join GCG_6419_Punch_Mstr C on Left(B.User8,Length(B.User8)-2) = Left(C.Punch,Length(C.Punch)-2) Where Terminal = '{0}'",V.Caller.Terminal,V.Local.sSql)
+		F.Data.DataTable.CreateFromSQL("TempRPTHead","Con",V.Local.sSql,True)
+		
+		F.Data.DataTable.Merge("TempRPTHead","RPTHead",False,2)
+
+		F.Data.DataTable.Close("TempRPTHead")
+			
+		F.Data.DataTable.Merge("TempHead","Head",False,4)
+		F.Data.DataTable.Merge("TempDetail","Detail",False,4)
+		F.Data.DataTable.DeleteRow("TempHead")
+		F.Data.DataTable.SaveToDB("TempHead","Con","BI_Bar_Head","Terminal*!*RptID*!*Job*!*Suffix*!*Key_Seq",7)
+		F.Data.DataTable.DeleteRow("TempDetail")
+		F.Data.DataTable.SaveToDB("TempDetail","Con","BI_Bar_Detail","Terminal*!*RptID*!*Job*!*Suffix*!*Key_Seq",7)
+		F.Data.DataTable.Close("TempHead")
+		F.Data.DataTable.Close("TempDetail")
+		
+		F.Intrinsic.Control.For(V.Local.i,0,V.DataTable.RPTHead.RowCount--,1)
+			F.Intrinsic.String.Right(V.DataTable.RPTHead(V.Local.i).Punch!FieldValTrim,2,V.Local.sKey1)
+			F.Intrinsic.String.Right(V.Local.sKey1,1,V.Local.sKey2)
+			F.Intrinsic.String.Left(V.Local.sKey1,1,V.Local.sKey1)
+			F.Intrinsic.String.Build("Select Value From GCG_6419_R_Table where Rec_No = '{0}'",V.Local.sKey1,V.Local.sSql)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sR)
+			F.Intrinsic.String.Build("Select Value From GCG_6419_H_Table where Rec_No = '{0}'",V.Local.sKey2,V.Local.sSql)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sH)
+			F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImg1_Path,V.DataTable.RPTHead(V.Local.i).SHAPE!FieldValTrim,V.Local.sImg1)
+			F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImg2_Path,V.DataTable.RPTHead(V.Local.i).IMG2!FieldValTrim,V.Local.sImg2)
+			F.Intrinsic.String.Build("Select rtrim(User_6) From WO_User_Flds Where Job = '{0}' and Suffix = '{1}'",V.DataTable.RPTHead(V.Local.i).Job!FieldValTrim,V.DataTable.RPTHead(V.Local.i).Suffix!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSql,V.Local.sImg3)
+			F.Intrinsic.String.Build("{0}{1}.PNG",V.Local.sImg3_Path,V.Local.sImg3,V.Local.sImg3)
+			F.Data.DataTable.AddRow("BIDATA","Job",V.DataTable.RPTHead(V.Local.i).Job!FieldValTrim,"Suffix",V.DataTable.RPTHead(V.Local.i).Suffix!FieldValTrim,"CRNR",V.DataTable.RPTHead(V.Local.i).CRNR!FieldValTrim,"ALUM",V.DataTable.RPTHead(V.Local.i).CRNR!FieldValTrim,"PUNCH",V.DataTable.RPTHead(V.Local.i).Punch!FieldValTrim)
+			F.Data.DataTable.SetValue("BIDATA",V.DataTable.BIDATA.RowCount--,"SHAPE",V.DataTable.RPTHead(V.Local.i).SHAPE!FieldValTrim,"A",V.DataTable.RPTHead(V.Local.i).A!FieldValTrim,"B",V.DataTable.RPTHead(V.Local.i).B!FieldValTrim,"C",V.DataTable.RPTHead(V.Local.i).C!FieldValTrim,"C2",V.DataTable.RPTHead(V.Local.i).C2!FieldValTrim)
+			F.Data.DataTable.SetValue("BIDATA",V.DataTable.BIDATA.RowCount--,"D",V.DataTable.RPTHead(V.Local.i).D!FieldValTrim,"E",V.DataTable.RPTHead(V.Local.i).E!FieldValTrim,"F",V.DataTable.RPTHead(V.Local.i).F!FieldValTrim,"G",V.DataTable.RPTHead(V.Local.i).G!FieldValTrim,"I",V.DataTable.RPTHead(V.Local.i).I!FieldValTrim)
+			F.Data.DataTable.SetValue("BIDATA",V.DataTable.BIDATA.RowCount--,"IMAGE1",V.Local.sImg1,"IMAGE2",V.Local.sImg2,"IMAGE3",V.Local.sImg3,"R",V.Local.sR,"H",V.Local.sH)
+		F.Intrinsic.Control.Next(V.Local.i)
+		F.Data.DataTable.Close("RPTHead")
+	F.Intrinsic.Control.Next(V.Local.iCount)
+	
+	F.Intrinsic.Control.If(V.DataTable.BIDATA.RowCount--,<>,-1)	
+		F.Intrinsic.String.Build("Delete From GCG_6419_BAR_IMAGE Where Terminal = '{0}'",V.Caller.Terminal,V.Local.sSql)
+		F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Data.DataTable.SetValue("BIDATA",-1,"Terminal",V.Caller.Terminal)
+		F.Data.DataTable.SaveToDB("BIDATA","Con","GCG_6419_BAR_IMAGE","",128)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.Head.RowCount--,<>,-1)
+		F.Intrinsic.Control.For(V.Local.iCount,0,V.DataTable.Head.RowCount--,1)
+			F.Intrinsic.Math.Add(V.Local.iCount,1,V.Local.iIncrement)
+			F.Intrinsic.String.Format(V.Local.iIncrement,"000000000",V.Local.sIncrement)
+			F.Data.DataTable.SetValue("Head",V.Local.iCount,"Key_Seq",V.Local.sIncrement)
+		F.Intrinsic.Control.Next(V.Local.iCount)
+		F.Data.DataTable.SaveToDB("Head","Con","BI_Bar_Head","",128)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.Detail.RowCount--,<>,-1)	
+		F.Data.DataTable.SaveToDB("Detail","Con","BI_Bar_Detail","",128)
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.DataTable.Close("BIDATA")
+	F.Data.DataTable.Close("Head")
+	F.Data.DataTable.Close("Detail")
+	
+	F.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!False!*!BJ020LZ!*!001811!*!{3}",V.Caller.Terminal,V.Local.bMatl,V.Local.bOut,V.Local.bComment,V.Local.sParamValues)
+	F.Intrinsic.String.Split(V.Local.sParamValues,"!*!",V.Local.sParamValues)
+	F.Intrinsic.String.Split("Terminal*!*MATLBAR*!*OUTBAR*!*FGBAR*!*PROGRAM*!*REPORTID*!*COMMENTS","*!*",V.Local.sParams)
+	F.Global.BI.PrintReport("001811",16,V.Local.sParams,V.Local.sParamValues,True)
+	
+	F.ODBC.Connection!con.Close
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.UI.CloseWaitDialog
+
+F.Intrinsic.Control.If(V.Global.sOrders.Trim,<>,"")
+	F.Intrinsic.String.Build("Modified Records have been updated. But the following Orders qty will need to be updated using the Order lines screen:{0}{1}",V.Ambient.NewLine,V.Global.sOrders,V.Local.sData)
+	F.Intrinsic.UI.Msgbox(V.Local.sData)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("Modified Records have been updated.")
+F.Intrinsic.Control.EndIf
+
+V.Global.sOrders.Set("")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdSave_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.Check_UserFields.Start
+F.Intrinsic.Control.SetErrorHandler("Check_UserFields_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.bUpdate.Declare(Boolean,False)
+V.Local.sFilter.Declare(String,"")
+V.Local.sSql.Declare(String,"")
+V.Local.sDueDate.Declare(String,"")
+V.Local.sDesc.Declare(String,"")
+V.Local.fEst.Declare(Float,0)
+V.Local.sUM.Declare(String,"")
+V.Local.fCost.Declare(Float,0)
+V.Local.sData.Declare(String,"")
+V.Local.sFilesdir.Declare(String,"")
+V.Local.sSeq.Declare(String,"")
+V.Local.sQty.Declare(String,"")
+
+F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,<>,"")
+	F.Intrinsic.String.Build("select Qty_Order from V_JOB_HEADER Where Job = '{0}' and Suffix = '{1}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sQty)
+	F.Intrinsic.Control.If(V.Local.sQty.Trim,<>,"","AND",V.Local.sQty.Long,<>,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValLong)
+		F.Intrinsic.String.Build("Update Job_Header Set Qty_Order = '{0}' Where Job = '{1}' and Suffix = '{2}'",V.Local.sQty.Long,V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+		F.ODBC.Connection!Con.Execute(V.Local.sSql)
+		F.Intrinsic.String.Build("select Date_Due from V_JOB_HEADER Where Job = '{0}' and Suffix = '{1}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+		F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sDueDate)
+		F.Intrinsic.Control.If(V.Local.sDueDate.Trim,=,"")
+			V.Local.sDueDate.Set(V.Ambient.Date)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.String.Format(V.Local.sDueDate,"MM/DD/YYYY",V.Local.sDueDate)
+		F.Global.APS.ScheduleJob(V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"B",V.Local.sDueDate)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{1}' and Suffix = '{2}'",V.Local.sDesc.Trim,V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+	F.Data.DataTable.CreateFromSQL("JOBOP",con,V.Local.sSql,True)
+	F.Intrinsic.Control.If(V.DataTable.JOBOP.RowCount--,<>,-1)
+		F.Intrinsic.String.Build("Job = '{0}' and Suffix = {1}",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sFilter)
+		F.Data.DataView.Create(V.Args.CheckDT,"TEMP",22,V.Local.sFilter,"")
+		'-----------------------------MAT-1 check and LAB-1 check---------------------------------
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER48!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,"OR",V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER49!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER49!FieldValTrim)
+			V.Local.bUpdate.Set(True)
+			F.Data.DataView.Create("JOBOP","VMOP",22,"OPERATION = 'MAT-1' and LMO = 'M'","Seq")
+			F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,=,"")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-1' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).User49!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).User49!FieldValFloat)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER49!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+							F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Seq",V.Local.sSeq,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER49!FieldValFloat,"Hours_Actual",0.00)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					
+					F.Intrinsic.String.Build("Select Um_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sUM)
+					
+					F.Intrinsic.String.Build("Select Cost From V_Inventory_Cost Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.fCost)
+					
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '995000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'M' and Operation = 'MAT-1' and Router = '{2}''",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq From Router_Line Where LMO = 'M' and Operation = 'MAT-1' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).User49!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Operation","MAT-1","UM",V.Local.sUM.Trim,"Burden",V.Local.fCost,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units_Open",0.00,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Units",V.DataTable.[V.Args.DT](V.Args.Index).User49!FieldValFloat)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-1' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+					
+					'getting info from Router
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'LAB-1' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'LAB-1' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+							F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+						F.Intrinsic.Control.Else
+							V.Local.fEst.Set(0)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+						F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Hours_Actual",0.00,"Seq",V.Local.sSeq)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VMOP")
+		F.Intrinsic.Control.EndIf
+
+		'-----------------------------MAT-2 check and LAB-2 check---------------------------------
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER50!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,"OR",V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER51!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER51!FieldValTrim)
+			V.Local.bUpdate.Set(True)
+			F.Data.DataView.Create("JOBOP","VMOP",22,"OPERATION = 'MAT-2' and LMO = 'M'","Seq")
+			F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,=,"")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-2' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).User51!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).User51!FieldValFloat)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER51!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+							F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Seq",V.Local.sSeq,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER51!FieldValFloat)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					
+					F.Intrinsic.String.Build("Select Um_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sUM)
+					
+					F.Intrinsic.String.Build("Select Cost From V_Inventory_Cost Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.fCost)
+					
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '995000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'M' and Operation = 'MAT-2' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq From Router_Line Where LMO = 'M' and Operation = 'MAT-2' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER51!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Operation","MAT-2","UM",V.Local.sUM.Trim,"Burden",V.Local.fCost,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER50!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units_Open",0.00,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER51!FieldValFloat)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-2' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+					
+					'getting info from Router
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'LAB-2' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'LAB-2' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+							F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+						F.Intrinsic.Control.Else
+							V.Local.fEst.Set(0)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+						F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+					
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VMOP")
+		F.Intrinsic.Control.EndIf
+
+		'-----------------------------MAT-3 check and LAB-3 check---------------------------------
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER52!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,"OR",V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER53!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldValTrim)
+			V.Local.bUpdate.Set(True)
+			F.Data.DataView.Create("JOBOP","VMOP",22,"OPERATION = 'MAT-3' and LMO = 'M'","Seq")
+			F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,=,"")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-3' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldValFloat)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+							F.Data.DataTable.SetValue("TempOP",-1,"Seq",V.Local.sSeq,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldVal)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+				
+					F.Intrinsic.String.Build("Select Um_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sUM)
+					
+					F.Intrinsic.String.Build("Select Cost From V_Inventory_Cost Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.fCost)
+					
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '995000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'M' and Operation = 'MAT-3' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq From Router_Line Where LMO = 'M' and Operation = 'MAT-3' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Operation","MAT-3","UM",V.Local.sUM.Trim,"Burden",V.Local.fCost,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER52!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units_Open",0.00,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER53!FieldValFloat)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-3' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+					
+					'getting info from Router
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'LAB-3' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'LAB-3' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+							F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+						F.Intrinsic.Control.Else
+							V.Local.fEst.Set(0)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+						F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VMOP")
+		F.Intrinsic.Control.EndIf
+		
+		'-----------------------------MAT-4 check and LAB-4 check---------------------------------
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER54!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,"OR",V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER55!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValTrim)
+			V.Local.bUpdate.Set(True)
+			F.Data.DataView.Create("JOBOP","VMOP",22,"OPERATION = 'MAT-4' and LMO = 'M'","Seq")
+			F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,=,"")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-4' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValFloat)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+							F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Seq",V.Local.sSeq,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValFloat)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+				
+					F.Intrinsic.String.Build("Select Um_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sUM)
+					
+					F.Intrinsic.String.Build("Select Cost From V_Inventory_Cost Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.fCost)
+					
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '995000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'M' and Operation = 'MAT-4' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq From Router_Line Where LMO = 'M' and Operation = 'MAT-4' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Operation","MAT-4","UM",V.Local.sUM.Trim,"Burden",V.Local.fCost,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER54!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units_Open",0.00,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER55!FieldValFloat)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-4' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+					
+					'getting info from Router
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'LAB-4' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq, Operation,  Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'LAB-4' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+							F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+						F.Intrinsic.Control.Else
+							V.Local.fEst.Set(0)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+						F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VMOP")
+		F.Intrinsic.Control.EndIf
+		
+		'-----------------------------MAT-5 check and LAB-5 check---------------------------------
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER56!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,"OR",V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER57!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldValTrim)
+			V.Local.bUpdate.Set(True)
+			F.Data.DataView.Create("JOBOP","VMOP",22,"OPERATION = 'MAT-5' and LMO = 'M'","Seq")
+			F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,=,"")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-5' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldValFloat)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+							F.Data.DataTable.SetValue("TempOP",-1,"Seq",V.Local.sSeq,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldValFloat)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					
+					F.Intrinsic.String.Build("Select Um_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sUM)
+					
+					F.Intrinsic.String.Build("Select Cost From V_Inventory_Cost Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.fCost)
+					
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '995000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'M' and Operation = 'MAT-5' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq From Router_Line Where LMO = 'M' and Operation = 'MAT-5' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Operation","MAT-5","UM",V.Local.sUM.Trim,"Burden",V.Local.fCost,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER56!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units_Open",0.00,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER57!FieldVal)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-5' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+					
+					'getting info from Router
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'LAB-5' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'LAB-5' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+							F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+						F.Intrinsic.Control.Else
+							V.Local.fEst.Set(0)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+						F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VMOP")
+		F.Intrinsic.Control.EndIf
+		
+		'-----------------------------MAT-6 check and LAB-6 check---------------------------------
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER58!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,"OR",V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).USER59!FieldValTrim,<>,V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValTrim)
+			V.Local.bUpdate.Set(True)
+			F.Data.DataView.Create("JOBOP","VMOP",22,"OPERATION = 'MAT-6' and LMO = 'M'","Seq")
+			F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,=,"")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-6' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP.RowCount--,<>,-1)
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValFloat)
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VMOP(V.DataView.JOBOP!VMOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+							F.Data.DataTable.SetValue("TempOP",-1,"Seq",V.Local.sSeq,"Flag_Closed","","PART",V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValFloat)
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("Select Description From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sDesc)
+					
+					F.Intrinsic.String.Build("Select Um_Inventory From V_Inventory_Mstr Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.sUM)
+					
+					F.Intrinsic.String.Build("Select Cost From V_Inventory_Cost Where Part = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).USER48!FieldValTrim,V.Local.sSql)
+					F.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSql,V.Local.fCost)
+					
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '995000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'M' and Operation = 'MAT-6' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq From Router_Line Where LMO = 'M' and Operation = 'MAT-6' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Operation","MAT-6","UM",V.Local.sUM.Trim,"Burden",V.Local.fCost,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"PART",V.DataTable.[V.Args.DT](V.Args.Index).USER58!FieldValTrim,"DESCRIPTION",V.Local.sDesc.Trim,"Hours_Estimated",V.Local.fEst,"Units_Open",0.00,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Units",V.DataTable.[V.Args.DT](V.Args.Index).USER59!FieldValFloat)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'LAB-6' and LMO = 'L'","Seq")
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+					
+					'getting info from Router
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'					F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'LAB-6' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'LAB-6' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+						F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+							F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+						F.Intrinsic.Control.Else
+							V.Local.fEst.Set(0)
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+						F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+						F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+						F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+					F.Data.DataTable.Close("TempOPRout")
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+						F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+						F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+						F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+						F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+							F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+							F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+							F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+							F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+						F.Intrinsic.Control.EndIf
+						F.Data.DataTable.Close("TempOP")
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				F.Data.DataView.Close("JOBOP","VLOP")
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VMOP")
+		F.Intrinsic.Control.EndIf
+		
+		'-----------------------------STIFF1 check and STIFF2 check---------------------------------
+		F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).User16!FieldValTrim,=,"")
+			F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'STIFF1' and LMO = 'L'","Seq")
+			F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+				V.Local.bUpdate.Set(True)
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+					F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex)
+				F.Intrinsic.Control.Else
+					F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VLOP")
+			F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'STIFF2' and LMO = 'L'","Seq")
+			F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+				V.Local.bUpdate.Set(True)
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+					F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex)
+				F.Intrinsic.Control.Else
+					F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VLOP")
+		F.Intrinsic.Control.Else
+			F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'STIFF1' and LMO = 'L'","Seq")
+			F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+				'getting info from Router
+				F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+				F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'				F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'STIFF1' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'				F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+				F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'STIFF1' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+				F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+				F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+						F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+					F.Intrinsic.Control.Else
+						V.Local.fEst.Set(0)
+					F.Intrinsic.Control.EndIf
+					V.Local.bUpdate.Set(True)
+					F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+					F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+					F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+					F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+					F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+				F.Intrinsic.Control.EndIf
+				F.Data.DataTable.Close("TempOP")
+				F.Data.DataTable.Close("TempOPRout")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+					F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+						F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+						F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+						F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VLOP")
+			
+			'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+			F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'STIFF2' and LMO = 'L'","Seq")
+			F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+				'getting info from Router
+				F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+				F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'				F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'STIFF2' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'				F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+				F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'STIFF2' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+				F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+				F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+						F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+					F.Intrinsic.Control.Else
+						V.Local.fEst.Set(0)
+					F.Intrinsic.Control.EndIf
+					V.Local.bUpdate.Set(True)
+					F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+					F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+					F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+					F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+					F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+				F.Intrinsic.Control.EndIf
+				F.Data.DataTable.Close("TempOP")
+				F.Data.DataTable.Close("TempOPRout")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+					F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+						F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+						F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+						F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VLOP")
+		F.Intrinsic.Control.EndIf
+		
+		'-----------------------------STIFF3 check---------------------------------
+		F.Intrinsic.Control.If(V.DataTable.[V.Args.DT](V.Args.Index).User22!FieldValTrim,=,"")
+			F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'STIFF3' and LMO = 'L'","Seq")
+			F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,<>,-1)
+				V.Local.bUpdate.Set(True)
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,=,0)
+					F.Data.DataTable.DeleteRow("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex)
+				F.Intrinsic.Control.Else
+					F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VLOP")
+		F.Intrinsic.Control.Else
+			F.Data.DataView.Create("JOBOP","VLOP",22,"OPERATION = 'STIFF3' and LMO = 'L'","Seq")
+			F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP.RowCount--,=,-1)
+				
+				'getting info from Router
+				F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '996000'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.Local.sSql)
+				F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+'				F.Intrinsic.String.Build("Select Cast('{0}' as Char) as Job, Cast('{1}' as Char) as Suffix, Line_Router as Seq, Cast('00' as Char) as WO_Insert, Operation, LMO, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Router, Line_Router as Router_Seq, 0.00 as Units_Complete, 0.00 as Percent_Complete, 0.00 as Units_Scrap, 0.00 as Units_Committed, 0.00 as Dollars_Committed, Set_Up as Setup, Run_Time as Units, 0.00 as Burden, 0.00 as Rate_Burden, 0.00 as Hours_Estimated, 0.00 as Hours_Actual, 0.00 as Dollars_Estimated, 0.00 as Dollars_Actual, 0.00 as Units_Open From Router_Line Where LMO = 'L' and Operation = 'STIFF3' and Router = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+'				F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+				F.Intrinsic.String.Build("Select Line_Router as Seq, Operation, Desc_Rt_Line as Description, UM_Inventory as UM, Part_WC_Outside as Part, Line_Router as Router_Seq, Set_Up as Setup, Run_Time as Units, Rate From Router_Line Where LMO = 'L' and Operation = 'STIFF3' and Router = '{0}'",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,V.Local.sSql)
+				F.Data.DataTable.CreateFromSQL("TempOPRout",con,V.Local.sSql,True)
+				F.Intrinsic.Control.If(v.DataTable.TempOP.RowCount--,<>,-1,"AND",V.DataTable.TempOPRout.RowCount--,<>,-1)
+					F.Intrinsic.Control.If(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,>,0)
+						F.Intrinsic.Math.Div(V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Units!FieldValFloat,V.Local.fEst)
+					F.Intrinsic.Control.Else
+						V.Local.fEst.Set(0)
+					F.Intrinsic.Control.EndIf
+					V.Local.bUpdate.Set(True)
+					F.Intrinsic.Math.Add(V.DataTable.TempOP(V.DataTable.TempOP.RowCount--).Setup!FieldValFloat,V.Local.fEst,V.Local.fEst)
+					F.Data.DataTable.SetValue("TempOP",-1,"Operation",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Operation!FieldValTrim,"Seq",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Seq!FieldValTrim,"UM",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).UM!FieldValTrim,"DESCRIPTION",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Description!FieldValTrim,"Job",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,"Suffix",V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim)
+					F.Data.DataTable.SetValue("TempOP",-1,"PART",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Part!FieldValTrim,"ROUTER_SEQ",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Router_Seq!FieldValTrim,"Router",V.DataTable.[V.Args.DT](V.Args.Index).Sign_Router!FieldValTrim,"Hours_Estimated",V.Local.fEst,"Units_Open",V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,"Units_Complete",0.00,"Percent_Complete",0.00,"Units_Scrap",0.00,"Units_Committed",0.00,"Dollars_Committed",0.00,"Burden",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Rate!FieldValFloat)
+					F.Data.DataTable.SetValue("TempOP",-1,"Flag_Closed","","Setup",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Setup!FieldValFloat,"Units",V.DataTable.TempOPRout(V.DataTable.TempOPRout.RowCount--).Units!FieldValFloat,"Rate_Burden",0.00,"Hours_Actual",0.00,"Dollars_Estimated",0.00,"Dollars_Actual",0.00)
+					F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+				F.Intrinsic.Control.EndIf
+				F.Data.DataTable.Close("TempOP")
+				F.Data.DataTable.Close("TempOPRout")
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Hours_Actual!FieldValFloat,>,0)
+					F.Data.DataTable.SetValue("JOBOP",V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).DataTableIndex,"Flag_Closed","Y")
+					F.Intrinsic.String.Build("Select * From Job_Operations Where Job = '{0}' and Suffix = '{1}' and Seq = '{2}'",V.DataTable.[V.Args.DT](V.Args.Index).Job!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Suffix!FieldValTrim,V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValTrim,V.Local.sSql)
+					F.Data.DataTable.CreateFromSQL("TempOP",con,V.Local.sSql,True)
+					F.Intrinsic.Control.If(V.DataTable.TempOP.RowCount--,<>,-1)
+						F.Intrinsic.Math.Add(V.DataView.JOBOP!VLOP(V.DataView.JOBOP!VLOP.RowCount--).Seq!FieldValLong,1,V.Local.sSeq)
+						F.Intrinsic.String.LPad(V.Local.sSeq,0,6,V.Local.sSeq)
+						F.Data.DataTable.SetValue("TempOP",-1,"Hours_Actual",0.00,"Seq",V.Local.sSeq,"Flag_Closed","")
+						F.Data.DataTable.Merge("TempOP","JOBOP",False,2)
+					F.Intrinsic.Control.EndIf
+					F.Data.DataTable.Close("TempOP")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataView.Close("JOBOP","VLOP")
+		F.Intrinsic.Control.EndIf
+		
+		F.Intrinsic.Control.If(V.DataView.[V.Args.CheckDT]!TEMP(V.DataView.[V.Args.CheckDT]!TEMP.RowCount--).SF_EACH!FieldValFloat,<>,V.DataTable.[V.Args.DT](V.Args.Index).SF_EACH!FieldValFloat)
+			'commeting out until callwrapper is fixed.
+			F.Intrinsic.Math.Mult(V.DataTable.[V.Args.DT](V.Args.Index).SF_EACH!FieldValFloat,V.DataTable.[V.Args.DT](V.Args.Index).Unit!FieldValFloat,V.Local.fEst)
+'			F.Intrinsic.String.Build("L,{0},{1},,,{2},,,,,,,,,,,,,,,,",V.DataTable.[V.Args.DT](V.Args.Index).Order_No!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Order_Line!FieldValTrim,V.Local.fEst,V.Local.sData)
+'			
+'			F.Intrinsic.String.Concat(V.Caller.FilesDir,"\","SOUPDLINES.TXT",V.Local.sFiledir)
+'			F.Intrinsic.File.String2File(V.Local.sFiledir,V.Local.sData)
+'			
+'			F.Global.Callwrapper.New("UPDATE","Sales.UpdateOrderHeaderAndLinesByFile")
+'			F.Global.Callwrapper.SetProperty("UPDATE","Screenless",1)
+'			F.Global.Callwrapper.SetProperty("UPDATE","InputFileName","SOUPDLINES.TXT")
+'			F.Global.CallWrapper.Run("UPDATE")
+'			
+'			F.Global.CallWrapper.GetProperty("UPDATE","Status",V.Local.sData)
+'			f.Intrinsic.Control.If(V.Local.sData,<>,"Success")
+'				F.Intrinsic.Control.If(V.Global.sOrders.Trim,=,"")
+'					F.Intrinsic.String.Build("Order: {0} Line: {1}",V.DataTable.[V.Args.DT](V.Args.Index).Order_No!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Order_Line!FieldValTrim,V.Global.sOrders)
+'				F.Intrinsic.Control.Else
+'					F.Intrinsic.String.Build("{0}{1}Order: {2} Line: {3}",V.Global.sOrders,V.Ambient.NewLine,V.DataTable.[V.Args.DT](V.Args.Index).Order_No!FieldValTrim,V.DataTable.[V.Args.DT](V.Args.Index).Order_Line!FieldValTrim,V.Global.sOrders)
+'				F.Intrinsic.Control.EndIf
+'			f.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		
+		F.Data.DataView.Close(V.Args.CheckDT,"TEMP")
+
+		F.Intrinsic.Control.If(V.Local.bUpdate)
+			F.Data.DataTable.SaveToDB("JOBOP","con","Job_Operations","Job*!*Suffix*!*Seq",7)
+			F.Intrinsic.String.Build("select Date_Due from V_JOB_HEADER Where Job = '{0}' and Suffix = '{1}'",V.DataTable.JOBOP(V.DataTable.JOBOP.RowCount--).Job!FieldValTrim,V.DataTable.JOBOP(V.DataTable.JOBOP.RowCount--).Suffix!FieldValTrim,V.Local.sSql)
+			F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sDueDate)
+			F.Intrinsic.Control.If(V.Local.sDueDate.Trim,=,"")
+				V.Local.sDueDate.Set(V.Ambient.Date)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Format(V.Local.sDueDate,"MM/DD/YYYY",V.Local.sDueDate)
+			F.Global.APS.ScheduleJob(V.DataTable.JOBOP(V.DataTable.JOBOP.RowCount--).Job!FieldValTrim,V.DataTable.JOBOP(V.DataTable.JOBOP.RowCount--).Suffix!FieldValTrim,"B",V.Local.sDueDate)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("JOBOP")
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Check_UserFields_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_WO_Users.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form_Unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Check_UserFields.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8784.20509$}$1
+${$6$}$rking$}$20240131080916173$}$QNdZLVy4bWuiWa9jh1ZTiPY99LydZoBN9DR2tbrrCpVXimzWqJKs74j6g/FUn2KslSCCU7JR27k=
+Program.Sub.Comments.End
