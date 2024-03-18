@@ -1,0 +1,167 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.FormBidDate..Create(BaseForm)
+Gui.FormBidDate..Caption("Select Bid Date")
+Gui.FormBidDate..Size(319,144)
+Gui.FormBidDate..MinX(0)
+Gui.FormBidDate..MinY(0)
+Gui.FormBidDate..Position(0,0)
+Gui.FormBidDate..AlwaysOnTop(False)
+Gui.FormBidDate..FontName("Tahoma")
+Gui.FormBidDate..FontSize(8.25)
+Gui.FormBidDate..ControlBox(True)
+Gui.FormBidDate..MaxButton(True)
+Gui.FormBidDate..MinButton(True)
+Gui.FormBidDate..MousePointer(0)
+Gui.FormBidDate..Moveable(True)
+Gui.FormBidDate..Sizeable(False)
+Gui.FormBidDate..ShowInTaskBar(True)
+Gui.FormBidDate..TitleBar(True)
+Gui.FormBidDate..Event(UnLoad,FormBidDate_UnLoad)
+Gui.FormBidDate.dtpBidDate.Create(DatePicker)
+Gui.FormBidDate.dtpBidDate.Enabled(True)
+Gui.FormBidDate.dtpBidDate.Visible(True)
+Gui.FormBidDate.dtpBidDate.Zorder(0)
+Gui.FormBidDate.dtpBidDate.Size(100,20)
+Gui.FormBidDate.dtpBidDate.Position(16,35)
+Gui.FormBidDate.dtpBidDate.CheckBox(False)
+Gui.FormBidDate.dtpBidDate.FontName("Tahoma")
+Gui.FormBidDate.dtpBidDate.FontSize(8.25)
+Gui.FormBidDate.lbl1.Create(Label,"Bid Date",True,40,13,0,17,19,True,0,"Tahoma",8.25,,0,0)
+Gui.FormBidDate.lbl1.BorderStyle(0)
+Gui.FormBidDate.cmdSubmit.Create(Button)
+Gui.FormBidDate.cmdSubmit.Enabled(True)
+Gui.FormBidDate.cmdSubmit.Visible(True)
+Gui.FormBidDate.cmdSubmit.Zorder(0)
+Gui.FormBidDate.cmdSubmit.Size(75,23)
+Gui.FormBidDate.cmdSubmit.Position(20,72)
+Gui.FormBidDate.cmdSubmit.Caption("Submit")
+Gui.FormBidDate.cmdSubmit.FontName("Tahoma")
+Gui.FormBidDate.cmdSubmit.FontSize(8.25)
+Gui.FormBidDate.cmdSubmit.Event(Click,cmdSubmit_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.dBid.Declare(Date,"01/01/1900")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+V.Local.sDate.Declare(String,"")
+V.Local.fValue.Declare
+
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	'Quote Header Pre Save Hook
+	F.Intrinsic.Control.Case(10922)
+		'Only running code for new
+		F.Intrinsic.Control.If(V.Caller.Switches,=,"N")
+			F.Intrinsic.Control.If(V.Passed.000003.Trim,<>,"","AND",V.Passed.Global,<>,"Line")
+				Gui.FormBidDate..Show
+				Gui.FormBidDate..WaitForDismiss
+				F.Intrinsic.Control.If(V.Global.dBid,<>,"01/01/1900")
+					F.Intrinsic.String.Format(V.Global.dBid,"MMDDYY",V.Local.sDate)
+					V.Passed.000023.Set(V.Local.sDate)
+					V.Passed.Global.Set(V.Local.sDate)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Else
+				'clearing out Global Variable so code will work on the Save button on header
+				F.Intrinsic.Control.If(V.Passed.Global,=,"Line")
+					V.Passed.Global.Set("")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	
+		F.Intrinsic.Control.CallSub(Exit)
+		
+	'Quote Header Line Hook
+	F.Intrinsic.Control.Case(10870)
+		'the pre save hook is getting fired after this hook when it's a new order 
+		'setting Global Line then on the Pre-Save setting it back blank so the scirpt will only who bid date selection when the user clicks save on the header
+		V.Passed.Global.Set("Line")
+	
+		F.Intrinsic.Control.CallSub(Exit)
+		
+	'Quote Line Exit Hook
+	F.Intrinsic.Control.Case(10660)
+		'clearing out Global Variable so code will work on the Save button on header
+			F.Intrinsic.Control.If(V.Passed.Global,=,"Line")
+				V.Passed.Global.Set("")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.Control.CallSub(Exit)
+			
+	F.Intrinsic.Control.CaseElse
+		F.Intrinsic.Control.CallSub(Exit)
+		
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Quote_Bid_Date.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Exit.Start
+F.Intrinsic.Control.SetErrorHandler("Exit_Err")
+F.Intrinsic.Control.ClearErrors
+
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Exit_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.Exit.End
+
+Program.Sub.cmdSubmit_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdSubmit_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+V.Global.dBid.Set(V.Screen.FormBidDate!dtpBidDate.Value)
+
+F.Intrinsic.Control.CallSub(FormBidDate_UnLoad)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdSubmit_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Quote_Bid_Date.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdSubmit_Click.End
+
+Program.Sub.FormBidDate_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("FormBidDate_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String,"")
+
+Gui.FormBidDate..Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("FormBidDate_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	F.Intrinsic.String.Build("Project: GCG_6419_Quote_Bid_Date.g2u {0}{0}Subroutine: {1}{0}Error Occurred {2} with description {3}",V.Ambient.NewLine,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Exit)
+Function.Intrinsic.Control.EndIf
+Program.Sub.FormBidDate_UnLoad.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8474.24170$}$1
+${$6$}$rking$}$20230412094308885$}$QNdZLVy4bWuiWa9jh1ZTiKHvMPldSPXe5J9Du882QzW+wFAR/8vpwNaToMbavXfstazdnaQO+JA=
+Program.Sub.Comments.End
